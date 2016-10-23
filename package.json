@@ -1,6 +1,6 @@
 {
   "name": "@ramonornela/http",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Requisição HTTP através de eventos com adição de plugins para interceptação",
   "main": "es2015/index.js",
   "module": "es2015/index.js",
