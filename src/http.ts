@@ -11,7 +11,7 @@ export class Http {
 
   constructor(
     protected http: HttpAngular,
-    protected events: Events,
+    protected events: HttpEvents,
     protected requestFactory: Request,
     protected plugins: Plugins) {
 
@@ -34,7 +34,7 @@ export class Http {
   protected preRequest() {
     this.events.subscribe(HttpEvents.PRE_REQUEST, (req: any) => {
       this.plugins.each((plugin: any) => {
-        plugin.preRequest(req[0]);
+        plugin.preRequest(req);
       });
     });
   }
@@ -42,7 +42,7 @@ export class Http {
   protected postRequest() {
     this.events.subscribe(HttpEvents.POST_REQUEST, (resp: any) => {
       this.plugins.each((plugin: any) => {
-        plugin.postRequest(resp[0]);
+        plugin.postRequest(resp);
       });
     });
   }

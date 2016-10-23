@@ -12,18 +12,44 @@ import {
   Headers
 } from '@angular/http';
 import { ContentType } from '@angular/http/src/enums';
-import { Events } from 'ionic-angular';
 import { isSuccess, getResponseURL } from '@angular/http/src/http_utils';
 import { isPresent, isString } from 'ionic-angular/util/util';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import { Subject } from 'rxjs/Subject';
 
+export function xhrBackendFactory(
+  browserXhr: BrowserXhr,
+  responseOptions: ResponseOptions,
+  xsrf: XSRFStrategy,
+  events: HttpEvents) {
+  return new XHRBackend(browserXhr, responseOptions, xsrf, events);
+}
+
+@Injectable()
 export class HttpEvents {
   static PRE_REQUEST: string = 'http.prerequest';
   static POST_REQUEST: string = 'http.postrequest';
   static POST_REQUEST_SUCCESS: string = 'http.postrequest_success';
   static POST_REQUEST_ERROR: string = 'http.postrequest_error';
+
+  private subjects: {[key: string]: Subject<any>} = {};
+
+  constructor() {
+    this.subjects[HttpEvents.PRE_REQUEST] = new Subject();
+    this.subjects[HttpEvents.POST_REQUEST] = new Subject();
+    this.subjects[HttpEvents.POST_REQUEST_SUCCESS] = new Subject();
+    this.subjects[HttpEvents.POST_REQUEST_ERROR] = new Subject();
+  }
+
+  publish(event: string, requestOrResponse: Request | Response) {
+    this.subjects[event].next(requestOrResponse);
+  }
+
+  subscribe(event: string, callback: (requestOrResponse?: Request | Response) => any) {
+    this.subjects[event].subscribe(callback);
+  }
 }
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
@@ -38,7 +64,7 @@ export class XHRConnection implements Connection {
    */
   response: Observable<Response>;
   readyState: ReadyState;
-  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions, private events?: Events) {
+  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions, private events?: HttpEvents) {
     this.request = req;
     this.response = new Observable<Response>((responseObserver: Observer<Response>) => {
 
@@ -171,13 +197,13 @@ export class XHRConnection implements Connection {
 @Injectable()
 export class XHRBackend implements ConnectionBackend {
   constructor(
-      private _browserXHR: BrowserXhr,
-      private _baseResponseOptions: ResponseOptions,
-      private _xsrfStrategy: XSRFStrategy,
-      private _events: Events) {}
+      private browserXHR: BrowserXhr,
+      private baseResponseOptions: ResponseOptions,
+      private xsrfStrategy: XSRFStrategy,
+      private events: HttpEvents) {}
 
   createConnection(request: Request): XHRConnection {
-    this._xsrfStrategy.configureRequest(request);
-    return new XHRConnection(request, this._browserXHR, this._baseResponseOptions, this._events);
+    this.xsrfStrategy.configureRequest(request);
+    return new XHRConnection(request, this.browserXHR, this.baseResponseOptions, this.events);
   }
 }

@@ -1,8 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
 import { UrlResolverModule } from '@ramonornela/url-resolver';
-import { Events, LoadingController } from 'ionic-angular';
-import { XHRBackend } from './backend/xhr_backend';
+import { LoadingController } from 'ionic-angular';
+import { xhrBackendFactory, HttpEvents } from './backend/xhr_backend';
 import { Http } from './http';
 import {
   Plugins,
@@ -14,14 +14,6 @@ import {
   ThrowExceptionStatus,
   ThrowExceptionStatusToken
 } from './plugins';
-
-export function xhrBackendFactory(
-  browserXhr: BrowserXhr,
-  responseOptions: ResponseOptions,
-  xsrf: XSRFStrategy,
-  events: Events) {
-  return new XHRBackend(browserXhr, responseOptions, xsrf, events);
-}
 
 @NgModule({
   imports: [
@@ -39,7 +31,7 @@ export class HttpModule {
       plugins = defaults;
     }
 
-    let xhrDeps = [ BrowserXhr, ResponseOptions, XSRFStrategy, Events ];
+    let xhrDeps = [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ];
     let pluginsProviders = [];
 
     // adicionando array de plugins
@@ -56,6 +48,7 @@ export class HttpModule {
     return {
       ngModule: HttpModule,
       providers: [
+        HttpEvents,
         { provide: ConnectionBackend, useFactory: xhrBackendFactory, deps: xhrDeps },
         HttpAngular,
         pluginsProviders,
