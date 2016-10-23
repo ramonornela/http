@@ -25,9 +25,7 @@
     "@angular/platform-browser": "2.0.1",
     "rxjs": "5.0.0-beta.12",
     "@ramonornela/configuration": "^0.0.3",
-    "@ramonornela/url-resolver": "^0.0.7",
-    "ionic-angular": "2.0.0-rc.1",
-    "ionic-native": "^2.2.4"
+    "@ramonornela/url-resolver": "^0.0.7"
   },
   "devDependencies": {
     "@angular/compiler": "2.0.1",
@@ -45,9 +43,7 @@
     "@ramonornela/configuration": "^0.0.3",
     "@ramonornela/url-resolver": "^0.0.7",
     "rxjs": "5.0.0-beta.12",
-    "zone.js": "^0.6.21",
-    "ionic-angular": "2.0.0-rc.1",
-    "ionic-native": "^2.2.4"
+    "zone.js": "^0.6.21"
   },
   "repository": {
     "type": "git",
