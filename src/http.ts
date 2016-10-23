@@ -14,8 +14,8 @@ export class Http {
     protected requestFactory: Request,
     protected plugins: Plugins) {
 
-    this.preRequest();
-    this.postRequest();
+    this.runEvent(HttpEvents.PRE_REQUEST, 'preRequest');
+    this.runEvent(HttpEvents.POST_REQUEST, 'postRequest');
   }
 
   request(url: any, params?: Object, headers?: {[key: string]: any}, body?: any): Observable<Response> {
@@ -30,22 +30,10 @@ export class Http {
     return this.plugins;
   }
 
-  protected preRequest() {
-    this.events.subscribe(HttpEvents.PRE_REQUEST, (req: any) => {
+  runEvent(subscribe: string, method: string) {
+    this.events.subscribe(subscribe, (req: any) => {
       this.plugins.each((plugin: any) => {
-        let stop = plugin.preRequest(req);
-
-        if (stop === false) {
-          this.events.stop();
-        }
-      });
-    });
-  }
-
-  protected postRequest() {
-    this.events.subscribe(HttpEvents.POST_REQUEST, (resp: any) => {
-      this.plugins.each((plugin: any) => {
-        let stop = plugin.postRequest(resp);
+        let stop = plugin[method](req);
 
         if (stop === false) {
           this.events.stop();
