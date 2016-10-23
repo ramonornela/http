@@ -4,6 +4,6 @@ import { Injectable } from '@angular/core';
 export abstract class Plugin {
   abstract getName(): string;
   abstract getPriority(): number;
-  abstract preRequest(req?: any);
-  abstract postRequest(resp?: any);
+  abstract preRequest(req?: any): boolean | void;
+  abstract postRequest(resp?: any): boolean | void;
 }

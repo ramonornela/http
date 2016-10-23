@@ -29,6 +29,9 @@ export function xhrBackendFactory(
 
 @Injectable()
 export class HttpEvents {
+
+  private stopped: boolean = false;
+
   static PRE_REQUEST: string = 'http.prerequest';
   static POST_REQUEST: string = 'http.postrequest';
   static POST_REQUEST_SUCCESS: string = 'http.postrequest_success';
@@ -41,6 +44,14 @@ export class HttpEvents {
     this.subjects[HttpEvents.POST_REQUEST] = new Subject();
     this.subjects[HttpEvents.POST_REQUEST_SUCCESS] = new Subject();
     this.subjects[HttpEvents.POST_REQUEST_ERROR] = new Subject();
+  }
+
+  stop() {
+    this.stopped = true;
+  }
+
+  isStop() {
+    return this.stopped;
   }
 
   publish(event: string, requestOrResponse: Request | Response) {
@@ -70,6 +81,10 @@ export class XHRConnection implements Connection {
 
       // disparando eventos pre request
       this.events.publish(HttpEvents.PRE_REQUEST, req);
+
+      if (this.events.isStop()) {
+        responseObserver.error({stop: HttpEvents.PRE_REQUEST});
+      }
 
       let _xhr: XMLHttpRequest = browserXHR.build();
       _xhr.open(RequestMethod[req.method].toUpperCase(), req.url);
@@ -110,6 +125,11 @@ export class XHRConnection implements Connection {
         if (response.ok) {
           // disparando eventos post request e post request error
           this.events.publish(HttpEvents.POST_REQUEST, response);
+
+          if (this.events.isStop()) {
+            responseObserver.error({stop: HttpEvents.POST_REQUEST});
+          }
+
           this.events.publish(HttpEvents.POST_REQUEST_SUCCESS, response);
           responseObserver.next(response);
           // TODO(gdi2290): defer complete if array buffer until done
@@ -121,6 +141,11 @@ export class XHRConnection implements Connection {
 
         // disparando eventos post request e post request error
         this.events.publish(HttpEvents.POST_REQUEST, response);
+
+        if (this.events.isStop()) {
+          responseObserver.error({stop: HttpEvents.POST_REQUEST});
+        }
+
         this.events.publish(HttpEvents.POST_REQUEST_ERROR, response);
       };
       // error event handler
@@ -140,8 +165,12 @@ export class XHRConnection implements Connection {
 
         responseObserver.error(response);
         this.events.publish(HttpEvents.POST_REQUEST, response);
-        this.events.publish(HttpEvents.POST_REQUEST_ERROR, response);
 
+        if (this.events.isStop()) {
+          responseObserver.error({stop: HttpEvents.POST_REQUEST});
+        }
+
+        this.events.publish(HttpEvents.POST_REQUEST_ERROR, response);
       };
 
       this.setDetectedContentType(req, _xhr);

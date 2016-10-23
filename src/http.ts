@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http as HttpAngular, Response } from '@angular/http';
-import { Events } from 'ionic-angular';
 import { Request } from '@ramonornela/url-resolver';
 import { HttpEvents } from './backend/xhr_backend';
 import { Plugins } from './plugins/plugins';
@@ -34,7 +33,11 @@ export class Http {
   protected preRequest() {
     this.events.subscribe(HttpEvents.PRE_REQUEST, (req: any) => {
       this.plugins.each((plugin: any) => {
-        plugin.preRequest(req);
+        let stop = plugin.preRequest(req);
+
+        if (stop === false) {
+          this.events.stop();
+        }
       });
     });
   }
@@ -42,7 +45,11 @@ export class Http {
   protected postRequest() {
     this.events.subscribe(HttpEvents.POST_REQUEST, (resp: any) => {
       this.plugins.each((plugin: any) => {
-        plugin.postRequest(resp);
+        let stop = plugin.postRequest(resp);
+
+        if (stop === false) {
+          this.events.stop();
+        }
       });
     });
   }
