@@ -1,14 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
 import { UrlResolverModule } from '@ramonornela/url-resolver';
-import { LoadingController } from 'ionic-angular';
 import { xhrBackendFactory, HttpEvents } from './backend/xhr_backend';
 import { Http } from './http';
 import {
   Plugins,
   HttpPluginsToken,
-  LoadingIonicPlugin,
-  NoConnectionMobilePlugin,
   ParseResponsePlugin,
   ParseResponseToken,
   ThrowExceptionStatus,
@@ -26,7 +23,7 @@ export class HttpModule {
     plugins = plugins || [];
 
     if (defaults === true) {
-      plugins.unshift(NoConnectionMobilePlugin, [ LoadingIonicPlugin, LoadingController ], [ ParseResponsePlugin, ParseResponseToken ]);
+      plugins.unshift([ ParseResponsePlugin, ParseResponseToken ]);
     } else if (defaults !== false) {
       plugins = defaults;
     }
