@@ -29,7 +29,7 @@ export class Plugins {
     return this;
   }
 
-  get(name: string): Plugin | void {
+  get(name: string): Plugin | null {
     let index: number = this.indexOf(name);
 
     if (index !== -1) {
@@ -48,7 +48,7 @@ export class Plugins {
     for (let index = 0, length = this.plugins.length; index < length; index++) {
       let plugin = this.plugins[index];
       if (plugin[name]) {
-        return ++index;
+        return index;
       }
     }
 
