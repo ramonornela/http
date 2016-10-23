@@ -55,6 +55,7 @@ export class HttpModule {
     return {
       ngModule: HttpModule,
       providers: [
+        ThrowExceptionStatus,
         { provide: ConnectionBackend, useFactory: xhrBackendFactory, deps: xhrDeps },
         HttpAngular,
         pluginsProviders,
