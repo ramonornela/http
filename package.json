@@ -13,7 +13,7 @@
     "build:es2015": "node --max_old_space_size=8096 ./node_modules/.bin/ngc -p tsconfig-es2015.json",
     "build": "npm run clean && npm run build-cjs && npm run build:es2015 && npm run preparePackage",
     "del:ngfactory:dist": "rimraf ./dist/es5/module.ngfactory* && rimraf ./dist/es2015/module.ngfactory*",
-    "publishPackage": "npm run lint && npm run build && cd dist && npm run del:ngfactory:dist && npm publish --access public"
+    "publishPackage": "npm run lint && npm run build && cd dist && npm run \"del:ngfactory:dist\" && npm publish --access public"
   },
   "dependencies": {
     "@angular/common": "2.0.1",
