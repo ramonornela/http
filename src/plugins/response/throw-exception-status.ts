@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OpaqueToken } from '@angular/core';
 import { ParseResponse } from './parse-response';
 import { Response } from '@angular/http';
 import { Optional } from '@angular/core';
 import { HttpException } from '../../exception';
+
+export const ThrowExceptionStatusToken = new OpaqueToken('THROWEXCEPTIONSTATUS');
 
 @Injectable()
 export class ThrowExceptionStatus implements ParseResponse {

@@ -11,7 +11,8 @@ import {
   NoConnectionMobilePlugin,
   ParseResponsePlugin,
   ParseResponseToken,
-  ThrowExceptionStatus
+  ThrowExceptionStatus,
+  ThrowExceptionStatusToken
 } from './plugins';
 
 export function xhrBackendFactory(
@@ -55,11 +56,11 @@ export class HttpModule {
     return {
       ngModule: HttpModule,
       providers: [
-        ThrowExceptionStatus,
         { provide: ConnectionBackend, useFactory: xhrBackendFactory, deps: xhrDeps },
         HttpAngular,
         pluginsProviders,
-        { provide: ParseResponseToken, useClass: ThrowExceptionStatus, multi: true },
+        { provide: ThrowExceptionStatusToken, useValue: () => {} },
+        { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
         Http
       ]
