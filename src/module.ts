@@ -59,7 +59,7 @@ export class HttpModule {
         { provide: ConnectionBackend, useFactory: xhrBackendFactory, deps: xhrDeps },
         HttpAngular,
         pluginsProviders,
-        { provide: ThrowExceptionStatusToken, useValue: () => {} },
+        { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
         Http
