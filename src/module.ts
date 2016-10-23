@@ -34,7 +34,7 @@ export class HttpModule {
     plugins = plugins || [];
 
     if (defaults === true) {
-      plugins.push(NoConnectionMobilePlugin, [ LoadingIonicPlugin, LoadingController ], [ ParseResponsePlugin, ParseResponseToken ]);
+      plugins.unshift(NoConnectionMobilePlugin, [ LoadingIonicPlugin, LoadingController ], [ ParseResponsePlugin, ParseResponseToken ]);
     } else if (defaults !== false) {
       plugins = defaults;
     }
