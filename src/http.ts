@@ -16,6 +16,8 @@ export class Http {
 
     this.runEvent(HttpEvents.PRE_REQUEST, 'preRequest');
     this.runEvent(HttpEvents.POST_REQUEST, 'postRequest');
+    this.runEvent(HttpEvents.POST_REQUEST_SUCCESS, 'postRequestSuccess');
+    this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
   }
 
   request(url: any, params?: Object, headers?: {[key: string]: any}, body?: any): Observable<Response> {
@@ -30,9 +32,14 @@ export class Http {
     return this.plugins;
   }
 
-  runEvent(subscribe: string, method: string) {
+  private runEvent(subscribe: string, method: string) {
     this.events.subscribe(subscribe, (req: any) => {
       this.plugins.each((plugin: any) => {
+        // workaround typescript not exists verification of interfaces
+        if (!(method in plugin)) {
+          return;
+        }
+
         let stop = plugin[method](req);
 
         if (stop === false) {

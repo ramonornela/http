@@ -17,6 +17,20 @@ export class Plugins {
   }
 
   set(plugin: Plugin, priority?: number): this {
+    let methods = [ 'preRequest', 'postRequest', 'postRequestSuccess' ,'postRequestError' ];
+
+    // workaround typescript not exists verification of interfaces
+    let implementsInterfaces = false;
+    for (let method of methods) {
+      if (method in plugin) {
+        implementsInterfaces = true;
+      }
+    }
+
+    if (implementsInterfaces === false) {
+      throw 'Plugin not implements interface of events (preRequest, postRequest ...).';
+    }
+
     let pluginConf: any = {};
 
     pluginConf[plugin.getName()] = plugin;

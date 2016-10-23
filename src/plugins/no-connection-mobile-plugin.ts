@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Plugin } from './plugin';
+import { PreRequestPlugin } from './plugin';
 import { Network } from 'ionic-native';
 import { NoConnectionException } from '../exception';
 
 @Injectable()
-export class NoConnectionMobilePlugin implements Plugin {
+export class NoConnectionMobilePlugin implements PreRequestPlugin {
 
   getPriority(): number {
     return -1;
@@ -16,9 +16,7 @@ export class NoConnectionMobilePlugin implements Plugin {
 
   preRequest() {
     if (Network.connection === 'none') {
-      throw new NoConnectionException('sem conexao');
+      throw new NoConnectionException('Not Connection');
     }
   }
-
-  postRequest() {}
 }

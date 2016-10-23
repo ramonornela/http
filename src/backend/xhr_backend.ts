@@ -131,6 +131,11 @@ export class XHRConnection implements Connection {
           }
 
           this.events.publish(HttpEvents.POST_REQUEST_SUCCESS, response);
+
+          if (this.events.isStop()) {
+            responseObserver.error({stop: HttpEvents.POST_REQUEST});
+          }
+
           responseObserver.next(response);
           // TODO(gdi2290): defer complete if array buffer until done
           responseObserver.complete();

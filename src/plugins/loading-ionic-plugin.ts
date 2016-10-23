@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Plugin } from './plugin';
+import { PreRequestPlugin, PostRequestPlugin } from './plugin';
 import { LoadingController } from 'ionic-angular';
 
 @Injectable()
-export class LoadingIonicPlugin implements Plugin {
+export class LoadingIonicPlugin implements PreRequestPlugin, PostRequestPlugin {
 
   protected loading;
 

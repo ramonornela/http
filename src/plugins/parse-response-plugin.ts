@@ -1,11 +1,11 @@
 import { Injectable, OpaqueToken } from '@angular/core';
-import { Plugin } from './plugin';
+import { PostRequestPlugin } from './plugin';
 import { ParseResponse } from './response/parse-response';
 
 export const ParseResponseToken = new OpaqueToken('PARSE_RESPONSE');
 
 @Injectable()
-export class ParseResponsePlugin implements Plugin {
+export class ParseResponsePlugin implements PostRequestPlugin {
 
   constructor(private parseResponses: Array<ParseResponse>) {
   }
@@ -17,8 +17,6 @@ export class ParseResponsePlugin implements Plugin {
   getName() {
     return 'parse-response';
   }
-
-  preRequest() {}
 
   postRequest(response: any) {
     for (let parseResponse of this.parseResponses) {
