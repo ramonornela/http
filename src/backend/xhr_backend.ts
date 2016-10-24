@@ -133,7 +133,7 @@ export class XHRConnection implements Connection {
           this.events.publish(HttpEvents.POST_REQUEST_SUCCESS, response);
 
           if (this.events.isStop()) {
-            responseObserver.error({stop: HttpEvents.POST_REQUEST});
+            responseObserver.error({stop: HttpEvents.POST_REQUEST_SUCCESS});
           }
 
           responseObserver.next(response);
