@@ -13,7 +13,6 @@ import {
 } from '@angular/http';
 import { ContentType } from '@angular/http/src/enums';
 import { isSuccess, getResponseURL } from '@angular/http/src/http_utils';
-import { isPresent, isString } from 'ionic-angular/util/util';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -88,7 +87,7 @@ export class XHRConnection implements Connection {
 
       let _xhr: XMLHttpRequest = browserXHR.build();
       _xhr.open(RequestMethod[req.method].toUpperCase(), req.url);
-      if (isPresent(req.withCredentials)) {
+      if (req.withCredentials !== undefined && req.withCredentials !== null) {
         _xhr.withCredentials = req.withCredentials;
       }
       // load event handler
@@ -96,9 +95,9 @@ export class XHRConnection implements Connection {
         // responseText is the old-school way of retrieving response (supported by IE8 & 9)
         // response/responseType properties were introduced in XHR Level2 spec (supported by
         // IE10)
-        let body = isPresent(_xhr.response) ? _xhr.response : _xhr.responseText;
+        let body = _xhr.response !== undefined && _xhr.response !== null ? _xhr.response : _xhr.responseText;
         // Implicitly strip a potential XSSI prefix.
-        if (isString(body)) body = body.replace(XSSI_PREFIX, '');
+        if (typeof body === 'string') body = body.replace(XSSI_PREFIX, '');
         let headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
 
         let url = getResponseURL(_xhr);
@@ -116,7 +115,7 @@ export class XHRConnection implements Connection {
         let statusText = _xhr.statusText || 'OK';
 
         var responseOptions = new ResponseOptions({body, status, headers, statusText, url});
-        if (isPresent(baseResponseOptions)) {
+        if (baseResponseOptions !== undefined && baseResponseOptions !== null) {
           responseOptions = baseResponseOptions.merge(responseOptions);
         }
         let response = new Response(responseOptions);
@@ -161,7 +160,7 @@ export class XHRConnection implements Connection {
           status: _xhr.status,
           statusText: _xhr.statusText,
         });
-        if (isPresent(baseResponseOptions)) {
+        if (baseResponseOptions !== undefined && baseResponseOptions !== null) {
           responseOptions = baseResponseOptions.merge(responseOptions);
         }
 
@@ -180,7 +179,7 @@ export class XHRConnection implements Connection {
 
       this.setDetectedContentType(req, _xhr);
 
-      if (isPresent(req.headers)) {
+      if (req.headers !== undefined && req.headers !== null) {
         req.headers.forEach((values, name) => {
           _xhr.setRequestHeader(name, values.join(','));
         });
@@ -201,7 +200,8 @@ export class XHRConnection implements Connection {
 
   setDetectedContentType(req: any /** TODO #9100 */, _xhr: any /** TODO #9100 */) {
     // Skip if a custom Content-Type header is provided
-    if (isPresent(req.headers) && isPresent(req.headers.get('Content-Type'))) {
+    if ((req.headers !== undefined && req.headers !== null)
+       && (req.headers.get('Content-Type') !== undefined && req.headers.get('Content-Type') !== null)) {
       return;
     }
 
