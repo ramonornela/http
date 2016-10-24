@@ -18,17 +18,11 @@ import {
   ]
 })
 export class HttpModule {
-  static initialize(defaults: any, plugins?: any): ModuleWithProviders {
+  static initialize(plugins?: any): ModuleWithProviders {
 
     plugins = plugins || [];
+    plugins.unshift([ ParseResponsePlugin, ParseResponseToken ]);
 
-    if (defaults === true) {
-      plugins.unshift([ ParseResponsePlugin, ParseResponseToken ]);
-    } else if (defaults !== false) {
-      plugins = defaults;
-    }
-
-    let xhrDeps = [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ];
     let pluginsProviders = [];
 
     // adicionando array de plugins
@@ -46,7 +40,11 @@ export class HttpModule {
       ngModule: HttpModule,
       providers: [
         HttpEvents,
-        { provide: ConnectionBackend, useFactory: xhrBackendFactory, deps: xhrDeps },
+        {
+          provide: ConnectionBackend,
+          useFactory: xhrBackendFactory,
+          deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ]
+        },
         HttpAngular,
         pluginsProviders,
         { provide: ThrowExceptionStatusToken, useValue: null },
