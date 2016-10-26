@@ -2,19 +2,23 @@
   "name": "@ramonornela/http",
   "version": "0.0.9",
   "description": "Requisição HTTP através de eventos com adição de plugins para interceptação",
-  "main": "es2015/index.js",
-  "module": "es2015/index.js",
-  "typings": "es2015/index.d.ts",
+  "main": "dist/umd/index.js",
+  "typings": "dist/esm/index.d.ts",
+  "module": "dist/esm/index.js",
   "scripts": {
-    "clean": "rimraf ./dist && rimraf ./src/module.ngfactory.ts",
-    "lint": "tslint -c ./tslint.json --project ./tsconfig-es2015.json --force",
-    "preparePackage": "node ./scripts/copy-package",
-    "build-cjs": "node --max_old_space_size=8096 ./node_modules/.bin/ngc -p tsconfig.json",
-    "build:es2015": "node --max_old_space_size=8096 ./node_modules/.bin/ngc -p tsconfig-es2015.json",
-    "build": "npm run clean && npm run build-cjs && npm run build:es2015 && npm run preparePackage",
-    "del:ngfactory:dist": "rimraf ./dist/es5/module.ngfactory* && rimraf ./dist/es2015/module.ngfactory*",
-    "publishPackage": "npm run lint && npm run build && npm run del:ngfactory:dist && cd dist && npm publish --access public"
+    "clean": "rimraf ./dist",
+    "lint": "tslint -c ./tslint.json --project ./tsconfig-esm.json --force",
+    "package:json": "node ./scripts/package",
+    "build:umd": "node --max_old_space_size=8096 ./node_modules/.bin/ngc -p tsconfig.json",
+    "build:esm": "node --max_old_space_size=8096 ./node_modules/.bin/ngc -p tsconfig-esm.json",
+    "build": "npm run clean && npm run build:umd && npm run build:esm && npm run package:json --prepare",
+    "publishPackage": "npm run lint && npm run build && npm publish --access public && npm run package:json --restore"
   },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "dependencies": {
     "@angular/common": "2.0.1",
     "@angular/core": "2.0.1",
@@ -25,11 +29,11 @@
     "@angular/platform-browser": "2.0.1",
     "rxjs": "5.0.0-beta.12",
     "@ramonornela/configuration": "^0.0.3",
-    "@ramonornela/url-resolver": "^0.0.8"
+    "@ramonornela/url-resolver": "^0.0.9"
   },
   "devDependencies": {
-    "@angular/compiler": "2.0.1",
-    "@angular/compiler-cli": "0.6.2",
+    "@angular/compiler": "~2.1.0",
+    "@angular/compiler-cli": "~2.1.0",
     "zone.js": "^0.6.21",
     "typescript": "^2.0.3",
     "tslint": "3.15.1",
@@ -38,9 +42,9 @@
     "rimraf": "^2.5.4"
   },
   "peerDependencies": {
-    "@angular/core": "^2.0.1",
-    "@angular/http": "^2.0.1",
-    "@ramonornela/url-resolver": "^0.0.8",
+    "@angular/core": "2.0.1",
+    "@angular/http": "2.0.1",
+    "@ramonornela/url-resolver": "^0.0.9",
     "rxjs": "5.0.0-beta.12",
     "zone.js": "^0.6.21"
   },
