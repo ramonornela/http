@@ -31,5 +31,5 @@ import {
     { provide: HttpPluginsToken, useClass: ParseResponsePlugin, deps: [ ParseResponseToken ], multi: true }
   ]
 })
-export class HttpModule {
+export class Http2Module {
 }
