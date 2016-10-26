@@ -11,8 +11,9 @@
     "package:json": "node ./scripts/package",
     "build:umd": "node --max_old_space_size=8096 ./node_modules/.bin/ngc -p tsconfig.json",
     "build:esm": "node --max_old_space_size=8096 ./node_modules/.bin/ngc -p tsconfig-esm.json",
-    "build": "npm run clean && npm run build:umd && npm run build:esm && npm run package:json --prepare",
-    "publishPackage": "npm run lint && npm run build && npm publish --access public && npm run package:json --restore"
+    "build": "npm run clean && npm run build:umd && npm run build:esm",
+    "build:lint": "npm run lint && npm run build",
+    "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore"
   },
   "files": [
     "dist/",
