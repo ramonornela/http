@@ -8,7 +8,7 @@ export const ThrowExceptionStatusToken = new OpaqueToken('THROWEXCEPTIONSTATUS')
 @Injectable()
 export class ThrowExceptionStatus implements ParseResponse {
 
-  constructor(@Optional() private fnExtractMessage?: (response: Response) => string) {}
+  constructor(@Optional() private fnExtractMessage?: any) {}
 
   parse(response: Response): void {
     this.throw(response);
