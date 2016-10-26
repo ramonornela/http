@@ -1,6 +1,6 @@
+import { UrlResolverModule } from '@ramonornela/url-resolver';
 import { NgModule } from '@angular/core';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
-import { UrlResolverModule } from '@ramonornela/url-resolver';
 import { xhrBackendFactory, HttpEvents } from './backend/xhr_backend';
 import { Http } from './http';
 import {
