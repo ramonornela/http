@@ -1,7 +1,6 @@
-import { Injectable, OpaqueToken } from '@angular/core';
-import { ParseResponse } from './parse-response';
+import { Injectable, OpaqueToken, Optional } from '@angular/core';
 import { Response } from '@angular/http';
-import { Optional } from '@angular/core';
+import { ParseResponse } from './parse-response';
 import { HttpException } from '../../exception';
 
 export const ThrowExceptionStatusToken = new OpaqueToken('THROWEXCEPTIONSTATUS');
