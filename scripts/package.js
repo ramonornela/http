@@ -11,7 +11,6 @@ var Package = {
   prepare: function() {
 	  
     var packageJson = require(originalPath);
-    var readme = fs.readFileSync(path.join(process.cwd(), 'README.md'));
 
     if (! packageJson) {
       throw new Error('Can\'t find package json');
