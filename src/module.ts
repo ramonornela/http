@@ -1,7 +1,7 @@
 import { UrlResolverModule } from '@ramonornela/url-resolver';
 import { NgModule } from '@angular/core';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
-import { xhrBackendFactory, HttpEvents } from './backend/xhr_backend';
+import { xhrBackendFactory, Events } from './backend/xhr_backend';
 import { Http } from './http';
 import {
   Plugins,
@@ -17,11 +17,11 @@ import {
     UrlResolverModule
   ],
   providers: [
-    HttpEvents,
+    Events,
     {
       provide: ConnectionBackend,
       useFactory: xhrBackendFactory,
-      deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ]
+      deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, Events ]
     },
     HttpAngular,
     { provide: ThrowExceptionStatusToken, useValue: null },

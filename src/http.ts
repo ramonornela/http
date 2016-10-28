@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http as HttpAngular, Response } from '@angular/http';
 import { Request } from '@ramonornela/url-resolver';
-import { HttpEvents } from './backend/xhr_backend';
+import { HttpEvents, Events } from './backend/xhr_backend';
 import { Plugins } from './plugins/plugins';
 import { Observable } from 'rxjs/Observable';
 
@@ -10,7 +10,7 @@ export class Http {
 
   constructor(
     protected http: HttpAngular,
-    protected events: HttpEvents,
+    protected events: Events,
     protected requestFactory: Request,
     protected plugins: Plugins) {
 

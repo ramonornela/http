@@ -17,50 +17,22 @@ import { isSuccess, getResponseURL } from '@angular/http/src/http_utils';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { Subject } from 'rxjs/Subject';
+import { Events } from './events';
 
 export function xhrBackendFactory(
   browserXhr: BrowserXhr,
   responseOptions: ResponseOptions,
   xsrf: XSRFStrategy,
-  events: HttpEvents) {
+  events: Events) {
   return new XHRBackend(browserXhr, responseOptions, xsrf, events);
 }
 
-@Injectable()
 export class HttpEvents {
-
-  private stopped: boolean = false;
 
   static PRE_REQUEST: string = 'http.prerequest';
   static POST_REQUEST: string = 'http.postrequest';
   static POST_REQUEST_SUCCESS: string = 'http.postrequest_success';
   static POST_REQUEST_ERROR: string = 'http.postrequest_error';
-
-  private subjects: {[key: string]: Subject<any>} = {};
-
-  constructor() {
-    this.subjects[HttpEvents.PRE_REQUEST] = new Subject();
-    this.subjects[HttpEvents.POST_REQUEST] = new Subject();
-    this.subjects[HttpEvents.POST_REQUEST_SUCCESS] = new Subject();
-    this.subjects[HttpEvents.POST_REQUEST_ERROR] = new Subject();
-  }
-
-  stop() {
-    this.stopped = true;
-  }
-
-  isStop() {
-    return this.stopped;
-  }
-
-  publish(event: string, requestOrResponse: Request | Response) {
-    this.subjects[event].next(requestOrResponse);
-  }
-
-  subscribe(event: string, callback: (requestOrResponse?: Request | Response) => any) {
-    this.subjects[event].subscribe(callback);
-  }
 }
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
@@ -75,7 +47,7 @@ export class XHRConnection implements Connection {
    */
   response: Observable<Response>;
   readyState: ReadyState;
-  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions, private events?: HttpEvents) {
+  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions, private events?: Events) {
     this.request = req;
     this.response = new Observable<Response>((responseObserver: Observer<Response>) => {
 
@@ -251,10 +223,12 @@ export class XHRBackend implements ConnectionBackend {
       private browserXHR: BrowserXhr,
       private baseResponseOptions: ResponseOptions,
       private xsrfStrategy: XSRFStrategy,
-      private events: HttpEvents) {}
+      private events: Events) {}
 
   createConnection(request: Request): XHRConnection {
     this.xsrfStrategy.configureRequest(request);
     return new XHRConnection(request, this.browserXHR, this.baseResponseOptions, this.events);
   }
 }
+
+export { Events };
