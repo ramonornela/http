@@ -11,7 +11,7 @@ export class ParseResponsePlugin implements PostRequestPlugin {
   }
 
   getPriority(): number {
-    return 1;
+    return 2;
   }
 
   getName() {
