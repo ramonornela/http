@@ -39,7 +39,8 @@ export class Plugins {
       priority = plugin.getPriority();
     }
 
-    this.plugins.splice(priority, 0, pluginConf);
+    this.plugins[priority] = pluginConf;
+    this.plugins.filter((value) => value !== undefined || value !== null);
     return this;
   }
 
