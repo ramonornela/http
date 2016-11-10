@@ -12,8 +12,8 @@ import {
   ThrowExceptionStatusToken
 } from './plugins';
 
-const HttpPluginsTempToken = new OpaqueToken('HTTPPLUGINSTEMP');
-const DefaultPluginToken = new OpaqueToken('DEFAULTPLUGINTEMP');
+export const HttpPluginsTempToken = new OpaqueToken('HTTPPLUGINSTEMP');
+export const DefaultPluginToken = new OpaqueToken('DEFAULTPLUGINTEMP');
 
 @NgModule({
   imports: [
