@@ -15,7 +15,7 @@ export class ThrowExceptionStatus implements ParseResponse {
   }
 
   protected throw(response: Response) {
-    if (response.status >= 400 || response.status >= 500) {
+    if (response.status >= 400) {
       let message = typeof this.fnExtractMessage === 'function'
                   ? this.fnExtractMessage.apply(this, [response])
                   : this.extractMessage(response);
