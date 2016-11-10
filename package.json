@@ -9,8 +9,8 @@
     "clean": "rimraf ./dist",
     "lint": "tslint -c ./tslint.json --project ./tsconfig-esm.json --force",
     "package:json": "node ./scripts/package",
-    "build:umd": "tsc -p tsconfig.json && ngc -p tsconfig.json",
-    "build:esm": "tsc -p tsconfig-esm.json && ngc -p tsconfig-esm.json",
+    "build:umd": "ngc",
+    "build:esm": "ngc -p tsconfig-esm.json",
     "build": "npm run clean && npm run build:umd && npm run build:esm",
     "build:lint": "npm run lint && npm run build",
     "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore"
