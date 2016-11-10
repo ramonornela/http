@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, APP_INITIALIZER, OpaqueToken } from '@angular/core';
 import { UrlResolverModule } from '@ramonornela/url-resolver';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
 import { xhrBackendFactory, Events } from './backend/xhr_backend';
@@ -12,6 +12,9 @@ import {
   ThrowExceptionStatusToken
 } from './plugins';
 
+const HttpPluginsTempToken = new OpaqueToken('HTTPPLUGINSTEMP');
+const DefaultPluginToken = new OpaqueToken('DEFAULTPLUGINTEMP');
+
 @NgModule({
   imports: [
     UrlResolverModule
@@ -19,7 +22,32 @@ import {
 })
 export class HttpModule {
 
-  static initialize(defaultPlugin: boolean | Array<any>, plugins?: Array<any>): ModuleWithProviders {
+  static initialize(defaultPlugin: any, plugins?: any): ModuleWithProviders {
+    return {
+      ngModule: HttpModule,
+      providers: [
+        Events,
+        {
+          provide: ConnectionBackend,
+          useFactory: xhrBackendFactory,
+          deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, Events ]
+        },
+        HttpAngular,
+        { provide: ThrowExceptionStatusToken, useValue: null },
+        { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
+        { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
+        Http,
+        { provide: HttpPluginsTempToken, useValue: plugins },
+        { provide: DefaultPluginToken, useValue: defaultPlugin },
+        { provide: HttpPluginsToken, useValue: null },
+        { provide: APP_INITIALIZER, useFactory: setupPlugins, deps: [ DefaultPluginToken,  HttpPluginsTempToken ], multi: true }
+      ]
+    };
+  }
+}
+
+export function setupPlugins(defaultPlugin: any, plugins?: any) {
+  return function() {
     plugins = plugins || [];
     let pluginsProviders = [];
 
@@ -35,22 +63,7 @@ export class HttpModule {
         multi: true
       });
     }
-    return {
-      ngModule: HttpModule,
-      providers: [
-        Events,
-        {
-          provide: ConnectionBackend,
-          useFactory: xhrBackendFactory,
-          deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, Events ]
-        },
-        HttpAngular,
-        { provide: ThrowExceptionStatusToken, useValue: null },
-        { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
-        { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
-        Http,
-        pluginsProviders
-      ]
-    };
+
+    return pluginsProviders;
   }
 }
