@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http as HttpAngular, Response } from '@angular/http';
 import { Request } from '@ramonornela/url-resolver';
 import { HttpEvents, Events } from './backend/xhr_backend';
-import { Plugins } from './plugins/plugins';
+import { Plugins, Plugin } from './plugins';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -28,12 +28,12 @@ export class Http {
     return this.http.request(url, null);
   }
 
-  getPlugins() {
+  getPlugins(): Plugins {
     return this.plugins;
   }
 
-  getPlugin(name: string) {
-    return this.getPlugins().getPlugin(name);
+  getPlugin(name: string): Plugin | null {
+    return this.getPlugins().get(name);
   }
 
   private runEvent(subscribe: string, method: string) {
