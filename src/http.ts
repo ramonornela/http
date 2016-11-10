@@ -32,6 +32,10 @@ export class Http {
     return this.plugins;
   }
 
+  getPlugin(name: string) {
+    return this.getPlugins().getPlugin(name);
+  }
+
   private runEvent(subscribe: string, method: string) {
     this.events.subscribe(subscribe, (req: any) => {
       this.plugins.each((plugin: any) => {
