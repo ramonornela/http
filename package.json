@@ -1,6 +1,6 @@
 {
   "name": "@ramonornela/http",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Requisição HTTP através de eventos com adição de plugins para interceptação",
   "main": "dist/umd/index.js",
   "typings": "dist/esm/index.d.ts",
