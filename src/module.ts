@@ -39,7 +39,6 @@ export class HttpModule {
         Http,
         { provide: HttpPluginsTempToken, useValue: plugins },
         { provide: DefaultPluginToken, useValue: defaultPlugin },
-        { provide: HttpPluginsToken, useValue: null },
         { provide: APP_INITIALIZER, useFactory: setupPlugins, deps: [ DefaultPluginToken,  HttpPluginsTempToken ], multi: true }
       ]
     };
