@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, APP_INITIALIZER, OpaqueToken } from '@angular/core';
+import { NgModule, ModuleWithProviders, APP_INITIALIZER, OpaqueToken, SkipSelf, Optional } from '@angular/core';
 import { UrlResolverModule } from '@ramonornela/url-resolver';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
 import { xhrBackendFactory, Events } from './backend/xhr_backend';
@@ -21,6 +21,12 @@ export const DefaultPluginToken = new OpaqueToken('DEFAULTPLUGINTEMP');
   ]
 })
 export class HttpModule {
+
+  constructor(@Optional() @SkipSelf() parentModule: HttpModule) {
+    if (parentModule) {
+      throw new Error('HttpModule already loaded; Import in root module only.');
+    }
+  }
 
   static initialize(defaultPlugin: any, plugins?: any): ModuleWithProviders {
     return {
