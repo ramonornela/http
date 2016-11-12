@@ -20,9 +20,9 @@ export class Http {
     this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
   }
 
-  request(url: any, params?: Object, headers?: {[key: string]: any}, body?: any): Observable<Response> {
+  request(url: any, params?: Object, options?: any): Observable<Response> {
     if (typeof url === 'string') {
-      url = this.requestFactory.create(url, params, headers, body);
+      url = this.requestFactory.create(url, params, options);
     }
 
     return this.http.request(url, null);
