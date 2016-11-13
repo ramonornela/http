@@ -36,6 +36,11 @@ export class Http {
     return this.getPlugins().get(name);
   }
 
+  setDefaultOptions(options: any): this {
+    this.requestFactory.setDefaultOptions(options);
+    return this;
+  }
+
   private runEvent(subscribe: string, method: string) {
     this.events.subscribe(subscribe, (req: any) => {
       this.plugins.each((plugin: any) => {
