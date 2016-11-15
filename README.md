@@ -12,6 +12,9 @@ import { MyApp } from './app.component';
 // import config token
 import { ConfigToken } from '@ramonornela/configuration';
 
+// import url-resolver
+import { UrlResolverModule } from '@ramonornela/url-resolver';
+
 // Import http module
 import { HttpModule } from '@ramonornela/http';
 
@@ -42,6 +45,7 @@ export const APP_CONFIG = {
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    UrlResolverModule,
     HttpModule.initialize(true) // http module with plugin parseResponse
   ],
   bootstrap: [IonicApp],
