@@ -74,6 +74,9 @@ export class Http {
   }
 
   setDefaultOptions(options: any): this {
+    if (!this.requestFactory) {
+      throw new Error('Called not permited, need import the module UrlResolverModule in root module');
+    }
     this.requestFactory.setDefaultOptions(options);
     return this;
   }
