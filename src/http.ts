@@ -23,8 +23,10 @@ export class Http {
   request(url: any, params?: Object, options?: any): Observable<Response> {
     if (typeof url === 'string' && this.requestFactory) {
       url = this.requestFactory.create(url, params, options);
+      return this.http.request(url);
     }
-    return this.http.request(url);
+
+    return this.http.request(url, options);
   }
 
   get(url: any, params?: Object, options?: any): Observable<Response> {
