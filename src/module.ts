@@ -1,5 +1,4 @@
 import { NgModule, ModuleWithProviders, APP_INITIALIZER, OpaqueToken, SkipSelf, Optional } from '@angular/core';
-import { UrlResolverModule } from '@ramonornela/url-resolver';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
 import { xhrBackendFactory, Events } from './backend/xhr_backend';
 import { Http } from './http';
@@ -15,11 +14,7 @@ import {
 export const HttpPluginsTempToken = new OpaqueToken('HTTPPLUGINSTEMP');
 export const DefaultPluginToken = new OpaqueToken('DEFAULTPLUGINTEMP');
 
-@NgModule({
-  imports: [
-    UrlResolverModule
-  ]
-})
+@NgModule()
 export class HttpModule {
 
   constructor(@Optional() @SkipSelf() parentModule: HttpModule) {

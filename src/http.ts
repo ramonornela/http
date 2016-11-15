@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Http as HttpAngular, Response } from '@angular/http';
 import { Request } from '@ramonornela/url-resolver';
 import { HttpEvents, Events } from './backend/xhr_backend';
@@ -11,8 +11,8 @@ export class Http {
   constructor(
     protected http: HttpAngular,
     protected events: Events,
-    protected requestFactory: Request,
-    protected plugins: Plugins) {
+    protected plugins: Plugins,
+    @Optional() protected requestFactory: Request) {
 
     this.runEvent(HttpEvents.PRE_REQUEST, 'preRequest');
     this.runEvent(HttpEvents.POST_REQUEST, 'postRequest');
@@ -21,11 +21,11 @@ export class Http {
   }
 
   request(url: any, params?: Object, options?: any): Observable<Response> {
-    if (typeof url === 'string') {
+    if (typeof url === 'string' && this.requestFactory) {
       url = this.requestFactory.create(url, params, options);
     }
 
-    return this.http.request(url, null);
+    return this.http.request(url);
   }
 
   getPlugins(): Plugins {
