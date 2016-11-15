@@ -24,8 +24,43 @@ export class Http {
     if (typeof url === 'string' && this.requestFactory) {
       url = this.requestFactory.create(url, params, options);
     }
-
     return this.http.request(url);
+  }
+
+  get(url: any, params?: Object, options?: any): Observable<Response> {
+    options = options || {};
+    options.method = 'GET';
+    return this.request(url, params, options);
+  }
+
+  post(url: any, params?: Object, options?: any): Observable<Response> {
+    options = options || {};
+    options.method = 'POST';
+    return this.request(url, params, options);
+  }
+
+  put(url: any, params?: Object, options?: any): Observable<Response> {
+    options = options || {};
+    options.method = 'PUT';
+    return this.request(url, params, options);
+  }
+
+  delete(url: any, params?: Object, options?: any): Observable<Response> {
+    options = options || {};
+    options.method = 'DELETE';
+    return this.request(url, params, options);
+  }
+
+  patch(url: any, params?: Object, options?: any): Observable<Response> {
+    options = options || {};
+    options.method = 'PATCH';
+    return this.request(url, params, options);
+  }
+
+  head(url: any, params?: Object, options?: any): Observable<Response> {
+    options = options || {};
+    options.method = 'HEAD';
+    return this.request(url, params, options);
   }
 
   getPlugins(): Plugins {
