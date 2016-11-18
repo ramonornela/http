@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, APP_INITIALIZER, OpaqueToken, SkipSelf, Optional } from '@angular/core';
+import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
 import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
 import { xhrBackendFactory, Events } from './backend/xhr_backend';
 import { Http } from './http';
@@ -11,9 +11,6 @@ import {
   ThrowExceptionStatusToken
 } from './plugins';
 
-export const HttpPluginsTempToken = new OpaqueToken('HTTPPLUGINSTEMP');
-export const DefaultPluginToken = new OpaqueToken('DEFAULTPLUGINTEMP');
-
 @NgModule()
 export class HttpModule {
 
@@ -23,7 +20,12 @@ export class HttpModule {
     }
   }
 
-  static initialize(defaultPlugin: any, plugins?: any): ModuleWithProviders {
+  static initialize(plugins: TypePlugins  = {
+    provide: HttpPluginsToken,
+    useClass: ParseResponsePlugin,
+    deps: [ParseResponseToken],
+    multi: true
+  }): ModuleWithProviders {
     return {
       ngModule: HttpModule,
       providers: [
@@ -38,32 +40,15 @@ export class HttpModule {
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
         Http,
-        { provide: HttpPluginsTempToken, useValue: plugins },
-        { provide: DefaultPluginToken, useValue: defaultPlugin },
-        { provide: APP_INITIALIZER, useFactory: setupPlugins, deps: [ DefaultPluginToken,  HttpPluginsTempToken ], multi: true }
+        plugins
       ]
     };
   }
 }
 
-export function setupPlugins(defaultPlugin: any, plugins?: any) {
-  return function() {
-    plugins = plugins || [];
-    let pluginsProviders = [];
-
-    if (defaultPlugin === true) {
-      plugins.unshift([ ParseResponsePlugin, [ ParseResponseToken ] ]);
-    }
-
-    for (let i = 0, length = plugins.length; i < length; i++) {
-      pluginsProviders.push({
-        provide: HttpPluginsToken,
-        useClass: plugins[i][0],
-        deps: plugins[i][1] || [],
-        multi: true
-      });
-    }
-
-    return pluginsProviders;
-  }
+export interface TypePlugins {
+  provide: any;
+  useClass: any;
+  multi: boolean;
+  deps?: Array<any>;
 }
