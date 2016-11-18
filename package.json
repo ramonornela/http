@@ -14,6 +14,7 @@
     "commit": "git-cz",
     "clean": "rimraf ./dist",
     "lint": "tslint -c ./tslint.json --project ./tsconfig-esm.json --force",
+    "nightly": "node ./scripts/nightly",
     "prepush": "npm run lint",
     "package:json": "node ./scripts/package",
     "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore"
@@ -42,6 +43,7 @@
     "commitizen": "^2.8.6",
     "conventional-changelog-cli": "^1.2.0",
     "cz-conventional-changelog": "^1.2.0",
+    "fluid-publish": "1.0.2",
     "husky": "^0.11.9",
     "rimraf": "^2.5.4",
     "tslint": "3.15.1",
