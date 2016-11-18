@@ -6,21 +6,23 @@
   "typings": "dist/esm/index.d.ts",
   "module": "dist/esm/index.js",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "prepush": "npm run lint",
-    "commit": "git-cz",
-    "lint": "tslint -c ./tslint.json --project ./tsconfig-esm.json --force",
-    "package:json": "node ./scripts/package",
-    "build:umd": "ngc",
-    "build:esm": "ngc -p tsconfig-esm.json",
     "build": "npm run clean && npm run build:umd && npm run build:esm",
     "build:lint": "npm run lint && npm run build",
-    "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore"
+    "build:esm": "ngc -p tsconfig-esm.json",
+    "build:umd": "ngc",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "commit": "git-cz",
+    "clean": "rimraf ./dist",
+    "lint": "tslint -c ./tslint.json --project ./tsconfig-esm.json --force",
+    "prepush": "npm run lint",
+    "package:json": "node ./scripts/package",
+    "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore",
   },
   "files": [
     "dist/",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "dependencies": {
     "@angular/common": "2.1.2",
@@ -30,22 +32,23 @@
     "@angular/platform-browser-dynamic": "2.1.2",
     "@angular/platform-server": "2.1.2",
     "@angular/platform-browser": "2.1.2",
-    "rxjs": "5.0.0-beta.12",
     "@ramonornela/configuration": "~0.0.3",
-    "@ramonornela/url-resolver": "~0.0.9"
+    "@ramonornela/url-resolver": "~0.0.9",
+    "rxjs": "5.0.0-beta.12",
   },
   "devDependencies": {
     "@angular/compiler": "2.1.2",
     "@angular/compiler-cli": "2.1.2",
-    "zone.js": "^0.6.21",
-    "typescript": "^2.0.6",
+    "commitizen": "^2.8.6",
+    "conventional-changelog-cli": "^1.2.0",
+    "cz-conventional-changelog": "^1.2.0",
+    "husky": "^0.11.9",
+    "rimraf": "^2.5.4",
     "tslint": "3.15.1",
     "tslint-eslint-rules": "1.5.0",
     "tslint-ionic-rules": "0.0.8",
-    "rimraf": "^2.5.4",
-    "commitizen": "^2.8.6",
-    "cz-conventional-changelog": "^1.2.0",
-    "husky": "^0.11.9"
+    "typescript": "^2.0.6",
+    "zone.js": "^0.6.21"
   },
   "peerDependencies": {
     "@angular/core": "^2.0.0",
