@@ -20,12 +20,7 @@ export class HttpModule {
     }
   }
 
-  static initialize(plugins: TypePlugins  = {
-    provide: HttpPluginsToken,
-    useClass: ParseResponsePlugin,
-    deps: [ParseResponseToken],
-    multi: true
-  }): ModuleWithProviders {
+  static initialize(plugins: Array<TypePlugins>): ModuleWithProviders {
     return {
       ngModule: HttpModule,
       providers: [
@@ -52,3 +47,10 @@ export interface TypePlugins {
   multi: boolean;
   deps?: Array<any>;
 }
+
+export const DefaultPlugins: any = [{
+  provide: HttpPluginsToken,
+  useClass: ParseResponsePlugin,
+  deps: [ParseResponseToken],
+  multi: true
+}];
