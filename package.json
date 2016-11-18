@@ -16,7 +16,7 @@
     "lint": "tslint -c ./tslint.json --project ./tsconfig-esm.json --force",
     "prepush": "npm run lint",
     "package:json": "node ./scripts/package",
-    "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore",
+    "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore"
   },
   "files": [
     "dist/",
