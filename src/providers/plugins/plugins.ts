@@ -70,6 +70,16 @@ export class Plugins {
     return -1;
   }
 
+  remove(name: string) {
+    let index = this.indexOf(name);
+    if (index !== -1) {
+      this.plugins.splice(index, 1);
+      return true;
+    }
+
+    return false;
+  }
+
   getAll() {
     return this.plugins;
   }
