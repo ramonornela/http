@@ -11,12 +11,12 @@ export class Plugins {
   constructor(plugins?: Array<Plugin>) {
     if (plugins) {
       for (let plugin of plugins) {
-        this.set(plugin);
+        this.add(plugin);
       }
     }
   }
 
-  set(plugin: Plugin, priority?: number): this {
+  add(plugin: Plugin, priority?: number): this {
     let methods = [ 'preRequest', 'postRequest', 'postRequestSuccess', 'postRequestError' ];
 
     // workaround typescript not exists verification of interfaces
