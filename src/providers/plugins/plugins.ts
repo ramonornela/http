@@ -14,11 +14,13 @@ export class Plugins {
     }
   }
 
-  set(plugins: Array<Plugin>) {
+  set(plugins: Array<Plugin>): this {
     this.plugins = []
     for (let plugin of plugins) {
       this.add(plugin);
     }
+
+    return this;
   }
 
   add(plugin: Plugin, priority?: number): this {
@@ -52,6 +54,7 @@ export class Plugins {
     }
 
     this.plugins.filter((value) => value !== undefined || value !== null);
+
     return this;
   }
 
@@ -81,7 +84,7 @@ export class Plugins {
     return -1;
   }
 
-  remove(name: string) {
+  remove(name: string): boolean {
     let index = this.indexOf(name);
     if (index !== -1) {
       this.plugins.splice(index, 1);
@@ -91,7 +94,7 @@ export class Plugins {
     return false;
   }
 
-  getAll() {
+  getAll(): Array<{[name: string]: Plugin}> {
     return this.plugins;
   }
 
