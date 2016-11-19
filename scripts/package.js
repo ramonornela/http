@@ -38,4 +38,5 @@ if (argvJson.original && argvJson.original.length > 2) {
   return;
 }
 
+module.exports = Package;
 throw 'Should be argument assign argv prepare or restore';
