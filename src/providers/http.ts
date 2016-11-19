@@ -81,6 +81,22 @@ export class Http {
     return this;
   }
 
+  onPreRequest(callback: (req?: any) => any) {
+    this.events.subscribe(HttpEvents.PRE_REQUEST, callback);
+  }
+
+  onPostRequest(callback: (req?: any) => any) {
+    this.events.subscribe(HttpEvents.POST_REQUEST, callback);
+  }
+
+  onPostRequestSuccess(callback: (req?: any) => any) {
+    this.events.subscribe(HttpEvents.POST_REQUEST_SUCCESS, callback);
+  }
+
+  onPostRequestError(callback: (req?: any) => any) {
+    this.events.subscribe(HttpEvents.POST_REQUEST_ERROR, callback);
+  }
+
   private runEvent(subscribe: string, method: string) {
     this.events.subscribe(subscribe, (req: any) => {
       this.plugins.each((plugin: any) => {
