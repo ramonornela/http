@@ -44,7 +44,13 @@ export class Plugins {
       priority = plugin.getPriority();
     }
 
-    this.plugins[priority] = pluginConf;
+    // if key exists add before pluginConfig
+    if (this.plugins[priority]) {
+      this.plugins.splice(priority, 0, pluginConf);
+    } else {
+      this.plugins[priority] = pluginConf;
+    }
+
     this.plugins.filter((value) => value !== undefined || value !== null);
     return this;
   }
