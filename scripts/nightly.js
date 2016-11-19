@@ -3,5 +3,10 @@
 var prePackage = require('./package');
 var fluid = require('fluid-publish');
 prePackage.prepare();
-fluid.dev(false, {devTag: 'nightly', changesCmd: 'git status -s -uno > /dev/null'});
+var options = {
+	devTag: 'nightly',
+	changesCmd: 'git status -s -uno > /dev/null',
+	publishCmd: 'npm publish --tag=nightly'
+};
+fluid.dev(false, options);
 prePackage.restore();
