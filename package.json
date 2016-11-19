@@ -14,9 +14,9 @@
     "commit": "git-cz",
     "clean": "rimraf ./dist",
     "lint": "tslint -c ./tslint.json --project ./tsconfig-esm.json --force",
-    "nightly": "npm run build:lint && node ./scripts/nightly",
+    "nightly": "npm run build:lint && node ./scripts/publish-nightly",
     "prepush": "npm run lint",
-    "package:json": "node ./scripts/package",
+    "package:json": "node ./scripts/package-json",
     "publishPackage": "npm run build:lint && npm run package:json --prepare && npm publish --access public && npm run package:json --restore"
   },
   "files": [

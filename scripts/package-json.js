@@ -6,27 +6,39 @@ var path = require('path');
 var process = require('process');
 
 var originalPath = path.join(process.cwd(), 'package.json');
-var tempPath = path.join(process.cwd(), 'package_tmp.json');
+var publishPath = path.join(__dirname, 'package-publish.json');
+var backupPath = path.join(process.cwd(), 'package-orig.json');
 
 var Package = {
 
   prepare: function() {
 	  
     var packageJson = require(originalPath);
+    var packagePublish = require(publishPath);
 
     if (! packageJson) {
       throw new Error('Can\'t find package json');
     }
 
-    delete packageJson.devDependencies;
-    delete packageJson.dependencies;
+    if (! packagePublish) {
+      throw new Error('Can\'t find package-publish json');
+    }
 
-    fs.renameSync(originalPath, tempPath);
+    Object.assign(packageJson, packagePublish);
+
+    // delete keys null
+    for (var config in packageJson) {
+      if (!packageJson[config]) {
+        delete packageJson[config];
+      }
+    }
+
+    fs.renameSync(originalPath, backupPath);
     fs.writeFileSync(originalPath, JSON.stringify(packageJson, null, 2));	
   },
 
   restore: function() {
-    fs.renameSync(tempPath, originalPath);
+    fs.renameSync(backupPath, originalPath);
   }
 }
 
