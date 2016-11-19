@@ -10,9 +10,14 @@ export class Plugins {
 
   constructor(plugins?: Array<Plugin>) {
     if (plugins) {
-      for (let plugin of plugins) {
-        this.add(plugin);
-      }
+      this.set(plugins);
+    }
+  }
+
+  set(plugins: Array<Plugin>) {
+    this.plugins = []
+    for (let plugin of plugins) {
+      this.add(plugin);
     }
   }
 
