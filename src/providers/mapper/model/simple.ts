@@ -4,8 +4,8 @@ import { ModelBase } from './model-base';
 
 export class ModelSimple extends ModelBase implements Transform {
 
-    constructor(model: any, private rootProperty?: string) {
-      super(model);
+    constructor(private model: any, private rootProperty?: string) {
+      super();
     }
 
     transform(data: Response) {

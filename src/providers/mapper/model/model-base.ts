@@ -1,6 +1,4 @@
 export class ModelBase {
-  constructor(protected model: any) {}
-
   getDataRoot(data: any, rootProperty: string): any {
     let rootPropertyArray = rootProperty.split('.');
 
