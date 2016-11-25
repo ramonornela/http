@@ -15,7 +15,7 @@ export class Plugins {
   }
 
   set(plugins: Array<Plugin>): this {
-    this.plugins = []
+    this.plugins = [];
     for (let plugin of plugins) {
       this.add(plugin);
     }
