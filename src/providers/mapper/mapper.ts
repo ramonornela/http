@@ -14,6 +14,10 @@ export class Mapper {
     return new Mapper(<Transform>instance);
   }
 
+  getTransform() {
+    return this._transform;
+  }
+
   transform(data: any) {
     return this._transform.transform(data);
   }
