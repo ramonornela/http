@@ -1,6 +1,6 @@
 import { Transform } from './transform';
 
-export class Response {
+export class Mapper {
 
   private _transform: Transform;
 
@@ -11,7 +11,7 @@ export class Response {
   static create(transform: any, ...args: Array<any>) {
     let instance = Object.create(transform.prototype);
     instance.constructor.apply(instance, args);
-    return new Response(<Transform>instance);
+    return new Mapper(<Transform>instance);
   }
 
   transform(data: any) {

@@ -1,10 +1,10 @@
 import { Injectable, Optional } from '@angular/core';
-import { Http as HttpAngular, Response as ResponseAngular } from '@angular/http';
+import { Http as HttpAngular, Response } from '@angular/http';
 import { Request } from '@ramonornela/url-resolver';
 import { HttpEvents, Events } from './backend/xhr_backend';
 import { Plugins, Plugin } from './plugins';
 import { Observable } from 'rxjs/Observable';
-import { Response } from './response';
+import { Mapper } from './mapper';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -22,8 +22,8 @@ export class Http {
     this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
   }
 
-  request(url: any, params?: Object, options?: any, response?: Response): Observable<ResponseAngular> {
-    if (options instanceof Response) {
+  request(url: any, params?: Object, options?: any, response?: Mapper): Observable<Response> {
+    if (options instanceof Mapper) {
       response = options;
       options = null;
     }
@@ -33,44 +33,44 @@ export class Http {
       options = null;
     }
 
-    if (response instanceof Response) {
-      return this.http.request(url, options).map((resp) => response.transform(resp.json()));
+    if (response instanceof Mapper) {
+      return this.http.request(url, options).map((resp) => response.transform(resp));
     }
 
     return this.http.request(url, options);
   }
 
-  get(url: any, params?: Object, options?: any): Observable<ResponseAngular> {
+  get(url: any, params?: Object, options?: any): Observable<Response> {
     options = options || {};
     options.method = 'GET';
     return this.request(url, params, options);
   }
 
-  post(url: any, params?: Object, options?: any): Observable<ResponseAngular> {
+  post(url: any, params?: Object, options?: any): Observable<Response> {
     options = options || {};
     options.method = 'POST';
     return this.request(url, params, options);
   }
 
-  put(url: any, params?: Object, options?: any): Observable<ResponseAngular> {
+  put(url: any, params?: Object, options?: any): Observable<Response> {
     options = options || {};
     options.method = 'PUT';
     return this.request(url, params, options);
   }
 
-  delete(url: any, params?: Object, options?: any): Observable<ResponseAngular> {
+  delete(url: any, params?: Object, options?: any): Observable<Response> {
     options = options || {};
     options.method = 'DELETE';
     return this.request(url, params, options);
   }
 
-  patch(url: any, params?: Object, options?: any): Observable<ResponseAngular> {
+  patch(url: any, params?: Object, options?: any): Observable<Response> {
     options = options || {};
     options.method = 'PATCH';
     return this.request(url, params, options);
   }
 
-  head(url: any, params?: Object, options?: any): Observable<ResponseAngular> {
+  head(url: any, params?: Object, options?: any): Observable<Response> {
     options = options || {};
     options.method = 'HEAD';
     return this.request(url, params, options);

@@ -1,3 +1,4 @@
+import { Response } from '@angular/http';
 import { Transform } from '../transform';
 import { ModelBase } from './model-base';
 
@@ -7,7 +8,9 @@ export class Simple extends ModelBase implements Transform {
       super(model);
     }
 
-    transform(data: any) {
+    transform(data: Response) {
+      data = data.json();
+
       if (this.rootProperty) {
         data = this.getDataRoot(data, this.rootProperty);
       }
