@@ -2,7 +2,7 @@ import { Response } from '@angular/http';
 import { Transform } from '../transform';
 import { ModelBase } from './model-base';
 
-export class ModelSimple extends ModelBase implements Transform {
+export class ModelCollection extends ModelBase implements Transform {
 
     constructor(model: any, private rootProperty?: string) {
       super(model);
@@ -15,10 +15,15 @@ export class ModelSimple extends ModelBase implements Transform {
         data = this.getDataRoot(data, this.rootProperty);
       }
 
-      if (typeof data !== 'object') {
-        throw new Error(`Returns should be object`);
+      if (!Array.isArray(data)) {
+        throw new Error(`Returns should be Array`);
       }
 
-      return new this.model(data);
+      let results = [];
+      for (let i = 0, length = data.length; i < length; i++) {
+          results.push(new this.model(data[i]));
+      }
+
+      return results;
     }
 }
