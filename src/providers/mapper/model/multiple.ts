@@ -1,6 +1,5 @@
 import { Response } from '@angular/http';
 import { Transform } from '../transform';
-import { ModelBase } from './model-base';
 import { Mapper } from '../mapper';
 import { ModelSimple } from './simple';
 import { ModelCollection } from './collection';
@@ -10,12 +9,11 @@ export const TypeModel = {
   Collection: 'collection',
 }
 
-export class ModelMultiple extends ModelBase implements Transform {
+export class ModelMultiple implements Transform {
 
     private types: {[key: string]: any};
 
     constructor(private mapper: {[key: string]: MapperOptions}) {
-      super();
       this.addType(TypeModel.Simple, ModelSimple)
           .addType(TypeModel.Collection, ModelCollection);
     }

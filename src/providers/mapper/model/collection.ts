@@ -1,18 +1,16 @@
 import { Response } from '@angular/http';
 import { Transform } from '../transform';
-import { ModelBase } from './model-base';
+import { getDataRoot } from './util';
 
-export class ModelCollection extends ModelBase implements Transform {
+export class ModelCollection implements Transform {
 
-    constructor(private model: any, private rootProperty?: string) {
-      super();
-    }
+    constructor(private model: any, private rootProperty?: string) {}
 
     transform(data: Response) {
       data = data.json();
 
       if (this.rootProperty) {
-        data = this.getDataRoot(data, this.rootProperty);
+        data = getDataRoot(data, this.rootProperty);
       }
 
       if (!Array.isArray(data)) {
