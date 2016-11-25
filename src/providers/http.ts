@@ -22,9 +22,9 @@ export class Http {
     this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
   }
 
-  request(url: any, params?: Object, options?: any, response?: Mapper): Observable<Response> {
+  request(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
     if (options instanceof Mapper) {
-      response = options;
+      mapper = options;
       options = null;
     }
 
@@ -33,47 +33,47 @@ export class Http {
       options = null;
     }
 
-    if (response instanceof Mapper) {
-      return this.http.request(url, options).map((resp) => response.transform(resp));
+    if (mapper instanceof Mapper) {
+      return this.http.request(url, options).map((resp) => mapper.transform(resp));
     }
 
     return this.http.request(url, options);
   }
 
-  get(url: any, params?: Object, options?: any): Observable<Response> {
+  get(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
     options = options || {};
     options.method = 'GET';
-    return this.request(url, params, options);
+    return this.request(url, params, options, mapper);
   }
 
-  post(url: any, params?: Object, options?: any): Observable<Response> {
+  post(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
     options = options || {};
     options.method = 'POST';
-    return this.request(url, params, options);
+    return this.request(url, params, options, mapper);
   }
 
-  put(url: any, params?: Object, options?: any): Observable<Response> {
+  put(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
     options = options || {};
     options.method = 'PUT';
-    return this.request(url, params, options);
+    return this.request(url, params, options, mapper);
   }
 
-  delete(url: any, params?: Object, options?: any): Observable<Response> {
+  delete(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
     options = options || {};
     options.method = 'DELETE';
-    return this.request(url, params, options);
+    return this.request(url, params, options, mapper);
   }
 
-  patch(url: any, params?: Object, options?: any): Observable<Response> {
+  patch(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
     options = options || {};
     options.method = 'PATCH';
-    return this.request(url, params, options);
+    return this.request(url, params, options, mapper);
   }
 
-  head(url: any, params?: Object, options?: any): Observable<Response> {
+  head(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
     options = options || {};
     options.method = 'HEAD';
-    return this.request(url, params, options);
+    return this.request(url, params, options, mapper);
   }
 
   getPlugins(): Plugins {
