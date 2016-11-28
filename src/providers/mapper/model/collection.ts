@@ -4,7 +4,11 @@ import { getDataRoot } from './util';
 
 export class ModelCollection implements Transform {
 
-    constructor(private model: any, private rootProperty?: string) {}
+    constructor(private model: any, private rootProperty?: string) {
+      if (typeof this.model !== 'object' && this.model === null) {
+        throw new Error('Data type model invalid');
+      }
+    }
 
     transform(data: Response) {
       data = data.json();
