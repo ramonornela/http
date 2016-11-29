@@ -17,10 +17,10 @@ export class ModelSimple implements Transform {
         result = jp.query(data, this.path);
       }
 
-      if (typeof result !== 'object') {
+      if (typeof result[0] !== 'object') {
         throw new Error(`Returns should be object`);
       }
 
-      return new this.model(result);
+      return new this.model(result[0]);
     }
 }
