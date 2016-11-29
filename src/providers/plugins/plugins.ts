@@ -98,7 +98,7 @@ export class Plugins {
     return this.plugins;
   }
 
-  each(fn: (plugin: Plugin, index?: number) => boolean | void) {
+  forEach(fn: (plugin: Plugin, index?: number) => boolean | void) {
     let i = 0;
     for (let object of this.plugins) {
       for (let name in object) {

@@ -110,7 +110,7 @@ export class Http {
 
   private runEvent(subscribe: string, method: string) {
     this.events.subscribe(subscribe, (req: any) => {
-      this.plugins.each((plugin: any) => {
+      this.plugins.forEach((plugin: any) => {
         // workaround typescript not exists verification of interfaces
         if (!(method in plugin)) {
           return;
