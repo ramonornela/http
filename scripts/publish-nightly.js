@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var prePackage = require('./package-json');
+var prePackage = require('./package-publish');
 var fluid = require('fluid-publish');
 prePackage.prepare();
 var options = {

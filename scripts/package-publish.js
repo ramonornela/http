@@ -6,7 +6,7 @@ var path = require('path');
 var process = require('process');
 
 var originalPath = path.join(process.cwd(), 'package.json');
-var publishPath = path.join(__dirname, 'package-publish.json');
+var publishPath = path.join(__dirname, 'package.json');
 var backupPath = path.join(process.cwd(), 'package-orig.json');
 
 var Package = {
