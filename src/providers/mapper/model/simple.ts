@@ -14,13 +14,13 @@ export class ModelSimple implements Transform {
       let result = data.json();
 
       if (this.path) {
-        result = jp.query(data, this.path);
+        result = jp.query(data, this.path)[0];
       }
 
-      if (typeof result[0] !== 'object') {
+      if (typeof result !== 'object') {
         throw new Error(`Returns should be object`);
       }
 
-      return new this.model(result[0]);
+      return new this.model(result);
     }
 }
