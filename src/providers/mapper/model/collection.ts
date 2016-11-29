@@ -1,31 +1,31 @@
 import { Response } from '@angular/http';
 import { Transform } from '../transform';
-import { getDataRoot } from './util';
+import jp from 'jsonpath';
 
 export class ModelCollection implements Transform {
 
-    constructor(private model: any, private rootProperty?: string) {
+    constructor(private model: any, private path?: string) {
       if (typeof this.model !== 'object' && this.model === null) {
         throw new Error('Data type model invalid');
       }
     }
 
     transform(data: Response) {
-      data = data.json();
+      let result = data.json();
 
-      if (this.rootProperty) {
-        data = getDataRoot(data, this.rootProperty);
+      if (this.path) {
+        result = jp.query(data, this.path);
       }
 
       if (!Array.isArray(data)) {
         throw new Error(`Returns should be Array`);
       }
 
-      let results = [];
-      for (let i = 0, length = data.length; i < length; i++) {
-          results.push(new this.model(data[i]));
+      let models = [];
+      for (let i = 0, length = result.length; i < length; i++) {
+          models.push(new this.model(result[i]));
       }
 
-      return results;
+      return models;
     }
 }

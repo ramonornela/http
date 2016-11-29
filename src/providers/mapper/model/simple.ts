@@ -1,26 +1,26 @@
 import { Response } from '@angular/http';
 import { Transform } from '../transform';
-import { getDataRoot } from './util';
+import jp from 'jsonpath';
 
 export class ModelSimple implements Transform {
 
-    constructor(private model: any, private rootProperty?: string) {
+    constructor(private model: any, private path?: string) {
       if (typeof this.model !== 'object' && this.model === null) {
         throw new Error('Data type model invalid');
       }
     }
 
     transform(data: Response) {
-      data = data.json();
+      let result = data.json();
 
-      if (this.rootProperty) {
-        data = getDataRoot(data, this.rootProperty);
+      if (this.path) {
+        result = jp.query(data, this.path);
       }
 
-      if (typeof data !== 'object') {
+      if (typeof result !== 'object') {
         throw new Error(`Returns should be object`);
       }
 
-      return new this.model(data);
+      return new this.model(result);
     }
 }
