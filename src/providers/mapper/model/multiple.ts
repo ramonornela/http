@@ -33,9 +33,9 @@ export class ModelMultiple implements Transform {
         }
 
         let model = this.mapper[key].model;
-        let rootProperty = this.mapper[key].rootProperty;
+        let path = this.mapper[key].path;
         let type = this.types[this.mapper[key].type];
-        let mapper = Mapper.create(type, model, rootProperty);
+        let mapper = Mapper.create(type, model, path);
 
         results[key] = mapper.transform(data);
       }
@@ -47,5 +47,5 @@ export class ModelMultiple implements Transform {
 export interface MapperOptions {
   type: string;
   model: any;
-  rootProperty?: string;
+  path?: string;
 }
