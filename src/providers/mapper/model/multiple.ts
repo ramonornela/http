@@ -6,7 +6,7 @@ import { ModelCollection } from './collection';
 
 export const TypeModel = {
   Simple: 'simple',
-  Collection: 'collection',
+  Collection: 'collection'
 }
 
 export class ModelMultiple implements Transform {
