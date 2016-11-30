@@ -14,10 +14,10 @@ export class ModelCollection implements Transform {
       let result = data.json();
 
       if (this.path) {
-        result = jp.query(data, this.path);
+        result = jp.query(result, this.path);
       }
 
-      if (!Array.isArray(data)) {
+      if (!Array.isArray(result)) {
         throw new Error(`Returns should be Array`);
       }
 

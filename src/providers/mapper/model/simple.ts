@@ -14,7 +14,7 @@ export class ModelSimple implements Transform {
       let result = data.json();
 
       if (this.path) {
-        result = jp.query(data, this.path)[0];
+        result = jp.query(result, this.path)[0];
       }
 
       if (typeof result !== 'object') {
