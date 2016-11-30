@@ -13,6 +13,7 @@
 npm-*
 
 node_modules/
+.nyc_output/
 dist/
 *.swp
 .DS_Store
