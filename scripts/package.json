@@ -1,7 +1,6 @@
 {
   "devDependencies": null,
   "dependencies": {
-    "@types/jsonpath": "0.1.29",
-    "jsonpath": "0.2.9"  
+    "@ramonornela/jsonpath": "0.2.10"
   }
 }

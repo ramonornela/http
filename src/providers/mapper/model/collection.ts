@@ -1,6 +1,6 @@
 import { Response } from '@angular/http';
 import { Transform } from '../transform';
-import jp from 'jsonpath';
+import jp from '@ramonornela/jsonpath';
 
 export class ModelCollection implements Transform {
 

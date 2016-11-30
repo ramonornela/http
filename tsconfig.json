@@ -9,9 +9,6 @@
     "removeComments": true,
     "outDir": "dist/umd",
     "moduleResolution": "node",
-    "types": [
-      "jsonpath"
-    ],
     "lib": [
       "es2015",
       "dom"
