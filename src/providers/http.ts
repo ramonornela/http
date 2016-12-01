@@ -52,6 +52,10 @@ export class Http {
     return responseObservable;
   }
 
+  requestPromise(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Promise<Response> {
+    return this.request.apply(this, arguments).toPromise();
+  }
+
   get(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
     options = options || {};
     options.method = 'GET';
