@@ -16,7 +16,7 @@ import { ConfigurationModule } from '@ramonornela/configuration';
 import { UrlResolverModule } from '@ramonornela/url-resolver';
 
 // Import http module
-import { HttpModule } from '@ramonornela/http';
+import { HttpModule, DefaultPlugins } from '@ramonornela/http';
 
 export const APP_CONFIG = {
   'urlResolver': {
@@ -49,7 +49,7 @@ export const APP_CONFIG = {
     IonicModule.forRoot(MyApp),
     ConfigurationModule.initialize(APP_CONFIG, 'dev')
     UrlResolverModule.initialize(),
-    HttpModule.initialize(true) // http module with plugin parseResponse
+    HttpModule.initialize(DefaultPlugins) // http module with plugin parseResponse
   ],
   bootstrap: [IonicApp],
   entryComponents: [
