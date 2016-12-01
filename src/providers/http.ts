@@ -28,6 +28,14 @@ export class Http {
 
   request(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
 
+    if ( !(url instanceof Request) && arguments.length == 1 && typeof url === 'object' ) {
+      let objParams = url;
+      url = objParams.url;
+      params = objParams.params;
+      options = objParams.options;
+      responseOptions = objParams.responseOptions;
+    }
+
     if ( options && this.checkForResponseOptions(options) ) {
       responseOptions = options;
       options = null;
