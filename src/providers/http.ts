@@ -29,8 +29,10 @@ export class Http {
     }
 
     if (typeof url === 'string' && this.requestFactory) {
-      url = this.requestFactory.create(url, params, options);
-      options = null;
+      if (this.requestFactory.resolve.metadata.has(url)) {
+        url = this.requestFactory.create(url, params, options);
+        options = null;
+      }
     }
 
     if (mapper instanceof Mapper) {
