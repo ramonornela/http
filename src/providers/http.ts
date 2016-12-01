@@ -1,20 +1,24 @@
-import { Injectable, Optional } from '@angular/core';
 import { Http as HttpAngular, Response } from '@angular/http';
-import { Request } from '@ramonornela/url-resolver';
+import { Injectable, Optional } from '@angular/core';
 import { HttpEvents, Events } from './backend/xhr_backend';
 import { Plugins, Plugin } from './plugins';
+import { ResponseOptions } from './response-options';
 import { Observable } from 'rxjs/Observable';
+import { Request } from '@ramonornela/url-resolver';
 import { Mapper } from './mapper';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/defer';
+import 'rxjs/add/operator/timeoutWith';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class Http {
 
-  constructor(
-    protected http: HttpAngular,
-    protected events: Events,
-    protected plugins: Plugins,
-    @Optional() protected requestFactory: Request) {
+  constructor(protected http: HttpAngular,
+              protected events: Events,
+              protected plugins: Plugins,
+              @Optional() protected requestFactory: Request) {
 
     this.runEvent(HttpEvents.PRE_REQUEST, 'preRequest');
     this.runEvent(HttpEvents.POST_REQUEST, 'postRequest');
@@ -22,60 +26,78 @@ export class Http {
     this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
   }
 
-  request(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
-    if (options instanceof Mapper) {
-      mapper = options;
+  request(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
+
+    if ( options && this.checkForResponseOptions(options) ) {
+      responseOptions = options;
       options = null;
     }
 
-    if (typeof url === 'string' && this.requestFactory) {
-      if (this.requestFactory.getMetadata().has(url)) {
+    responseOptions = responseOptions || {};
+
+    if ( typeof url === 'string' && this.requestFactory ) {
+      if ( this.requestFactory.getMetadata().has(url) ) {
         url = this.requestFactory.create(url, params, options);
         options = null;
       }
     }
 
-    if (mapper instanceof Mapper) {
-      return this.http.request(url, options).map((resp) => mapper.transform(resp));
+    let responseObservable = this.http.request(url, options);
+
+    let mapper: Mapper = responseOptions.mapper;
+    if ( mapper instanceof Mapper ) {
+      responseObservable.map((resp) => mapper.transform(resp));
     }
 
-    return this.http.request(url, options);
+    return responseObservable;
   }
 
-  get(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
+  get(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
     options = options || {};
     options.method = 'GET';
-    return this.request(url, params, options, mapper);
+    return this.request(url, params, options, responseOptions);
   }
 
-  post(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
+  post(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
     options = options || {};
     options.method = 'POST';
-    return this.request(url, params, options, mapper);
+    return this.request(url, params, options, responseOptions);
   }
 
-  put(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
+  put(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
     options = options || {};
     options.method = 'PUT';
-    return this.request(url, params, options, mapper);
+    return this.request(url, params, options, responseOptions);
   }
 
-  delete(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
+  delete(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
     options = options || {};
     options.method = 'DELETE';
-    return this.request(url, params, options, mapper);
+    return this.request(url, params, options, responseOptions);
   }
 
-  patch(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
+  patch(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
     options = options || {};
     options.method = 'PATCH';
-    return this.request(url, params, options, mapper);
+    return this.request(url, params, options, responseOptions);
   }
 
-  head(url: any, params?: Object, options?: any, mapper?: Mapper): Observable<Response> {
+  head(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
     options = options || {};
     options.method = 'HEAD';
-    return this.request(url, params, options, mapper);
+    return this.request(url, params, options, responseOptions);
+  }
+
+  private checkForResponseOptions(obj: any): boolean {
+
+    let properties = [ 'mapper', 'promise', 'timeout' ];
+    for ( let prop of properties ) {
+      if ( prop in obj ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   getPlugins(): Plugins {
