@@ -29,7 +29,7 @@ export class Http {
     }
 
     if (typeof url === 'string' && this.requestFactory) {
-      if (this.requestFactory.resolve.metadata.has(url)) {
+      if (this.requestFactory.getMetadata().has(url)) {
         url = this.requestFactory.create(url, params, options);
         options = null;
       }
