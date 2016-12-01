@@ -16,6 +16,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class Http {
 
+  protected responseOptions: ResponseOptions = {};
+
   constructor(protected http: HttpAngular,
               protected events: Events,
               protected plugins: Plugins,
@@ -43,6 +45,8 @@ export class Http {
     }
 
     responseOptions = responseOptions || {};
+
+    this.applyDefaultResponseOptions(responseOptions);
 
     if ( typeof url === 'string' && this.requestFactory ) {
       if ( this.requestFactory.getMetadata().has(url) ) {
@@ -120,6 +124,26 @@ export class Http {
     }
 
     return false;
+  }
+
+  private applyDefaultResponseOptions(options: ResponseOptions) {
+    options.mapper = options.mapper || this.responseOptions.mapper;
+    options.timeout = options.timeout || this.responseOptions.timeout;
+  }
+
+  setDefaultResponseOptions(options: ResponseOptions): this {
+    this.responseOptions = options;
+    return this;
+  }
+
+  setResponseTimeout(timeout: number): this {
+    this.responseOptions.timeout = timeout;
+    return this;
+  }
+
+  setResponseMapper(mapper: Mapper): this {
+    this.responseOptions.mapper = mapper;
+    return this;
   }
 
   getPlugins(): Plugins {
