@@ -9,10 +9,10 @@ import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-// import config token
-import { ConfigToken } from '@ramonornela/configuration';
+// import configuration module
+import { ConfigurationModule } from '@ramonornela/configuration';
 
-// import url-resolver
+// import url-resolver module
 import { UrlResolverModule } from '@ramonornela/url-resolver';
 
 // Import http module
@@ -20,19 +20,21 @@ import { HttpModule } from '@ramonornela/http';
 
 export const APP_CONFIG = {
   'urlResolver': {
-    '__defines__': {
-      'host': 'http://api.example.com/'
-    },
-    'user': {
-      'url': 'user/{id}',
-      'method': 'GET',
-      'headers': {
-        'content-type': 'application/json'
+    'dev': {
+      '_defaults': {
+        'host': 'http://api.example.com/'
       },
-      'params': {
-        'id': {
-          'type': 'number',
-          'required': true
+      'user': {
+        'url': 'user/{id}',
+        'method': 'GET',
+        'headers': {
+          'content-type': 'application/json'
+        },
+        'params': {
+          'id': {
+            'type': 'number',
+            'required': true
+          }
         }
       }
     }
@@ -45,15 +47,13 @@ export const APP_CONFIG = {
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    UrlResolverModule,
+    ConfigurationModule.initialize(APP_CONFIG, 'dev')
+    UrlResolverModule.initialize(),
     HttpModule.initialize(true) // http module with plugin parseResponse
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp
-  ],
-  providers: [
-    { provide: ConfigToken, useValue: APP_CONFIG },
   ]
 })
 export class AppModule {}
