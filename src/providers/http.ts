@@ -1,6 +1,7 @@
 import { Http as HttpAngular, Response } from '@angular/http';
 import { Injectable, Optional } from '@angular/core';
 import { HttpEvents, Events } from './backend/xhr_backend';
+import { TimeoutException } from './exception';
 import { Plugins, Plugin } from './plugins';
 import { ResponseOptions } from './response-options';
 import { Observable } from 'rxjs/Observable';
@@ -51,6 +52,15 @@ export class Http {
     }
 
     let responseObservable = this.http.request(url, options);
+
+    if ( responseOptions.timeout ) {
+      responseObservable = responseObservable
+        .timeoutWith(responseOptions.timeout, Observable.defer(() => {
+          let err = new TimeoutException();
+          this.events.publish(HttpEvents.POST_REQUEST_ERROR, err);
+          return Observable.throw(err);
+        }));
+    }
 
     let mapper: Mapper = responseOptions.mapper;
     if ( mapper instanceof Mapper ) {

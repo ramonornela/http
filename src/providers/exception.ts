@@ -11,3 +11,6 @@ export class HttpException {
     return this.message;
   }
 }
+
+export class TimeoutException {
+}
