@@ -4,10 +4,12 @@ import {
   Http,
   xhrBackendFactory,
   Events,
-  Plugins,
   HttpPluginsToken,
+  Plugins,
   ParseResponsePlugin,
   ParseResponseToken,
+  RequestDefaultOptionsToken,
+  ResponseDefaultOptionsToken,
   ThrowExceptionStatus,
   ThrowExceptionStatusToken
 } from './providers';
@@ -21,7 +23,7 @@ export class HttpModule {
     }
   }
 
-  static initialize(plugins: Array<TypePlugins>): ModuleWithProviders {
+  static initialize(plugins: Array<TypePlugins>, defaultRequest?: any, defaultResponse?: any): ModuleWithProviders {
     return {
       ngModule: HttpModule,
       providers: [
@@ -35,6 +37,8 @@ export class HttpModule {
         { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
+        { provide: RequestDefaultOptionsToken, useValue: defaultRequest },
+        { provide: ResponseDefaultOptionsToken, useValue: defaultResponse },
         Http,
         plugins
       ]
@@ -49,9 +53,11 @@ export interface TypePlugins {
   deps?: Array<any>;
 }
 
-export const DefaultPlugins: any = [{
-  provide: HttpPluginsToken,
-  useClass: ParseResponsePlugin,
-  deps: [ParseResponseToken],
-  multi: true
-}];
+export const DefaultPlugins: any = [
+  {
+    provide: HttpPluginsToken,
+    useClass: ParseResponsePlugin,
+    deps: [ ParseResponseToken ],
+    multi: true
+  }
+];

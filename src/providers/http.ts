@@ -1,5 +1,5 @@
 import { Http as HttpAngular, Response } from '@angular/http';
-import { Injectable, Optional } from '@angular/core';
+import { Injectable, Inject, OpaqueToken, Optional } from '@angular/core';
 import { HttpEvents, Events } from './backend/xhr_backend';
 import { TimeoutException } from './exception';
 import { Plugins, Plugin } from './plugins';
@@ -13,6 +13,9 @@ import 'rxjs/add/observable/defer';
 import 'rxjs/add/operator/timeoutWith';
 import 'rxjs/add/operator/map';
 
+export const RequestDefaultOptionsToken = new OpaqueToken('REQUESTDEFAULTOPTIONSTOKEN');
+export const ResponseDefaultOptionsToken = new OpaqueToken('RESPONSEDEFAULTOPTIONSTOKEN');
+
 @Injectable()
 export class Http {
 
@@ -21,12 +24,22 @@ export class Http {
   constructor(protected http: HttpAngular,
               protected events: Events,
               protected plugins: Plugins,
-              @Optional() protected requestFactory: Request) {
+              @Optional() protected requestFactory: Request,
+              @Optional() @Inject(RequestDefaultOptionsToken) defaultRequest: any,
+              @Optional() @Inject(ResponseDefaultOptionsToken) defaultResponse: any) {
 
     this.runEvent(HttpEvents.PRE_REQUEST, 'preRequest');
     this.runEvent(HttpEvents.POST_REQUEST, 'postRequest');
     this.runEvent(HttpEvents.POST_REQUEST_SUCCESS, 'postRequestSuccess');
     this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
+
+    if (defaultRequest) {
+      this.setDefaultOptions(defaultRequest);
+    }
+
+    if (defaultResponse) {
+      this.setDefaultResponseOptions(defaultResponse);
+    }
   }
 
   request(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
