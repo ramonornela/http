@@ -67,7 +67,7 @@ export class Http {
     }
 
     if (responseOptions.mapper instanceof Mapper) {
-      responseObservable.map((resp) => mapper.transform(resp));
+      responseObservable.map((resp) => responseOptions.mapper.transform(resp));
     }
 
     return responseObservable;
