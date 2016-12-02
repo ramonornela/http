@@ -84,6 +84,10 @@
     "post"
   ],
   "author": "Ramon Ornelas <ramon.ornela@gmail.com>",
+  "contributors": [
+    "Julio Lemes <juliolemesti@gmail.com>",
+    "Michael Nishikawa <michael.xd@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ramonornela/http/issues"
