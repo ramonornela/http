@@ -115,7 +115,7 @@ export class Http {
 
   protected checkForResponseOptions(obj: any): boolean {
 
-    let properties = [ 'mapper', 'promise', 'timeout' ];
+    let properties = [ 'mapper', 'timeout' ];
     for (let prop of properties) {
       if (prop in obj) {
         return true;
