@@ -31,7 +31,7 @@ export class Http {
 
   request(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
 
-    if ( !(url instanceof Request) && arguments.length === 1 && typeof url === 'object' ) {
+    if (!(url instanceof Request) && arguments.length === 1 && typeof url === 'object') {
       let objParams = url;
       url = objParams.url;
       params = objParams.params;
@@ -39,7 +39,7 @@ export class Http {
       responseOptions = objParams.responseOptions;
     }
 
-    if ( options && this.checkForResponseOptions(options) ) {
+    if (options && this.checkForResponseOptions(options)) {
       responseOptions = options;
       options = null;
     }
@@ -48,8 +48,8 @@ export class Http {
 
     this.applyDefaultResponseOptions(responseOptions);
 
-    if ( typeof url === 'string' && this.requestFactory ) {
-      if ( this.requestFactory.getMetadata().has(url) ) {
+    if (typeof url === 'string' && this.requestFactory) {
+      if (this.requestFactory.getMetadata().has(url)) {
         url = this.requestFactory.create(url, params, options);
         options = null;
       }
@@ -57,7 +57,7 @@ export class Http {
 
     let responseObservable = this.http.request(url, options);
 
-    if ( responseOptions.timeout ) {
+    if (responseOptions.timeout) {
       responseObservable = responseObservable
         .timeoutWith(responseOptions.timeout, Observable.defer(() => {
           let err = new TimeoutException();
@@ -66,8 +66,7 @@ export class Http {
         }));
     }
 
-    let mapper: Mapper = responseOptions.mapper;
-    if ( mapper instanceof Mapper ) {
+    if (responseOptions.mapper instanceof Mapper) {
       responseObservable.map((resp) => mapper.transform(resp));
     }
 
@@ -114,11 +113,11 @@ export class Http {
     return this.request(url, params, options, responseOptions);
   }
 
-  private checkForResponseOptions(obj: any): boolean {
+  protected checkForResponseOptions(obj: any): boolean {
 
     let properties = [ 'mapper', 'promise', 'timeout' ];
-    for ( let prop of properties ) {
-      if ( prop in obj ) {
+    for (let prop of properties) {
+      if (prop in obj) {
         return true;
       }
     }
@@ -126,7 +125,7 @@ export class Http {
     return false;
   }
 
-  private applyDefaultResponseOptions(options: ResponseOptions) {
+  protected applyDefaultResponseOptions(options: ResponseOptions) {
     options.mapper = options.mapper || this.responseOptions.mapper;
     options.timeout = options.timeout || this.responseOptions.timeout;
   }
@@ -178,7 +177,7 @@ export class Http {
     this.events.subscribe(HttpEvents.POST_REQUEST_ERROR, callback);
   }
 
-  private runEvent(subscribe: string, method: string) {
+  protected runEvent(subscribe: string, method: string) {
     this.events.subscribe(subscribe, (req: any) => {
       this.plugins.forEach((plugin: any) => {
         // workaround typescript not exists verification of interfaces
