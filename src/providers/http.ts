@@ -42,6 +42,10 @@ export class Http {
     }
   }
 
+  getRequestFactory(): Request {
+    return this.requestFactory;
+  }
+
   request(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
 
     if (!(url instanceof Request) && arguments.length === 1 && typeof url === 'object') {
