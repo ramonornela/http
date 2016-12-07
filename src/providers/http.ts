@@ -46,19 +46,19 @@ export class Http {
     return this.requestFactory;
   }
 
-  request(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
+  request(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Observable<Response> {
 
     if (!(url instanceof Request) && arguments.length === 1 && typeof url === 'object') {
       let objParams = url;
       url = objParams.url;
       params = objParams.params;
-      options = objParams.options;
+      requestOptions = objParams.requestOptions;
       responseOptions = objParams.responseOptions;
     }
 
-    if (options && this.checkForResponseOptions(options)) {
-      responseOptions = options;
-      options = null;
+    if (requestOptions && this.checkForResponseOptions(requestOptions)) {
+      responseOptions = requestOptions;
+      requestOptions = null;
     }
 
     responseOptions = responseOptions || {};
@@ -67,12 +67,12 @@ export class Http {
 
     if (typeof url === 'string' && this.requestFactory) {
       if (this.requestFactory.getMetadata().has(url)) {
-        url = this.requestFactory.create(url, params, options);
-        options = null;
+        url = this.requestFactory.create(url, params, requestOptions);
+        requestOptions = null;
       }
     }
 
-    let responseObservable = this.http.request(url, options);
+    let responseObservable = this.http.request(url, requestOptions);
 
     if (responseOptions.timeout) {
       responseObservable = responseObservable
@@ -90,44 +90,44 @@ export class Http {
     return responseObservable;
   }
 
-  requestPromise(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Promise<Response> {
+  requestPromise(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Promise<Response> {
     return this.request.apply(this, arguments).toPromise();
   }
 
-  get(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
-    options = options || {};
-    options.method = 'GET';
-    return this.request(url, params, options, responseOptions);
+  get(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Observable<Response> {
+    requestOptions = requestOptions || {};
+    requestOptions.method = 'GET';
+    return this.request(url, params, requestOptions, responseOptions);
   }
 
-  post(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
-    options = options || {};
-    options.method = 'POST';
-    return this.request(url, params, options, responseOptions);
+  post(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Observable<Response> {
+    requestOptions = requestOptions || {};
+    requestOptions.method = 'POST';
+    return this.request(url, params, requestOptions, responseOptions);
   }
 
-  put(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
-    options = options || {};
-    options.method = 'PUT';
-    return this.request(url, params, options, responseOptions);
+  put(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Observable<Response> {
+    requestOptions = requestOptions || {};
+    requestOptions.method = 'PUT';
+    return this.request(url, params, requestOptions, responseOptions);
   }
 
-  delete(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
-    options = options || {};
-    options.method = 'DELETE';
-    return this.request(url, params, options, responseOptions);
+  delete(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Observable<Response> {
+    requestOptions = requestOptions || {};
+    requestOptions.method = 'DELETE';
+    return this.request(url, params, requestOptions, responseOptions);
   }
 
-  patch(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
-    options = options || {};
-    options.method = 'PATCH';
-    return this.request(url, params, options, responseOptions);
+  patch(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Observable<Response> {
+    requestOptions = requestOptions || {};
+    requestOptions.method = 'PATCH';
+    return this.request(url, params, requestOptions, responseOptions);
   }
 
-  head(url: any, params?: Object, options?: any, responseOptions?: ResponseOptions): Observable<Response> {
-    options = options || {};
-    options.method = 'HEAD';
-    return this.request(url, params, options, responseOptions);
+  head(url: any, params?: Object, requestOptions?: any, responseOptions?: ResponseOptions): Observable<Response> {
+    requestOptions = requestOptions || {};
+    requestOptions.method = 'HEAD';
+    return this.request(url, params, requestOptions, responseOptions);
   }
 
   protected checkForResponseOptions(obj: any): boolean {
