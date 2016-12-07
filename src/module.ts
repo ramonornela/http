@@ -9,7 +9,7 @@ import {
   ParseResponsePlugin,
   ParseResponseToken,
   RequestDefaultOptionsToken,
-  ResponseDefaultOptionsToken,
+  DefaultOptionsToken,
   ThrowExceptionStatus,
   ThrowExceptionStatusToken
 } from './providers';
@@ -38,7 +38,7 @@ export class HttpModule {
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
         { provide: RequestDefaultOptionsToken, useValue: defaultRequest },
-        { provide: ResponseDefaultOptionsToken, useValue: defaultResponse },
+        { provide: DefaultOptionsToken, useValue: defaultResponse },
         Http,
         plugins
       ]

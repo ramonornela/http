@@ -1,6 +1,6 @@
 import { Mapper } from './mapper/mapper';
 
-export interface ResponseOptions {
+export interface Options {
   timeout?: number;
   mapper?: Mapper;
 }
