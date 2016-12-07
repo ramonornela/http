@@ -34,7 +34,7 @@ export class Http {
     this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
 
     if (defaultRequest) {
-      this.setDefaultOptions(defaultRequest);
+      this.setDefaultRequestOptions(defaultRequest);
     }
 
     if (defaultResponse) {
@@ -170,7 +170,7 @@ export class Http {
     return this.getPlugins().get(name);
   }
 
-  setDefaultOptions(options: any): this {
+  setDefaultRequestOptions(options: any): this {
     if (!this.requestFactory) {
       throw new Error('Called not permited, need import the module UrlResolverModule in root module');
     }
