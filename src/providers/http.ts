@@ -14,12 +14,14 @@ import 'rxjs/add/operator/timeoutWith';
 import 'rxjs/add/operator/map';
 
 export const RequestDefaultOptionsToken = new OpaqueToken('REQUESTDEFAULTOPTIONSTOKEN');
-export const DefaultOptionsToken = new OpaqueToken('RESPONSEDEFAULTOPTIONSTOKEN');
+export const DefaultOptionsToken = new OpaqueToken('DEFAULTOPTIONSTOKEN');
 
 @Injectable()
 export class Http {
 
   protected options: Options = {};
+
+  protected requestOptions: any = {};
 
   constructor(protected http: HttpAngular,
               protected events: Events,
@@ -64,6 +66,10 @@ export class Http {
     options = options || {};
 
     this.applyDefaultOptions(options);
+
+    // merge of default options in case the urlResolver is not configured
+    requestOptions = requestOptions || {};
+    requestOptions = Object.assign({}, this.requestOptions, requestOptions);
 
     if (typeof url === 'string' && this.requestFactory) {
       if (this.requestFactory.getMetadata().has(url)) {
@@ -171,10 +177,12 @@ export class Http {
   }
 
   setDefaultRequestOptions(options: any): this {
-    if (!this.requestFactory) {
-      throw new Error('Called not permited, need import the module UrlResolverModule in root module');
+    if (this.requestFactory) {
+      this.requestFactory.setDefaultOptions(options);
+      return this;
     }
-    this.requestFactory.setDefaultOptions(options);
+
+    this.requestOptions = options;
     return this;
   }
 
