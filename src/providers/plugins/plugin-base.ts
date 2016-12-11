@@ -1,4 +1,4 @@
-abstract class PluginBase {
+export abstract class PluginBase {
 
   protected optionsInitials: {[key: string]: any};
 
