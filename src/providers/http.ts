@@ -48,12 +48,18 @@ export class Http {
     return this.requestFactory;
   }
 
-  protected setOptionsPlugins(options: Options) {
-    for (let pluginName in options.pluginsOptions) {
+  protected setOptionsPlugins(options: Object) {
+    for (let pluginName in options) {
       let plugin = this.getPlugin(pluginName);
-      if ('setOptions' in plugin) {
-        plugin.setOptions(options.pluginsOptions[pluginName]);
+      if (!plugin) {
+        throw new Error('Plugin not exists');
       }
+
+      if (!('setOptions' in plugin)) {
+        throw new Error('Plugin not implements setOptions()');
+      }
+
+      plugin.setOptions(options[pluginName]);
     }
   }
 
