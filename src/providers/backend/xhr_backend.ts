@@ -65,18 +65,23 @@ export class XHRConnection implements Connection {
       }
       // load event handler
       const onLoad = () => {
-        // responseText is the old-school way of retrieving response (supported by IE8 & 9)
-        // response/responseType properties were introduced in ResourceLoader Level2 spec (supported
-        // by IE10)
-        let body = _xhr.response === undefined ? _xhr.responseText : _xhr.response;
-        // Implicitly strip a potential XSSI prefix.
-        if (typeof body === 'string') body = body.replace(XSSI_PREFIX, '');
-        const headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
-
-        const url = getResponseURL(_xhr);
-
         // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
         let status: number = _xhr.status === 1223 ? 204 : _xhr.status;
+
+        let body: any = null;
+
+        // HTTP 204 means no content
+        if (status !== 204) {
+          // responseText is the old-school way of retrieving response (supported by IE8 & 9)
+          // response/responseType properties were introduced in ResourceLoader Level2 spec
+          // (supported by IE10)
+          body = _xhr.response == null ? _xhr.responseText : _xhr.response;
+
+          // Implicitly strip a potential XSSI prefix.
+          if (typeof body === 'string') {
+            body = body.replace(XSSI_PREFIX, '');
+          }
+        }
 
         // fix status code when it is 0 (0 status is undocumented).
         // Occurs when accessing file resources or on Android 4.1 stock browser
@@ -85,7 +90,11 @@ export class XHRConnection implements Connection {
           status = body ? 200 : 0;
         }
 
-        const statusText = _xhr.statusText || 'OK';
+        const headers: Headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
+
+        const url: string = getResponseURL(_xhr);
+
+        const statusText: string = _xhr.statusText || 'OK';
 
         let responseOptions = new ResponseOptions({body, status, headers, statusText, url});
         if (baseResponseOptions !== undefined && baseResponseOptions !== null) {
@@ -120,7 +129,7 @@ export class XHRConnection implements Connection {
         this.events.publish(HttpEvents.POST_REQUEST, response);
       };
       // error event handler
-      const onError = (err: any) => {
+      const onError = (err: ErrorEvent) => {
         let responseOptions = new ResponseOptions({
           body: err,
           type: ResponseType.Error,
@@ -183,7 +192,7 @@ export class XHRConnection implements Connection {
     });
   }
 
-  setDetectedContentType(req: any /** TODO #9100 */, _xhr: any /** TODO #9100 */) {
+  setDetectedContentType(req: any /** TODO Request */, _xhr: any /** XMLHttpRequest */) {
     // Skip if a custom Content-Type header is provided
     if ((req.headers !== undefined && req.headers !== null)
        && (req.headers.get('Content-Type') !== undefined && req.headers.get('Content-Type') !== null)) {
