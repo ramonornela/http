@@ -1,5 +1,5 @@
 abstract class PluginBase {
-  
+
   protected optionsInitials: {[key: string]: any};
 
   constructor() {
@@ -11,7 +11,7 @@ abstract class PluginBase {
   }
 
   protected getOptionsInitial(): {[key: string]: any} {
-    let options = {}; 
+    let options = {};
     for (let prop in this) {
       if (typeof this[prop] !== 'function') {
         options[prop] = this[prop];
