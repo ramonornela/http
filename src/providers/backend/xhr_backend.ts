@@ -92,7 +92,7 @@ export class XHRConnection implements Connection {
 
         const headers: Headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
 
-        const url: string = getResponseURL(_xhr);
+        const url: string = getResponseURL(_xhr) || req.url;
 
         const statusText: string = _xhr.statusText || 'OK';
 
