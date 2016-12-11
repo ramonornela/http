@@ -51,7 +51,7 @@ export class XHRConnection implements Connection {
     this.request = req;
     this.response = new Observable<Response>((responseObserver: Observer<Response>) => {
 
-      // disparando eventos pre request
+      // dispatch event pre request
       this.events.publish(HttpEvents.PRE_REQUEST, req);
 
       if (this.events.isStop()) {
@@ -94,16 +94,16 @@ export class XHRConnection implements Connection {
         let response = new Response(responseOptions);
         response.ok = isSuccess(status);
         if (response.ok) {
-          this.events.publish(HttpEvents.POST_REQUEST, response);
-
-          if (this.events.isStop()) {
-            responseObserver.error({stop: HttpEvents.POST_REQUEST});
-          }
-
           this.events.publish(HttpEvents.POST_REQUEST_SUCCESS, response);
 
           if (this.events.isStop()) {
             responseObserver.error({stop: HttpEvents.POST_REQUEST_SUCCESS});
+          }
+
+          this.events.publish(HttpEvents.POST_REQUEST, response);
+
+          if (this.events.isStop()) {
+            responseObserver.error({stop: HttpEvents.POST_REQUEST});
           }
 
           responseObserver.next(response);
@@ -114,14 +114,10 @@ export class XHRConnection implements Connection {
 
         responseObserver.error(response);
 
-        // disparando eventos post request e post request error
-        this.events.publish(HttpEvents.POST_REQUEST, response);
-
-        if (this.events.isStop()) {
-          responseObserver.error({stop: HttpEvents.POST_REQUEST});
-        }
-
+        // dispatch event post request and post request error
         this.events.publish(HttpEvents.POST_REQUEST_ERROR, response);
+
+        this.events.publish(HttpEvents.POST_REQUEST, response);
       };
       // error event handler
       let onError = (err: any) => {
