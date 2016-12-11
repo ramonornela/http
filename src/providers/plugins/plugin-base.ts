@@ -3,7 +3,10 @@ export abstract class PluginBase {
   protected optionsInitials: {[key: string]: any};
 
   constructor() {
-    this.optionsInitials = this.getOptionsInitial();
+    // workaround assign value constructor
+    setTimeout(() => {
+      this.optionsInitials = this.getOptionsInitial();
+    });
   }
 
   protected restoreOptions() {
@@ -12,10 +15,11 @@ export abstract class PluginBase {
 
   protected getOptionsInitial(): {[key: string]: any} {
     let options = {};
-    for (let prop in this) {
-      if (typeof this[prop] !== 'function') {
-        options[prop] = this[prop];
-      }
+    let keys = Object.keys(this);
+    let length = keys.length;
+
+    for (let i =  0; i < length; i++) {
+      options[prop] = this[keys[i]];
     }
 
     return options;
