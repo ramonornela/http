@@ -48,6 +48,15 @@ export class Http {
     return this.requestFactory;
   }
 
+  protected setOptionsPlugins(options: Options) {
+    for (let pluginName in options.pluginsOptions) {
+      let plugin = this.getPlugin(pluginName);
+      if ('setOptions' in plugin) {
+        plugin.setOptions(options.pluginsOptions[pluginName]);
+      }
+    }
+  }
+
   request(url: any, params?: Object, requestOptions?: any, options?: Options): Observable<Response> {
 
     if (!(url instanceof Request) && arguments.length === 1 && typeof url === 'object') {
@@ -76,6 +85,10 @@ export class Http {
         url = this.requestFactory.create(url, params, requestOptions);
         requestOptions = null;
       }
+    }
+
+    if (options.pluginsOptions) {
+      this.setOptionsPlugins(options.pluginsOptions);
     }
 
     let responseObservable = this.http.request(url, requestOptions);
