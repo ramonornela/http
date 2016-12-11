@@ -19,7 +19,7 @@ export abstract class PluginBase {
     let length = keys.length;
 
     for (let i =  0; i < length; i++) {
-      options[prop] = this[keys[i]];
+      options[keys[i]] = this[keys[i]];
     }
 
     return options;
