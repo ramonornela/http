@@ -276,3 +276,5 @@ export class XHRBackend implements ConnectionBackend {
     return new XHRConnection(request, this.browserXHR, this.baseResponseOptions, this.events);
   }
 }
+
+export { Events };
