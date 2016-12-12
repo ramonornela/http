@@ -30,10 +30,10 @@ export class Http {
               @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
               @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
 
-    this.runEvent('onPreRequest');
-    this.runEvent('onPostRequest');
-    this.runEvent('onPostRequestSuccess');
-    this.runEvent('onPostRequestError');
+    this.runEvent('preRequest');
+    this.runEvent('postRequest');
+    this.runEvent('postRequestSuccess');
+    this.runEvent('postRequestError');
 
     if (defaultOptionsRequest) {
       this.setDefaultRequestOptions(defaultOptionsRequest);
@@ -210,7 +210,12 @@ export class Http {
   }
 
   protected runEvent(method: string) {
-    this.events[method].call(null, (req: any) => {
+    let methodName = [
+      'on',
+      method.charAt(0).toUpperCase(),
+      method.slice(1)
+    ].join('');
+    this.events[methodName].call(this.events, (req: any) => {
       this.plugins.forEach((plugin: any) => {
         // workaround typescript not exists verification of interfaces
         if (!(method in plugin)) {
