@@ -4,9 +4,10 @@ import { HttpEvents } from './backend/xhr_backend';
 import { TimeoutException } from './exception';
 import { Plugins, Plugin } from './plugins';
 import { Options } from './options';
-import { Observable } from 'rxjs/Observable';
+import { Config } from '@ramonornela/configuration';
 import { Request } from '@ramonornela/url-resolver';
 import { Mapper } from './mapper';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/defer';
@@ -15,6 +16,8 @@ import 'rxjs/add/operator/map';
 
 export const RequestDefaultOptionsToken = new OpaqueToken('REQUESTDEFAULTOPTIONSTOKEN');
 export const DefaultOptionsToken = new OpaqueToken('DEFAULTOPTIONSTOKEN');
+
+const KEY_CONFIG = 'http';
 
 @Injectable()
 export class Http {
@@ -26,6 +29,7 @@ export class Http {
   constructor(protected http: HttpAngular,
               protected events: HttpEvents,
               protected plugins: Plugins,
+              @Optional() config: Config,
               @Optional() protected requestFactory: Request,
               @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
               @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
@@ -34,6 +38,18 @@ export class Http {
     this.runEvent('postRequest');
     this.runEvent('postRequestSuccess');
     this.runEvent('postRequestError');
+
+    if (config) {
+      let httpConfig = config.get(KEY_CONFIG) || {};
+
+      if (!defaultOptionsRequest && httpConfig.defaultOptionsRequest) {
+        defaultOptionsRequest = httpConfig.defaultOptionsRequest;
+      }
+
+      if (!defaultOptions && httpConfig.defaultOptions) {
+        defaultOptions = httpConfig.defaultOptions;
+      }
+    }
 
     if (defaultOptionsRequest) {
       this.setDefaultRequestOptions(defaultOptionsRequest);
