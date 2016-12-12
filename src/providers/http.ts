@@ -188,7 +188,7 @@ export class Http {
     return this;
   }
 
-  setPluginsOptions(options: Object): this {
+  setPluginsOptions(options: {[key: string]: {[key: string]: any}}): this {
     this.options.pluginsOptions = options;
     return this;
   }
