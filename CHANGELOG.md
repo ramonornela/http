@@ -1,3 +1,41 @@
+<a name="0.0.32"></a>
+## [0.0.32](https://github.com/ramonornela/http/compare/v0.0.31...v0.0.32) (2016-12-12)
+
+
+### Bug Fixes
+
+* **module:** export module Events ([6da9f56](https://github.com/ramonornela/http/commit/6da9f56))
+* **xhrBackend:** apply commit https://github.com/angular/angular/commit/1d53a870dd6efa618e86d8040c9af84b11b8cc64 ([34c7d11](https://github.com/ramonornela/http/commit/34c7d11))
+* **xhrBackend:** apply commit https://github.com/angular/angular/commit/94b8612e4eb39100b723ea4457f60d9d2d1e5be6 ([2a7ac45](https://github.com/ramonornela/http/commit/2a7ac45))
+* **xhrBackend:** apply commit https://github.com/angular/angular/commit/986abbe0b2ca0e33078db114637505996fa70bd7 ([97b76e8](https://github.com/ramonornela/http/commit/97b76e8))
+* **xhrBackend:** apply commit https://github.com/angular/angular/commit/a0c58a6b5ca7e7f444ce778bdcb2bd3355f87ada ([c2bcb9d](https://github.com/ramonornela/http/commit/c2bcb9d))
+
+
+### Features
+
+* **http:** add plugin options default ([2e7f014](https://github.com/ramonornela/http/commit/2e7f014))
+* **http:** add return requestFactory ([f07279b](https://github.com/ramonornela/http/commit/f07279b))
+* **http:** add setOptions() to request ([d93f662](https://github.com/ramonornela/http/commit/d93f662))
+* **http:** check if id exists in metadata ([7d4759e](https://github.com/ramonornela/http/commit/7d4759e))
+* **http:** Configurações globais para o ResponseOptions ([8ac05a0](https://github.com/ramonornela/http/commit/8ac05a0))
+* **http:** defaultOptions and defaultRequestOptions how configuration ([bcdb648](https://github.com/ramonornela/http/commit/bcdb648))
+* **http:** merge of default options in case the urlResolver is not configured ([1173dd8](https://github.com/ramonornela/http/commit/1173dd8))
+* **http:** refactor use HttpEvents ([9bcc6b4](https://github.com/ramonornela/http/commit/9bcc6b4))
+* **http:** rename method setDefaultOptions() to setDefaultRequestOptions() ([fdc98a3](https://github.com/ramonornela/http/commit/fdc98a3))
+* **http:** rename responseOptions to options ([ab149ac](https://github.com/ramonornela/http/commit/ab149ac))
+* **http:** validate setOptions plugin ([9dbdaba](https://github.com/ramonornela/http/commit/9dbdaba))
+* **Http:** Adicionada interface para passar opções de response (ResponseOptions) na request ([b950984](https://github.com/ramonornela/http/commit/b950984))
+* **Http:** Método 'request' que retorna Promise ([2846660](https://github.com/ramonornela/http/commit/2846660))
+* **Http:** Possibilidade de aplicar 'timout' nas requisições ([65d0cdc](https://github.com/ramonornela/http/commit/65d0cdc))
+* **Http:** Possibilidade de passar um objeto com os parametros no método 'request' ([0ccf0d8](https://github.com/ramonornela/http/commit/0ccf0d8))
+* **module:** add default request and response to initialize() ([0d9a371](https://github.com/ramonornela/http/commit/0d9a371))
+* **module:** export interface  options ([c8dfbc3](https://github.com/ramonornela/http/commit/c8dfbc3))
+* **plugin:** add plugin base ([e3843b4](https://github.com/ramonornela/http/commit/e3843b4))
+* **plugin:** fix problem assign properties this typescript ([72963aa](https://github.com/ramonornela/http/commit/72963aa))
+* **xhrBackend:** post request run after success and error ([09f685c](https://github.com/ramonornela/http/commit/09f685c))
+
+
+
 <a name="0.0.31"></a>
 ## [0.0.31](https://github.com/ramonornela/http/compare/v0.0.30...v0.0.31) (2016-11-30)
 
