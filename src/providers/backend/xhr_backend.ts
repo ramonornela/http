@@ -23,16 +23,52 @@ export function xhrBackendFactory(
   browserXhr: BrowserXhr,
   responseOptions: ResponseOptions,
   xsrf: XSRFStrategy,
-  events: Events) {
+  events: HttpEvents) {
   return new XHRBackend(browserXhr, responseOptions, xsrf, events);
 }
 
-export class HttpEvents {
+export class HttpEvents extends Events {
 
   static PRE_REQUEST: string = 'http.prerequest';
   static POST_REQUEST: string = 'http.postrequest';
   static POST_REQUEST_SUCCESS: string = 'http.postrequest_success';
   static POST_REQUEST_ERROR: string = 'http.postrequest_error';
+
+  constructor() {
+    super();
+  }
+
+  preRequest(req: Request) {
+    this.publish(HttpEvents.PRE_REQUEST, req);
+  }
+
+  postRequest(resp: Response) {
+    this.publish(HttpEvents.POST_REQUEST, resp);
+  }
+
+  postRequestSuccess(resp: Response) {
+    this.publish(HttpEvents.POST_REQUEST_SUCCESS, resp);
+  }
+
+  postRequestError(resp: Response) {
+    this.publish(HttpEvents.POST_REQUEST_ERROR, resp);
+  }
+
+  onPreRequest(callback: (req?: any) => any) {
+    this.subscribe(HttpEvents.PRE_REQUEST, callback);
+  }
+
+  onPostRequest(callback: (req?: any) => any) {
+    this.subscribe(HttpEvents.POST_REQUEST, callback);
+  }
+
+  onPostRequestSuccess(callback: (req?: any) => any) {
+    this.subscribe(HttpEvents.POST_REQUEST_SUCCESS, callback);
+  }
+
+  onPostRequestError(callback: (req?: any) => any) {
+    this.subscribe(HttpEvents.POST_REQUEST_ERROR, callback);
+  }
 }
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
@@ -47,12 +83,12 @@ export class XHRConnection implements Connection {
    */
   response: Observable<Response>;
   readyState: ReadyState;
-  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions, private events?: Events) {
+  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions, private events?: HttpEvents) {
     this.request = req;
     this.response = new Observable<Response>((responseObserver: Observer<Response>) => {
 
       // dispatch event pre request
-      this.events.publish(HttpEvents.PRE_REQUEST, req);
+      this.events.preRequest(req);
 
       if (this.events.isStop()) {
         responseObserver.error({stop: HttpEvents.PRE_REQUEST});
@@ -103,13 +139,13 @@ export class XHRConnection implements Connection {
         const response = new Response(responseOptions);
         response.ok = isSuccess(status);
         if (response.ok) {
-          this.events.publish(HttpEvents.POST_REQUEST_SUCCESS, response);
+          this.events.postRequestSuccess(response);
 
           if (this.events.isStop()) {
             responseObserver.error({stop: HttpEvents.POST_REQUEST_SUCCESS});
           }
 
-          this.events.publish(HttpEvents.POST_REQUEST, response);
+          this.events.postRequest(response);
 
           if (this.events.isStop()) {
             responseObserver.error({stop: HttpEvents.POST_REQUEST});
@@ -124,9 +160,9 @@ export class XHRConnection implements Connection {
         responseObserver.error(response);
 
         // dispatch event post request and post request error
-        this.events.publish(HttpEvents.POST_REQUEST_ERROR, response);
+        this.events.postRequestError(response);
 
-        this.events.publish(HttpEvents.POST_REQUEST, response);
+        this.events.postRequest(response);
       };
       // error event handler
       const onError = (err: ErrorEvent) => {
@@ -233,12 +269,10 @@ export class XHRBackend implements ConnectionBackend {
       private browserXHR: BrowserXhr,
       private baseResponseOptions: ResponseOptions,
       private xsrfStrategy: XSRFStrategy,
-      private events: Events) {}
+      private events: HttpEvents) {}
 
   createConnection(request: Request): XHRConnection {
     this.xsrfStrategy.configureRequest(request);
     return new XHRConnection(request, this.browserXHR, this.baseResponseOptions, this.events);
   }
 }
-
-export { Events };

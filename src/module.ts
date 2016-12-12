@@ -3,7 +3,7 @@ import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, Connect
 import {
   Http,
   xhrBackendFactory,
-  Events,
+  HttpEvents,
   HttpPluginsToken,
   Plugins,
   ParseResponsePlugin,
@@ -27,11 +27,11 @@ export class HttpModule {
     return {
       ngModule: HttpModule,
       providers: [
-        Events,
+        HttpEvents,
         {
           provide: ConnectionBackend,
           useFactory: xhrBackendFactory,
-          deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, Events ]
+          deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ]
         },
         HttpAngular,
         { provide: ThrowExceptionStatusToken, useValue: null },

@@ -1,6 +1,6 @@
 import { Http as HttpAngular, Response } from '@angular/http';
 import { Injectable, Inject, OpaqueToken, Optional } from '@angular/core';
-import { HttpEvents, Events } from './backend/xhr_backend';
+import { HttpEvents } from './backend/xhr_backend';
 import { TimeoutException } from './exception';
 import { Plugins, Plugin } from './plugins';
 import { Options } from './options';
@@ -24,16 +24,16 @@ export class Http {
   protected requestOptions: any = {};
 
   constructor(protected http: HttpAngular,
-              protected events: Events,
+              protected events: HttpEvents,
               protected plugins: Plugins,
               @Optional() protected requestFactory: Request,
               @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
               @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
 
-    this.runEvent(HttpEvents.PRE_REQUEST, 'preRequest');
-    this.runEvent(HttpEvents.POST_REQUEST, 'postRequest');
-    this.runEvent(HttpEvents.POST_REQUEST_SUCCESS, 'postRequestSuccess');
-    this.runEvent(HttpEvents.POST_REQUEST_ERROR, 'postRequestError');
+    this.runEvent('onPreRequest');
+    this.runEvent('onPostRequest');
+    this.runEvent('onPostRequestSuccess');
+    this.runEvent('onPostRequestError');
 
     if (defaultOptionsRequest) {
       this.setDefaultRequestOptions(defaultOptionsRequest);
@@ -191,6 +191,10 @@ export class Http {
     return this.plugins;
   }
 
+  getEvents(): HttpEvents {
+    return this.events;
+  }
+
   getPlugin(name: string): Plugin | null {
     return this.getPlugins().get(name);
   }
@@ -205,24 +209,8 @@ export class Http {
     return this;
   }
 
-  onPreRequest(callback: (req?: any) => any) {
-    this.events.subscribe(HttpEvents.PRE_REQUEST, callback);
-  }
-
-  onPostRequest(callback: (req?: any) => any) {
-    this.events.subscribe(HttpEvents.POST_REQUEST, callback);
-  }
-
-  onPostRequestSuccess(callback: (req?: any) => any) {
-    this.events.subscribe(HttpEvents.POST_REQUEST_SUCCESS, callback);
-  }
-
-  onPostRequestError(callback: (req?: any) => any) {
-    this.events.subscribe(HttpEvents.POST_REQUEST_ERROR, callback);
-  }
-
-  protected runEvent(subscribe: string, method: string) {
-    this.events.subscribe(subscribe, (req: any) => {
+  protected runEvent(method: string) {
+    this.events[method].call(null, (req: any) => {
       this.plugins.forEach((plugin: any) => {
         // workaround typescript not exists verification of interfaces
         if (!(method in plugin)) {
