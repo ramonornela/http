@@ -157,7 +157,7 @@ export class Http {
 
   protected checkForOptions(obj: any): boolean {
 
-    let properties = [ 'mapper', 'timeout' ];
+    let properties = [ 'mapper', 'timeout', 'pluginsOptions' ];
     for (let prop of properties) {
       if (prop in obj) {
         return true;
@@ -170,6 +170,7 @@ export class Http {
   protected applyDefaultOptions(options: Options) {
     options.mapper = options.mapper || this.options.mapper;
     options.timeout = options.timeout || this.options.timeout;
+    options.pluginsOptions = options.pluginsOptions || this.options.pluginsOptions;
   }
 
   setDefaultOptions(options: Options): this {
@@ -184,6 +185,11 @@ export class Http {
 
   setMapper(mapper: Mapper): this {
     this.options.mapper = mapper;
+    return this;
+  }
+
+  setPluginsOptions(options: Object): this {
+    this.options.pluginsOptions = options;
     return this;
   }
 
