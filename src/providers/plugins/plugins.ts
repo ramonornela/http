@@ -3,10 +3,14 @@ import { Plugin } from './plugin';
 
 export const HttpPluginsToken = new OpaqueToken('HTTP_PLUGINS');
 
+const EventsMethods = [ 'preRequest', 'postRequest', 'postRequestSuccess', 'postRequestError' ];
+
 @Injectable()
 export class Plugins {
 
   private plugins: Array<{[name: string]: Plugin}> = [];
+
+  private throwsException: boolean = false;
 
   constructor(plugins?: Array<Plugin>) {
     if (plugins) {
@@ -23,12 +27,15 @@ export class Plugins {
     return this;
   }
 
-  add(plugin: Plugin, priority?: number): this {
-    let methods = [ 'preRequest', 'postRequest', 'postRequestSuccess', 'postRequestError' ];
+  setThrowsException(throws: boolean): this {
+    this.throwsException = throws;
+    return this;
+  }
 
+  add(plugin: Plugin, priority?: number): this {
     // workaround typescript not exists verification of interfaces
     let implementsInterfaces = false;
-    for (let method of methods) {
+    for (let method of EventsMethods) {
       if (method in plugin) {
         implementsInterfaces = true;
       }
@@ -110,5 +117,26 @@ export class Plugins {
         }
       }
     }
+  }
+
+  runEvent(event: string, params: Array<any>) {
+    if (EventsMethods.indexOf(event) === -1) {
+      throw new Error(`Event '${event}' not exists`);
+    }
+
+    this.forEach((plugin: Plugin) => {
+      if (!(event in plugin)) {
+        return;
+      }
+
+      try {
+        let method  = plugin[event];
+        method.apply(plugin, params);
+      } catch (ex) {
+        if (this.throwsException) {
+          throw ex;
+        }
+      }
+    });
   }
 }

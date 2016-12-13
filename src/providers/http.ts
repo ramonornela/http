@@ -237,19 +237,9 @@ export class Http {
       method.charAt(0).toUpperCase(),
       method.slice(1)
     ].join('');
+
     this.events[methodName].call(this.events, (req: any) => {
-      this.plugins.forEach((plugin: any) => {
-        // workaround typescript not exists verification of interfaces
-        if (!(method in plugin)) {
-          return;
-        }
-
-        let stop = plugin[method](req);
-
-        if (stop === false) {
-          this.events.stop();
-        }
-      });
+      this.plugins.runEvent(method, [ req ]);
     });
   }
 }
