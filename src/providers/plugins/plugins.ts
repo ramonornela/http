@@ -10,7 +10,9 @@ export class Plugins {
 
   private plugins: Array<{[name: string]: Plugin}> = [];
 
-  private throwsException: boolean = false;
+  private throwsException: boolean = true;
+
+  private options: Object = {};
 
   constructor(plugins?: Array<Plugin>) {
     if (plugins) {
@@ -30,6 +32,21 @@ export class Plugins {
   setThrowsException(throws: boolean): this {
     this.throwsException = throws;
     return this;
+  }
+
+  isThrowsException(plugin: string | Plugin): boolean {
+
+    if (typeof plugin !== 'string') {
+      plugin = plugin.getName();
+    }
+
+    this.options[plugin] = this.options[plugin] || {};
+
+    let throwPlugin = 'throwsException' in this.options[plugin]
+      ? this.options[plugin].throwsException
+      : this.throwsException;
+
+    return throwPlugin;
   }
 
   add(plugin: Plugin, priority?: number): this {
@@ -119,6 +136,33 @@ export class Plugins {
     }
   }
 
+  cleanOptions() {
+    this.forEach((plugin: Plugin) => {
+      if ('restoreOptions' in plugin) {
+        plugin.restoreOptions();
+      }
+    });
+    this.options = {};
+  }
+
+  setOptions(options: Object): this {
+    for (let pluginName in options) {
+
+      if (!this.has(pluginName)) {
+        throw new Error('Plugin not exists');
+      }
+
+      let plugin = this.get(pluginName);
+
+      if ('setOptions' in plugin) {
+        plugin.setOptions(options[pluginName]);
+      }
+    }
+
+    this.options = options;
+    return this;
+  }
+
   runEvent(event: string, params: Array<any>) {
     if (EventsMethods.indexOf(event) === -1) {
       throw new Error(`Event '${event}' not exists`);
@@ -133,7 +177,8 @@ export class Plugins {
         let method  = plugin[event];
         method.apply(plugin, params);
       } catch (ex) {
-        if (this.throwsException) {
+
+        if (this.isThrowsException(plugin)) {
           throw ex;
         }
       }

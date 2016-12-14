@@ -2,6 +2,7 @@ export interface Plugin {
   getName(): string;
   getPriority(): number;
   setOptions?: (options: Object) => this;
+  restoreOptions?: () => void;
 }
 
 export interface PreRequestPlugin extends Plugin {

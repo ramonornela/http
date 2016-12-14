@@ -9,10 +9,6 @@ export abstract class PluginBase {
     });
   }
 
-  protected restoreOptions() {
-    this.setOptions(this.optionsInitials);
-  }
-
   protected getOptionsInitial(): {[key: string]: any} {
     let options = {};
     let keys = Object.keys(this);
@@ -23,6 +19,10 @@ export abstract class PluginBase {
     }
 
     return options;
+  }
+
+  restoreOptions() {
+    this.setOptions(this.optionsInitials);
   }
 
   setOptions(options: Object): this {

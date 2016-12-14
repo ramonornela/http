@@ -64,21 +64,6 @@ export class Http {
     return this.requestFactory;
   }
 
-  protected setOptionsPlugins(options: Object) {
-    for (let pluginName in options) {
-      let plugin = this.getPlugin(pluginName);
-      if (!plugin) {
-        throw new Error('Plugin not exists');
-      }
-
-      if (!('setOptions' in plugin)) {
-        throw new Error('Plugin not implements setOptions()');
-      }
-
-      plugin.setOptions(options[pluginName]);
-    }
-  }
-
   request(url: any, params?: Object, requestOptions?: any, options?: Options): Observable<Response> {
 
     if (!(url instanceof Request) && arguments.length === 1 && typeof url === 'object') {
@@ -109,8 +94,9 @@ export class Http {
       }
     }
 
+    this.plugins.cleanOptions();
     if (options.pluginsOptions) {
-      this.setOptionsPlugins(options.pluginsOptions);
+      this.plugins.setOptions(options.pluginsOptions);
     }
 
     let responseObservable = this.http.request(url, requestOptions);
