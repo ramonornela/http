@@ -8,8 +8,6 @@ import { Injectable } from '@angular/core';
 export class Events {
   private channels: Array<any> = [];
 
-  private stopped: boolean;
-
   /**
    * Subscribe to an event topic. Events that get posted to that topic will trigger the provided handler.
    *
