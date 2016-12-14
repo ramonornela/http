@@ -64,6 +64,11 @@ export class Http {
     return this.requestFactory;
   }
 
+  throwsException(throws: boolean): this {
+    this.plugins.setThrowsException(throws);
+    return this;
+  }
+
   request(url: any, params?: Object, requestOptions?: any, options?: Options): Observable<Response> {
 
     if (!(url instanceof Request) && arguments.length === 1 && typeof url === 'object') {
