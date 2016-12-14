@@ -143,13 +143,12 @@ export class XHRConnection implements Connection {
           responseObserver.complete();
           return;
         }
-
-        responseObserver.error(response);
-
         // dispatch event post request and post request error
         this.events.postRequestError(response);
         this.events.postRequest(response);
-      };
+
+        responseObserver.error(response);
+    };
       // error event handler
       const onError = (err: ErrorEvent) => {
         let responseOptions = new ResponseOptions({
@@ -163,10 +162,11 @@ export class XHRConnection implements Connection {
         }
 
         let response = new Response(responseOptions);
-        responseObserver.error(response);
 
         this.events.postRequestError(response);
         this.events.postRequest(response);
+
+        responseObserver.error(response);
       };
 
       this.setDetectedContentType(req, _xhr);
