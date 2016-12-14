@@ -90,10 +90,6 @@ export class XHRConnection implements Connection {
       // dispatch event pre request
       this.events.preRequest(req);
 
-      if (this.events.isStop()) {
-        responseObserver.error({stop: HttpEvents.PRE_REQUEST});
-      }
-
       const _xhr: XMLHttpRequest = browserXHR.build();
       _xhr.open(RequestMethod[req.method].toUpperCase(), req.url);
       if (req.withCredentials !== undefined && req.withCredentials !== null) {
@@ -140,16 +136,7 @@ export class XHRConnection implements Connection {
         response.ok = isSuccess(status);
         if (response.ok) {
           this.events.postRequestSuccess(response);
-
-          if (this.events.isStop()) {
-            responseObserver.error({stop: HttpEvents.POST_REQUEST_SUCCESS});
-          }
-
           this.events.postRequest(response);
-
-          if (this.events.isStop()) {
-            responseObserver.error({stop: HttpEvents.POST_REQUEST});
-          }
 
           responseObserver.next(response);
           // TODO(gdi2290): defer complete if array buffer until done
@@ -161,7 +148,6 @@ export class XHRConnection implements Connection {
 
         // dispatch event post request and post request error
         this.events.postRequestError(response);
-
         this.events.postRequest(response);
       };
       // error event handler
@@ -179,13 +165,8 @@ export class XHRConnection implements Connection {
         let response = new Response(responseOptions);
         responseObserver.error(response);
 
-        this.events.publish(HttpEvents.POST_REQUEST, response);
-
-        if (this.events.isStop()) {
-          responseObserver.error({stop: HttpEvents.POST_REQUEST});
-        }
-
-        this.events.publish(HttpEvents.POST_REQUEST_ERROR, response);
+        this.events.postRequestError(response);
+        this.events.postRequest(response);
       };
 
       this.setDetectedContentType(req, _xhr);

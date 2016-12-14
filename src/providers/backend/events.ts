@@ -82,12 +82,4 @@ export class Events {
     });
     return responses;
   }
-
-  stop() {
-    this.stopped = true;
-  }
-
-  isStop() {
-    return this.stopped;
-  }
 }
