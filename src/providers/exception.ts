@@ -1,14 +1,11 @@
-export class HttpException {
+export class HttpException extends Error {
 
-  constructor(private message: string, private code: number) {
+  constructor(message: string, private _code: number) {
+    super(message);
   }
 
-  getCode() {
-    return this.code;
-  }
-
-  getMessage() {
-    return this.message;
+  get code() {
+    return this._code;
   }
 }
 
