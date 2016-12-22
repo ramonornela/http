@@ -10,7 +10,7 @@ export class Plugins {
 
   private plugins: Array<{[name: string]: Plugin}> = [];
 
-  private throwsException: boolean = true;
+  private throwsException: boolean | Function = true;
 
   private options: Object = {};
 
@@ -29,12 +29,12 @@ export class Plugins {
     return this;
   }
 
-  setThrowsException(throws: boolean): this {
+  setThrowsException(throws: boolean | Function): this {
     this.throwsException = throws;
     return this;
   }
 
-  isThrowsException(plugin: string | Plugin): boolean {
+  getThrowsExceptionPlugin(plugin: string | Plugin): boolean | Function {
 
     if (typeof plugin !== 'string') {
       plugin = plugin.getName();
@@ -47,6 +47,17 @@ export class Plugins {
       : this.throwsException;
 
     return throwPlugin;
+  }
+
+  isThrowsException(plugin: string | Plugin): boolean {
+
+    if (typeof plugin !== 'string') {
+      plugin = plugin.getName();
+    }
+
+    let throwPlugin = this.getThrowsExceptionPlugin(plugin);
+
+    return throwPlugin === true || typeof throwPlugin === 'function';
   }
 
   add(plugin: Plugin, priority?: number): this {
@@ -179,6 +190,11 @@ export class Plugins {
       } catch (ex) {
 
         if (this.isThrowsException(plugin)) {
+          let callbackException = this.getThrowsExceptionPlugin(plugin);
+          if (typeof callbackException === 'function') {
+            callbackException(ex);
+            return;
+          }
           throw ex;
         }
       }
