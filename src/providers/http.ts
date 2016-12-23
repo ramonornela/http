@@ -26,6 +26,8 @@ export class Http {
 
   protected requestOptions: any = {};
 
+  protected lastRequest: Object = null;
+
   constructor(protected http: HttpAngular,
               protected events: HttpEvents,
               protected plugins: Plugins,
@@ -69,6 +71,19 @@ export class Http {
     return this;
   }
 
+  canRetry() {
+    return this.lastRequest;
+  }
+
+  retryRequest(clean: boolean = false): Observable<Response> {
+    let lastArgs = this.lastRequest;
+    if (clean) {
+      this.lastRequest = null;
+    }
+
+    return this.request(lastArgs);
+  }
+
   request(url: any, params?: Object, requestOptions?: any, options?: Options): Observable<Response> {
 
     if (!(url instanceof Request) && arguments.length === 1 && typeof url === 'object') {
@@ -87,6 +102,15 @@ export class Http {
     options = options || {};
 
     this.applyDefaultOptions(options);
+
+    if (options.retry) {
+      this.lastRequest = {
+        url,
+        params,
+        requestOptions,
+        options
+      };
+    }
 
     // merge of default options in case the urlResolver is not configured
     requestOptions = requestOptions || {};
@@ -164,7 +188,7 @@ export class Http {
 
   protected checkForOptions(obj: any): boolean {
 
-    let properties = [ 'mapper', 'timeout', 'pluginsOptions' ];
+    let properties = [ 'mapper', 'timeout', 'retry', 'pluginsOptions' ];
     for (let prop of properties) {
       if (prop in obj) {
         return true;
@@ -178,6 +202,7 @@ export class Http {
     options.mapper = options.mapper || this.options.mapper;
     options.timeout = options.timeout || this.options.timeout;
     options.pluginsOptions = options.pluginsOptions || this.options.pluginsOptions;
+    options.retry = options.retry || this.options.retry;
   }
 
   setDefaultOptions(options: Options): this {
@@ -192,6 +217,11 @@ export class Http {
 
   setMapper(mapper: Mapper): this {
     this.options.mapper = mapper;
+    return this;
+  }
+
+  setRetry(retry: boolean): this {
+    this.options.retry = retry;
     return this;
   }
 
