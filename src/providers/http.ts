@@ -72,16 +72,15 @@ export class Http {
   }
 
   canRetry() {
+    return this.lastRequest !== null;
+  }
+
+  getLastRequest() {
     return this.lastRequest;
   }
 
-  retryRequest(clean: boolean = false): Observable<Response> {
-    let lastArgs = this.lastRequest;
-    if (clean) {
-      this.lastRequest = null;
-    }
-
-    return this.request(lastArgs);
+  retryRequest(): Observable<Response> {
+    return this.request(this.lastRequest);
   }
 
   request(url: any, params?: Object, requestOptions?: any, options?: Options): Observable<Response> {
@@ -103,6 +102,7 @@ export class Http {
 
     this.applyDefaultOptions(options);
 
+    this.lastRequest = null;
     if (options.retry) {
       this.lastRequest = {
         url,
