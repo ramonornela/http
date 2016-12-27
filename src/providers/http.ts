@@ -140,7 +140,7 @@ export class Http {
     }
 
     if (options.mapper instanceof Mapper) {
-      responseObservable.map((resp) => options.mapper.transform(resp));
+      responseObservable = responseObservable.map((resp) => options.mapper.transform(resp));
     }
 
     return responseObservable;
