@@ -123,7 +123,6 @@ export class Http {
       }
     }
 
-    this.plugins.cleanOptions();
     if (options.pluginsOptions) {
       this.plugins.setOptions(options.pluginsOptions);
     }
@@ -261,6 +260,9 @@ export class Http {
 
     this.events[methodName].call(this.events, (req: any) => {
       this.plugins.runEvent(method, [ req ]);
+      if (method === 'postRequest' || method === 'postRequestError') {
+        this.plugins.cleanOptions();
+      }
     });
   }
 }
