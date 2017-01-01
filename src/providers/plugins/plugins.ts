@@ -5,6 +5,8 @@ export const HttpPluginsToken = new OpaqueToken('HTTP_PLUGINS');
 
 const EventsMethods = [ 'preRequest', 'postRequest', 'postRequestSuccess', 'postRequestError' ];
 
+const AllPlugins = '*';
+
 @Injectable()
 export class Plugins {
 
@@ -157,6 +159,18 @@ export class Plugins {
   }
 
   setOptions(options: Object): this {
+    let keys = Object.keys(options);
+
+    if (keys.indexOf(AllPlugins) !== -1) {
+      this.forEach((plugin: Plugin) => {
+        if ('setOptions' in plugin) {
+          plugin.setOptions(options[AllPlugins]);
+        }
+      });
+
+      delete options[AllPlugins];
+    }
+
     for (let pluginName in options) {
 
       if (!this.has(pluginName)) {
