@@ -19,6 +19,13 @@ export const DefaultOptionsToken = new OpaqueToken('DEFAULTOPTIONSTOKEN');
 
 const KEY_CONFIG = 'http';
 
+export interface LastRequest {
+  url: any;
+  params: Object;
+  requestOptions: any;
+  options: Options;
+}
+
 @Injectable()
 export class Http {
 
@@ -26,7 +33,9 @@ export class Http {
 
   protected requestOptions: any = {};
 
-  protected lastRequest: Object = null;
+  protected lastRequest: LastRequest = null;
+
+  protected requests: {[key: string]: LastRequest};
 
   constructor(protected http: HttpAngular,
               protected events: HttpEvents,
@@ -71,7 +80,11 @@ export class Http {
     return this;
   }
 
-  canRetry() {
+  canRetry(id?: string) {
+    if (id) {
+      return this.requests[id] !== undefined;
+    }
+
     return this.lastRequest !== null;
   }
 
@@ -79,7 +92,16 @@ export class Http {
     return this.lastRequest;
   }
 
-  retryRequest(): Observable<Response> {
+  retryRequest(id?: string): Observable<Response> {
+
+    if (id) {
+      if (!this.requests[id]) {
+        throw new Error(`${id} not exists to retry`);
+      }
+
+      return this.request(this.requests[id]);
+    }
+
     return this.request(this.lastRequest);
   }
 
@@ -110,6 +132,8 @@ export class Http {
         requestOptions,
         options
       };
+
+      this.requests[url] = this.lastRequest;
     }
 
     // merge of default options in case the urlResolver is not configured
