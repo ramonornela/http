@@ -35,7 +35,7 @@ export class Http {
 
   protected lastRequest: LastRequest = null;
 
-  protected requests: {[key: string]: LastRequest};
+  protected requests: {[key: string]: LastRequest} = {};
 
   constructor(protected http: HttpAngular,
               protected events: HttpEvents,
