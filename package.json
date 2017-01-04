@@ -22,7 +22,7 @@
     "nightly": "npm run build:qa && node ./scripts/publish-nightly",
     "prepush": "npm run lint",
     "package:json": "node ./scripts/package-publish",
-    "publishPackage": "npm run build:qa && npm run package:json --prepare && npm publish --access public && npm run package:json --restore",
+    "publishPackage": "npm run build:qa && npm run changelog && npm run package:json --prepare && npm publish --access public && npm run package:json --restore",
     "test": "npm run clean && npm run build:test && npm run jasmine"
   },
   "files": [
