@@ -1,0 +1,6 @@
+{
+  "mode": "modules",
+  "out": "doc",
+  "theme": "default",
+  "ignoreCompilerErrors": "true"
+}
