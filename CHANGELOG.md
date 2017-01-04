@@ -1,3 +1,31 @@
+<a name="0.0.34"></a>
+## [0.0.34](https://github.com/ramonornela/http/compare/v0.0.33...v0.0.34) (2017-01-04)
+
+
+### Bug Fixes
+
+* **http:** clean options postRequest and postRequestError ([ffb2992](https://github.com/ramonornela/http/commit/ffb2992))
+* **http:** fix return observable with mapper ([837434f](https://github.com/ramonornela/http/commit/837434f))
+* **http:** initialize queue requests ([6f1700e](https://github.com/ramonornela/http/commit/6f1700e))
+* **xhrBackend:** observable error after events ([6a937eb](https://github.com/ramonornela/http/commit/6a937eb))
+* **xhrBackend:** run dispatch error before subscribe postRequest and postRequestError ([cad77aa](https://github.com/ramonornela/http/commit/cad77aa))
+* **xhrBackend:** run postRequest and postRequestError in case not catch error ([385531a](https://github.com/ramonornela/http/commit/385531a))
+
+
+### Features
+
+* **http:** allow enable throwsExceptions plugins ([5f57ff6](https://github.com/ramonornela/http/commit/5f57ff6))
+* **http:** extends HttpException class base Error ([9aea158](https://github.com/ramonornela/http/commit/9aea158))
+* **http:** implementation retry last request ([99d8393](https://github.com/ramonornela/http/commit/99d8393))
+* **http:** retry request by id ([226a598](https://github.com/ramonornela/http/commit/226a598))
+* **http:** return params last request ([5c6f02a](https://github.com/ramonornela/http/commit/5c6f02a))
+* **http:** skip throw exception by plugin and restore options plugins ([045e2eb](https://github.com/ramonornela/http/commit/045e2eb))
+* **http:** skip throwException plugin ([d339736](https://github.com/ramonornela/http/commit/d339736))
+* **httpException:** refactor exception ([b753c87](https://github.com/ramonornela/http/commit/b753c87))
+* **plugins:** implmentation callback to exception plugin ([df7195f](https://github.com/ramonornela/http/commit/df7195f))
+* **plugins:** set options all plugins ([0c6328d](https://github.com/ramonornela/http/commit/0c6328d))
+
+
 <a name="0.0.32"></a>
 ## [0.0.32](https://github.com/ramonornela/http/compare/v0.0.31...v0.0.32) (2016-12-12)
 
