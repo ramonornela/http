@@ -1,8 +1,8 @@
 import { Response } from '@angular/http';
-import { Transform } from '../transform';
 import { Mapper } from '../mapper';
-import { ModelSimple } from './simple';
+import { Transform } from '../transform';
 import { ModelCollection } from './collection';
+import { ModelSimple } from './simple';
 
 export const TypeModel = {
   Simple: 'simple',

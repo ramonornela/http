@@ -1,18 +1,18 @@
-import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { Http as HttpAngular, BrowserXhr, ResponseOptions, XSRFStrategy, ConnectionBackend } from '@angular/http';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { BrowserXhr, ConnectionBackend, Http as HttpAngular, ResponseOptions, XSRFStrategy } from '@angular/http';
 import {
-  Http,
-  xhrBackendFactory,
+  DefaultOptionsToken,
   Events,
+  Http,
   HttpEvents,
   HttpPluginsToken,
-  Plugins,
   ParseResponsePlugin,
   ParseResponseToken,
+  Plugins,
   RequestDefaultOptionsToken,
-  DefaultOptionsToken,
   ThrowExceptionStatus,
-  ThrowExceptionStatusToken
+  ThrowExceptionStatusToken,
+  xhrBackendFactory
 } from './providers';
 
 @NgModule()

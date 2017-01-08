@@ -1,18 +1,18 @@
+import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
 import { Http as HttpAngular, Response } from '@angular/http';
-import { Injectable, Inject, OpaqueToken, Optional } from '@angular/core';
-import { HttpEvents } from './backend/xhr_backend';
-import { TimeoutException } from './exception';
-import { Plugins, Plugin } from './plugins';
-import { Options } from './options';
 import { Config } from '@ramonornela/configuration';
 import { Request } from '@ramonornela/url-resolver';
-import { Mapper } from './mapper';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/defer';
-import 'rxjs/add/operator/timeoutWith';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/timeoutWith';
+import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
+import { HttpEvents } from './backend/xhr_backend';
+import { TimeoutException } from './exception';
+import { Mapper } from './mapper';
+import { Options } from './options';
+import { Plugin, Plugins } from './plugins';
 
 export const RequestDefaultOptionsToken = new OpaqueToken('REQUESTDEFAULTOPTIONSTOKEN');
 export const DefaultOptionsToken = new OpaqueToken('DEFAULTOPTIONSTOKEN');

@@ -1,20 +1,20 @@
+import { Injectable } from '@angular/core';
 import {
-  ConnectionBackend,
-  Connection,
-  Request,
-  Response,
-  ReadyState,
-  RequestMethod,
   BrowserXhr,
-  ResponseType,
-  ResponseOptions,
-  XSRFStrategy,
+  Connection,
+  ConnectionBackend,
   Headers,
-  ResponseContentType
+  ReadyState,
+  Request,
+  RequestMethod,
+  Response,
+  ResponseContentType,
+  ResponseOptions,
+  ResponseType,
+  XSRFStrategy
 } from '@angular/http';
 import { ContentType } from '@angular/http/src/enums';
-import { isSuccess, getResponseURL } from '@angular/http/src/http_utils';
-import { Injectable } from '@angular/core';
+import { getResponseURL, isSuccess } from '@angular/http/src/http_utils';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Events } from './events';
