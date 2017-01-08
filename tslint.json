@@ -1,3 +1,12 @@
 {
-  "extends": "tslint-ionic-rules"
+  "rulesDirectory": [
+    "node_modules/codelyzer"
+  ],
+  "extends": "tslint-ionic-rules",
+  "rules": {
+    "ordered-imports": true,
+    "no-consecutive-blank-lines": true,
+    "import-destructuring-spacing": true,
+    "invoke-injectable": true
+  }
 }
