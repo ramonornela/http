@@ -19,7 +19,7 @@ github.authenticate({
 
 github.releases.createRelease({
   owner: 'ramonornela',
-  repo: 'http',
+  repo: packageJSON.name.split('/')[1],
   target_commitish: 'master',
   tag_name: 'v' + packageJSON.version,
   name: packageJSON.version,
