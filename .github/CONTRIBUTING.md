@@ -4,7 +4,7 @@ Thanks for your interest in contributing! :tada: :tada: :tada:
 
 ## Commit Message Format
 
-We have very precise rules over how our git commit messages should be formatted. This leads to readable messages that are easy to follow when looking through the project history. We also use the git commit messages to generate our [changelog](https://github.com/ramonornela/http/blob/master/CHANGELOG.md). (Ok you got us, it's basically Angular's commit message format).
+We have very precise rules over how our git commit messages should be formatted. This leads to readable messages that are easy to follow when looking through the project history. We also use the git commit messages to generate our [changelog](https://github.com/mbamobi/http/blob/master/CHANGELOG.md). (Ok you got us, it's basically Angular's commit message format).
 
 `type(scope): subject`
 

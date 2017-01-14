@@ -1,7 +1,7 @@
 import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
 import { Http as HttpAngular, Response } from '@angular/http';
-import { Config } from '@ramonornela/configuration';
-import { Request } from '@ramonornela/url-resolver';
+import { Config } from '@mbamobi/configuration';
+import { Request } from '@mbamobi/url-resolver';
 import 'rxjs/add/observable/defer';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
