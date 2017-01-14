@@ -1,3 +1,13 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/mbamobi/http/compare/v0.0.34...v1.0.0) (2017-01-14)
+
+
+### Bug Fixes
+
+* **http:** adjust variables not used ([638ee1b](https://github.com/mbamobi/http/commit/638ee1b))
+
+
+
 <a name="0.0.34"></a>
 ## [0.0.34](https://github.com/ramonornela/http/compare/v0.0.33...v0.0.34) (2017-01-04)
 
