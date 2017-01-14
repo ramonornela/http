@@ -170,7 +170,7 @@ export class Http {
   }
 
   requestPromise(url: any, params?: Object, requestOptions?: any, options?: Options): Promise<Response> {
-    return this.request.apply(this, arguments).toPromise();
+    return this.request.apply(this, [ url, params, requestOptions, options ]).toPromise();
   }
 
   get(url: any, params?: Object, requestOptions?: any, options?: Options): Observable<Response> {
