@@ -1,3 +1,33 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/mbamobi/http/compare/v1.0.0...v1.0.1) (2017-02-01)
+
+
+### Bug Fixes
+
+* **http:** adjust variables not used ([638ee1b](https://github.com/mbamobi/http/commit/638ee1b))
+
+
+### Features
+
+* **exception:** new constructor parameter (response) ([699ad8c](https://github.com/mbamobi/http/commit/699ad8c))
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/mbamobi/http/compare/v1.0.0...v1.0.1) (2017-02-01)
+
+
+### Bug Fixes
+
+* **http:** adjust variables not used ([638ee1b](https://github.com/mbamobi/http/commit/638ee1b))
+
+
+### Features
+
+* **exception:** new constructor parameter (response) ([699ad8c](https://github.com/mbamobi/http/commit/699ad8c))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/mbamobi/http/compare/v0.0.34...v1.0.0) (2017-01-14)
 

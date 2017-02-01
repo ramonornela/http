@@ -1,6 +1,6 @@
 {
   "name": "@mbamobi/http",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Requisição HTTP através de eventos com adição de plugins para interceptação",
   "main": "dist/umd/index.js",
   "typings": "dist/esm/index.d.ts",
