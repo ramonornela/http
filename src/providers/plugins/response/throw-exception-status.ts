@@ -19,11 +19,11 @@ export class ThrowExceptionStatus implements ParseResponse {
       let message = typeof this.fnExtractMessage === 'function'
                   ? this.fnExtractMessage.apply(this, [response])
                   : this.extractMessage(response);
-      throw new HttpException(message, response.status);
+      throw new HttpException(message, response.status, response);
     }
 
     if (response.status === 0) {
-      throw new HttpException('Unknown', response.status);
+      throw new HttpException('Unknown', response.status, response);
     }
   }
 
