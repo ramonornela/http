@@ -1,5 +1,5 @@
 import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
-import { Http as HttpAngular, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { Config } from '@mbamobi/configuration';
 import { Request } from '@mbamobi/url-resolver';
 import 'rxjs/add/observable/defer';
@@ -10,6 +10,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvents } from './backend/xhr_backend';
 import { TimeoutException } from './exception';
+import { HttpOverride } from './http_override';
 import { Mapper } from './mapper';
 import { Options } from './options';
 import { Plugin, Plugins } from './plugins';
@@ -37,7 +38,7 @@ export class Http {
 
   protected requests: {[key: string]: LastRequest} = {};
 
-  constructor(protected http: HttpAngular,
+  constructor(protected http: HttpOverride,
               protected events: HttpEvents,
               protected plugins: Plugins,
               @Optional() config: Config,

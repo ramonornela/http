@@ -1,10 +1,12 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
-import { BrowserXhr, ConnectionBackend, Http as HttpAngular, ResponseOptions, XSRFStrategy } from '@angular/http';
+import { BrowserXhr, ConnectionBackend, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
 import {
   DefaultOptionsToken,
   Events,
   Http,
   HttpEvents,
+  httpFactory,
+  HttpOverride,
   HttpPluginsToken,
   ParseResponsePlugin,
   ParseResponseToken,
@@ -35,7 +37,7 @@ export class HttpModule {
           useFactory: xhrBackendFactory,
           deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ]
         },
-        HttpAngular,
+        { provide: HttpOverride, useFactory: httpFactory, deps: [ ConnectionBackend, RequestOptions ] },
         { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
