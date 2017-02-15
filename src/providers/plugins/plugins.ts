@@ -166,6 +166,8 @@ export class Plugins {
         if ('setOptions' in plugin) {
           plugin.setOptions(options[AllPlugins]);
         }
+
+        this.options[plugin.getName()] = options[AllPlugins];
       });
 
       delete options[AllPlugins];
@@ -182,6 +184,8 @@ export class Plugins {
       if ('setOptions' in plugin) {
         plugin.setOptions(options[pluginName]);
       }
+
+      this.options[plugin.getName()] = options[pluginName];
     }
 
     this.options = options;
