@@ -29,6 +29,7 @@ export function xhrBackendFactory(
 
 export class HttpEvents extends Events {
 
+  static PRE_SUBSCRIBE: string = 'http.presubscribe';
   static PRE_REQUEST: string = 'http.prerequest';
   static POST_REQUEST: string = 'http.postrequest';
   static POST_REQUEST_SUCCESS: string = 'http.postrequest_success';
@@ -36,6 +37,11 @@ export class HttpEvents extends Events {
 
   constructor() {
     super();
+  }
+
+  // preSubscribe(subscriber: Subscriber<any>) {
+  preSubscribe(subscriber: any) {
+    this.publish(HttpEvents.PRE_SUBSCRIBE, subscriber);
   }
 
   preRequest(req: Request) {
@@ -52,6 +58,10 @@ export class HttpEvents extends Events {
 
   postRequestError(resp: Response) {
     this.publish(HttpEvents.POST_REQUEST_ERROR, resp);
+  }
+
+  onPreSubscribe(callback: (req?: any) => any) {
+    this.subscribe(HttpEvents.PRE_SUBSCRIBE, callback);
   }
 
   onPreRequest(callback: (req?: any) => any) {
@@ -86,6 +96,8 @@ export class XHRConnection implements Connection {
   constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions, private events?: HttpEvents) {
     this.request = req;
     this.response = new Observable<Response>((responseObserver: Observer<Response>) => {
+
+      this.events.preSubscribe(responseObserver);
 
       // dispatch event pre request
       this.events.preRequest(req);
