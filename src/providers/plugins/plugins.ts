@@ -12,8 +12,6 @@ export class Plugins {
 
   private plugins: Array<{[name: string]: Plugin}> = [];
 
-  private throwsException: boolean | Function = true;
-
   private options: Object = {};
 
   constructor(plugins?: Array<Plugin>) {
@@ -29,37 +27,6 @@ export class Plugins {
     }
 
     return this;
-  }
-
-  setThrowsException(throws: boolean | Function): this {
-    this.throwsException = throws;
-    return this;
-  }
-
-  getThrowsExceptionPlugin(plugin: string | Plugin): boolean | Function {
-
-    if (typeof plugin !== 'string') {
-      plugin = plugin.getName();
-    }
-
-    this.options[plugin] = this.options[plugin] || {};
-
-    let throwPlugin = 'throwsException' in this.options[plugin]
-      ? this.options[plugin].throwsException
-      : this.throwsException;
-
-    return throwPlugin;
-  }
-
-  isThrowsException(plugin: string | Plugin): boolean {
-
-    if (typeof plugin !== 'string') {
-      plugin = plugin.getName();
-    }
-
-    let throwPlugin = this.getThrowsExceptionPlugin(plugin);
-
-    return throwPlugin === true || typeof throwPlugin === 'function';
   }
 
   add(plugin: Plugin, priority?: number): this {
@@ -197,7 +164,7 @@ export class Plugins {
       throw new Error(`Event '${event}' not exists`);
     }
 
-    this.forEach((plugin: Plugin) => {
+    this.forEach((plugin: any) => {
       if (!(event in plugin)) {
         return;
       }
@@ -207,8 +174,8 @@ export class Plugins {
         method.apply(plugin, params);
       } catch (ex) {
 
-        if (this.isThrowsException(plugin)) {
-          let callbackException = this.getThrowsExceptionPlugin(plugin);
+        if (plugin.getThrowsException && plugin.getThrowsException()) {
+          let callbackException = plugin.getThrowsException();
           if (typeof callbackException === 'function') {
             callbackException(ex);
             return;

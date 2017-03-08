@@ -2,11 +2,22 @@ export abstract class PluginBase {
 
   protected optionsInitials: {[key: string]: any};
 
+  protected throwsException: boolean | Function = true;
+
   constructor() {
     // workaround assign value constructor
     setTimeout(() => {
       this.optionsInitials = this.getOptionsInitial();
     });
+  }
+
+  setThrowsException(throws: boolean): this {
+    this.throwsException = throws;
+    return this;
+  }
+
+  getThrowsException() {
+    return this.throwsException;
   }
 
   protected getOptionsInitial(): {[key: string]: any} {

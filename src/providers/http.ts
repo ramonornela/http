@@ -42,7 +42,7 @@ export class Http {
   private static _requests: Array<Observable<Response>> = [];
 
   protected get openRequests() {
-    return Http._requests = Http._requests.filter((request) => request instanceof Subscriber && !request.closed);
+    return Http._requests = Http._requests.filter((request: any) => request instanceof Subscriber && !request.closed);
   }
 
   constructor(protected http: HttpOverride,
@@ -85,11 +85,6 @@ export class Http {
 
   getRequestFactory(): Request {
     return this.requestFactory;
-  }
-
-  throwsException(throws: boolean): this {
-    this.plugins.setThrowsException(throws);
-    return this;
   }
 
   canRetry(id?: string) {
