@@ -1,7 +1,7 @@
 import { Injectable, OpaqueToken } from '@angular/core';
 import { PostRequestPlugin } from './plugin';
-import { ParseResponse } from './response/parse-response';
 import { PluginBase } from './plugin-base';
+import { ParseResponse } from './response/parse-response';
 
 export const ParseResponseToken = new OpaqueToken('PARSE_RESPONSE');
 
