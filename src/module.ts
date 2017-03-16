@@ -1,6 +1,7 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserXhr, ConnectionBackend, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
 import {
+  CancelRequestPlugin,
   DefaultOptionsToken,
   Events,
   Http,
@@ -58,6 +59,11 @@ export interface TypePlugins {
 }
 
 export const DefaultPlugins: any = [
+  {
+    provide: HttpPluginsToken,
+    useClass: CancelRequestPlugin,
+    multi: true
+  },
   {
     provide: HttpPluginsToken,
     useClass: ParseResponsePlugin,
