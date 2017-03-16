@@ -7,7 +7,7 @@ import { PluginBase } from './plugin-base';
 
 @Injectable()
 export class CancelRequestPlugin extends PluginBase implements PreRequestPlugin {
-  
+
   private _requests: Array<Observable<Response>> = [];
 
   protected get requests() {
