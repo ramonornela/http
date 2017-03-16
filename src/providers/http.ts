@@ -2,7 +2,6 @@ import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
 import { Response } from '@angular/http';
 import { Config } from '@mbamobi/configuration';
 import { Request } from '@mbamobi/url-resolver';
-import { Subscriber } from 'rxjs';
 import 'rxjs/add/observable/defer';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
@@ -39,12 +38,6 @@ export class Http {
 
   protected requests: {[key: string]: LastRequest} = {};
 
-  private static _requests: Array<Observable<Response>> = [];
-
-  protected get openRequests() {
-    return Http._requests = Http._requests.filter((request: any) => request instanceof Subscriber && !request.closed);
-  }
-
   constructor(protected http: HttpOverride,
               protected events: HttpEvents,
               protected plugins: Plugins,
@@ -52,10 +45,6 @@ export class Http {
               @Optional() protected requestFactory: Request,
               @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
               @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
-
-    this.events.onPreSubscribe((subscriber) => {
-      Http._requests.push(subscriber);
-    });
 
     this.runEvent('preRequest');
     this.runEvent('postRequest');
@@ -295,9 +284,5 @@ export class Http {
         this.plugins.cleanOptions();
       }
     });
-  }
-
-  cancelOpenRequests() {
-    this.openRequests.forEach((request: any) => request.unsubscribe());
   }
 }
