@@ -58,7 +58,7 @@ export class HttpEvents extends Events {
     this.subscribe(HttpEvents.PRE_REQUEST, callback);
   }
 
-  onPostRequest(callback: (req?: any) => any) {
+  onPostRequest(callback: (req?: any, subscribe?: any) => any) {
     this.subscribe(HttpEvents.POST_REQUEST, callback);
   }
 
