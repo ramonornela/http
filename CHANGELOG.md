@@ -16,6 +16,24 @@
 
 
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/mbamobi/http/compare/v1.0.1...v1.1.0) (2017-04-04)
+
+
+### Bug Fixes
+
+* **events:** override Http Angular to fixed conflicts events ([1949817](https://github.com/mbamobi/http/commit/1949817))
+* **http:** implements subscribe onPreRequest() ([d0306c7](https://github.com/mbamobi/http/commit/d0306c7))
+* **plugins:** set plugin options ([7c184e6](https://github.com/mbamobi/http/commit/7c184e6))
+
+
+### Features
+
+* **http:** cancel open requests ([f08e5a2](https://github.com/mbamobi/http/commit/f08e5a2))
+* **plugins:** register plugin cancelRequest by default ([c439054](https://github.com/mbamobi/http/commit/c439054))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/mbamobi/http/compare/v1.0.0...v1.0.1) (2017-02-01)
 
