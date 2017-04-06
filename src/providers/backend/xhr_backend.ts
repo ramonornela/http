@@ -13,11 +13,21 @@ import {
   ResponseType,
   XSRFStrategy
 } from '@angular/http';
-import { ContentType } from '@angular/http/src/enums';
-import { getResponseURL, isSuccess } from '@angular/http/src/http_utils';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Events } from './events';
+
+export const isSuccess = (status: number): boolean => (status >= 200 && status < 300);
+
+export function getResponseURL(xhr: any): string {
+  if ('responseURL' in xhr) {
+    return xhr.responseURL;
+  }
+  if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+    return xhr.getResponseHeader('X-Request-URL');
+  }
+  return;
+}
 
 export function xhrBackendFactory(
   browserXhr: BrowserXhr,
@@ -241,18 +251,18 @@ export class XHRConnection implements Connection {
 
     // Set the detected content type
     switch (req.contentType) {
-      case ContentType.NONE:
+      case 0: // ContentType.NONE
         break;
-      case ContentType.JSON:
+      case 1: // ContentType.JSON
         _xhr.setRequestHeader('content-type', 'application/json');
         break;
-      case ContentType.FORM:
+      case 2: // ContentType.FORM
         _xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
         break;
-      case ContentType.TEXT:
+      case 4: // ContentType.TEXT
         _xhr.setRequestHeader('content-type', 'text/plain');
         break;
-      case ContentType.BLOB:
+      case 5: // ContentType.BLOB
         let blob = req.blob();
         if (blob.type) {
           _xhr.setRequestHeader('content-type', blob.type);
