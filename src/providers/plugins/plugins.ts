@@ -116,13 +116,15 @@ export class Plugins {
     }
   }
 
-  cleanOptions() {
+  cleanOptions(event: string) {
     this.forEach((plugin: Plugin) => {
       if ('restoreOptions' in plugin) {
-        plugin.restoreOptions();
+        if (event && event in plugin) {
+          plugin.restoreOptions();
+        }
       }
+      this.options[plugin.getName()] = {};
     });
-    this.options = {};
   }
 
   setOptions(options: Object): this {

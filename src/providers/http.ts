@@ -280,8 +280,8 @@ export class Http {
 
     this.events[methodName].call(this.events, (req: any, subscribe: any) => {
       this.plugins.runEvent(method, [ req, subscribe ]);
-      if (method === 'postRequest' || method === 'postRequestError') {
-        this.plugins.cleanOptions();
+      if (method === 'postRequest') {
+        this.plugins.cleanOptions(method);
       }
     });
   }
