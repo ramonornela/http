@@ -4,9 +4,12 @@ export class HttpException {
 
   private _code: number;
 
-  constructor(message: string, code: number) {
+  private _response: any;
+
+  constructor(message: string, code: number, response: any) {
     this._message = message;
     this._code = code;
+    this._response = response;
   }
 
   get message() {
@@ -15,6 +18,10 @@ export class HttpException {
 
   get code() {
     return this._code;
+  }
+
+  get response() {
+    return this._response;
   }
 }
 

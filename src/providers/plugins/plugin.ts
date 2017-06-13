@@ -6,7 +6,7 @@ export interface Plugin {
 }
 
 export interface PreRequestPlugin extends Plugin {
-  preRequest(req?: any): boolean | void;
+  preRequest(req?: any, subscriber?: any): boolean | void;
 }
 
 export interface PostRequestPlugin extends Plugin {

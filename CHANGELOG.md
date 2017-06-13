@@ -1,3 +1,114 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/mbamobi/http/compare/v2.2.0...v3.0.0) (2017-04-07)
+
+
+
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/mbamobi/http/compare/v2.2.0...v3.0.0) (2017-04-07)
+
+
+
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/mbamobi/http/compare/v2.1.0...v2.2.0) (2017-04-06)
+
+
+### Bug Fixes
+
+* **http:** clean options only event specify ([78463b7](https://github.com/mbamobi/http/commit/78463b7))
+
+
+
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/mbamobi/http/compare/v2.1.0...v2.2.0) (2017-04-06)
+
+
+### Bug Fixes
+
+* **http:** clean options only event specify ([78463b7](https://github.com/mbamobi/http/commit/78463b7))
+
+
+
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/mbamobi/http/compare/v2.0.0...v2.1.0) (2017-04-06)
+
+
+
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/mbamobi/http/compare/v1.0.1...v1.1.0) (2017-04-04)
+
+
+### Bug Fixes
+
+* **events:** override Http Angular to fixed conflicts events ([1949817](https://github.com/mbamobi/http/commit/1949817))
+* **http:** implements subscribe onPreRequest() ([d0306c7](https://github.com/mbamobi/http/commit/d0306c7))
+* **plugins:** set plugin options ([7c184e6](https://github.com/mbamobi/http/commit/7c184e6))
+
+
+### Features
+
+* **http:** cancel open requests ([f08e5a2](https://github.com/mbamobi/http/commit/f08e5a2))
+* **plugins:** register plugin cancelRequest by default ([c439054](https://github.com/mbamobi/http/commit/c439054))
+
+
+
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/mbamobi/http/compare/v1.0.1...v1.1.0) (2017-04-04)
+
+
+### Bug Fixes
+
+* **events:** override Http Angular to fixed conflicts events ([1949817](https://github.com/mbamobi/http/commit/1949817))
+* **http:** implements subscribe onPreRequest() ([d0306c7](https://github.com/mbamobi/http/commit/d0306c7))
+* **plugins:** set plugin options ([7c184e6](https://github.com/mbamobi/http/commit/7c184e6))
+
+
+### Features
+
+* **http:** cancel open requests ([f08e5a2](https://github.com/mbamobi/http/commit/f08e5a2))
+* **plugins:** register plugin cancelRequest by default ([c439054](https://github.com/mbamobi/http/commit/c439054))
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/mbamobi/http/compare/v1.0.0...v1.0.1) (2017-02-01)
+
+
+### Bug Fixes
+
+* **http:** adjust variables not used ([638ee1b](https://github.com/mbamobi/http/commit/638ee1b))
+
+
+### Features
+
+* **exception:** new constructor parameter (response) ([699ad8c](https://github.com/mbamobi/http/commit/699ad8c))
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/mbamobi/http/compare/v1.0.0...v1.0.1) (2017-02-01)
+
+
+### Bug Fixes
+
+* **http:** adjust variables not used ([638ee1b](https://github.com/mbamobi/http/commit/638ee1b))
+
+
+### Features
+
+* **exception:** new constructor parameter (response) ([699ad8c](https://github.com/mbamobi/http/commit/699ad8c))
+
+
+
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/mbamobi/http/compare/v0.0.34...v1.0.0) (2017-01-14)
+
+
+### Bug Fixes
+
+* **http:** adjust variables not used ([638ee1b](https://github.com/mbamobi/http/commit/638ee1b))
+
+
+
 <a name="0.0.34"></a>
 ## [0.0.34](https://github.com/ramonornela/http/compare/v0.0.33...v0.0.34) (2017-01-04)
 

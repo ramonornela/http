@@ -1,6 +1,6 @@
 # HttpModule
 
-This allow define urls Http using [url-resolver](https://github.com/ramonornela/url-resolver) to make request Http and intercept with plugins/events to analisy responses
+This allow define urls Http using [url-resolver](https://github.com/mbamobi/url-resolver) to make request Http and intercept with plugins/events to analisy responses
 
 ## Using HttpModule in an Ionic 2 app
 
@@ -10,13 +10,13 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 // import configuration module
-import { ConfigurationModule } from '@ramonornela/configuration';
+import { ConfigurationModule } from '@mbamobi/configuration';
 
 // import url-resolver module
-import { UrlResolverModule } from '@ramonornela/url-resolver';
+import { UrlResolverModule } from '@mbamobi/url-resolver';
 
 // Import http module
-import { HttpModule, DefaultPlugins } from '@ramonornela/http';
+import { HttpModule, DefaultPlugins } from '@mbamobi/http';
 
 export const APP_CONFIG = {
   'urlResolver': {
@@ -61,4 +61,4 @@ export class AppModule {}
 
 Contributing
 
-See [CONTRIBUTING.md](https://github.com/ramonornela/http/blob/master/.github/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/mbamobi/http/blob/master/.github/CONTRIBUTING.md)

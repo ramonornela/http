@@ -1,7 +1,7 @@
 import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
-import { Http as HttpAngular, Response } from '@angular/http';
-import { Config } from '@ramonornela/configuration';
-import { Request } from '@ramonornela/url-resolver';
+import { Response } from '@angular/http';
+import { Config } from '@mbamobi/configuration';
+import { Request } from '@mbamobi/url-resolver';
 import 'rxjs/add/observable/defer';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
@@ -10,6 +10,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvents } from './backend/xhr_backend';
 import { TimeoutException } from './exception';
+import { HttpOverride } from './http_override';
 import { Mapper } from './mapper';
 import { Options } from './options';
 import { Plugin, Plugins } from './plugins';
@@ -37,7 +38,7 @@ export class Http {
 
   protected requests: {[key: string]: LastRequest} = {};
 
-  constructor(protected http: HttpAngular,
+  constructor(protected http: HttpOverride,
               protected events: HttpEvents,
               protected plugins: Plugins,
               @Optional() config: Config,
@@ -73,11 +74,6 @@ export class Http {
 
   getRequestFactory(): Request {
     return this.requestFactory;
-  }
-
-  throwsException(throws: boolean): this {
-    this.plugins.setThrowsException(throws);
-    return this;
   }
 
   canRetry(id?: string) {
@@ -170,7 +166,7 @@ export class Http {
   }
 
   requestPromise(url: any, params?: Object, requestOptions?: any, options?: Options): Promise<Response> {
-    return this.request.apply(this, arguments).toPromise();
+    return this.request.apply(this, [ url, params, requestOptions, options ]).toPromise();
   }
 
   get(url: any, params?: Object, requestOptions?: any, options?: Options): Observable<Response> {
@@ -282,10 +278,10 @@ export class Http {
       method.slice(1)
     ].join('');
 
-    this.events[methodName].call(this.events, (req: any) => {
-      this.plugins.runEvent(method, [ req ]);
-      if (method === 'postRequest' || method === 'postRequestError') {
-        this.plugins.cleanOptions();
+    this.events[methodName].call(this.events, (req: any, subscribe: any) => {
+      this.plugins.runEvent(method, [ req, subscribe ]);
+      if (method === 'postRequest') {
+        this.plugins.cleanOptions(method);
       }
     });
   }

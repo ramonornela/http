@@ -1,13 +1,15 @@
 import { Injectable, OpaqueToken } from '@angular/core';
 import { PostRequestPlugin } from './plugin';
+import { PluginBase } from './plugin-base';
 import { ParseResponse } from './response/parse-response';
 
 export const ParseResponseToken = new OpaqueToken('PARSE_RESPONSE');
 
 @Injectable()
-export class ParseResponsePlugin implements PostRequestPlugin {
+export class ParseResponsePlugin extends PluginBase implements PostRequestPlugin {
 
   constructor(private parseResponses: Array<ParseResponse>) {
+    super();
   }
 
   getPriority(): number {

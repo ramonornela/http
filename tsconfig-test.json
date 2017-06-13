@@ -2,8 +2,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "module": "commonjs",
     "target": "es5",
     "experimentalDecorators": true,
