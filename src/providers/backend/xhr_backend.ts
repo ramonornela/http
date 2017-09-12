@@ -15,7 +15,7 @@ import {
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { Events } from './events';
+import { HttpEvents } from './events';
 
 export const isSuccess = (status: number): boolean => (status >= 200 && status < 300);
 
@@ -35,50 +35,6 @@ export function xhrBackendFactory(
   xsrf: XSRFStrategy,
   events: HttpEvents) {
   return new XHRBackend(browserXhr, responseOptions, xsrf, events);
-}
-
-export class HttpEvents extends Events {
-
-  static PRE_REQUEST: string = 'http.prerequest';
-  static POST_REQUEST: string = 'http.postrequest';
-  static POST_REQUEST_SUCCESS: string = 'http.postrequest_success';
-  static POST_REQUEST_ERROR: string = 'http.postrequest_error';
-
-  constructor() {
-    super();
-  }
-
-  preRequest(req: Request, subscribe: any) {
-    this.publish(HttpEvents.PRE_REQUEST, req, subscribe);
-  }
-
-  postRequest(resp: Response) {
-    this.publish(HttpEvents.POST_REQUEST, resp);
-  }
-
-  postRequestSuccess(resp: Response) {
-    this.publish(HttpEvents.POST_REQUEST_SUCCESS, resp);
-  }
-
-  postRequestError(resp: Response) {
-    this.publish(HttpEvents.POST_REQUEST_ERROR, resp);
-  }
-
-  onPreRequest(callback: (req?: any) => any) {
-    this.subscribe(HttpEvents.PRE_REQUEST, callback);
-  }
-
-  onPostRequest(callback: (req?: any, subscribe?: any) => any) {
-    this.subscribe(HttpEvents.POST_REQUEST, callback);
-  }
-
-  onPostRequestSuccess(callback: (req?: any) => any) {
-    this.subscribe(HttpEvents.POST_REQUEST_SUCCESS, callback);
-  }
-
-  onPostRequestError(callback: (req?: any) => any) {
-    this.subscribe(HttpEvents.POST_REQUEST_ERROR, callback);
-  }
 }
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
