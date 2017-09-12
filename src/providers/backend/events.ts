@@ -82,7 +82,6 @@ export class Events {
   }
 }
 
-
 export class HttpEvents extends Events {
 
   static PRE_REQUEST: string = 'http.prerequest';
