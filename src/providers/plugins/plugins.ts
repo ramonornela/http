@@ -1,5 +1,6 @@
-import { Injectable, OpaqueToken } from '@angular/core';
+import { Injectable, OpaqueToken, Optional } from '@angular/core';
 import { Plugin } from './plugin';
+import { HttpEvents } from '../backend/xhr_backend';
 
 export const HttpPluginsToken = new OpaqueToken('HTTP_PLUGINS');
 
@@ -14,10 +15,30 @@ export class Plugins {
 
   private options: Object = {};
 
-  constructor(plugins?: Array<Plugin>) {
+  constructor(protected events: HttpEvents, @Optional() plugins: Array<Plugin>) {
     if (plugins) {
       this.set(plugins);
     }
+
+    this.callEvent('preRequest');
+    this.callEvent('postRequest');
+    this.callEvent('postRequestSuccess');
+    this.callEvent('postRequestError');
+  }
+
+  protected callEvent(method: string) {
+    let methodName = [
+      'on',
+      method.charAt(0).toUpperCase(),
+      method.slice(1)
+    ].join('');
+
+    this.events[methodName].call(this.events, (req: any, subscribe: any) => {
+      this.runEvent(method, [ req, subscribe ]);
+      if (method === 'postRequest') {
+        this.cleanOptions(method);
+      }
+    });
   }
 
   set(plugins: Array<Plugin>): this {

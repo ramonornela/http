@@ -46,11 +46,6 @@ export class Http {
               @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
               @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
 
-    this.runEvent('preRequest');
-    this.runEvent('postRequest');
-    this.runEvent('postRequestSuccess');
-    this.runEvent('postRequestError');
-
     if (config) {
       let httpConfig = config.get(KEY_CONFIG) || {};
 
@@ -269,20 +264,5 @@ export class Http {
 
     this.requestOptions = options;
     return this;
-  }
-
-  protected runEvent(method: string) {
-    let methodName = [
-      'on',
-      method.charAt(0).toUpperCase(),
-      method.slice(1)
-    ].join('');
-
-    this.events[methodName].call(this.events, (req: any, subscribe: any) => {
-      this.plugins.runEvent(method, [ req, subscribe ]);
-      if (method === 'postRequest') {
-        this.plugins.cleanOptions(method);
-      }
-    });
   }
 }

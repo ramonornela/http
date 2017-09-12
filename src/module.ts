@@ -41,7 +41,7 @@ export class HttpModule {
         { provide: HttpOverride, useFactory: httpFactory, deps: [ ConnectionBackend, RequestOptions ] },
         { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
-        { provide: Plugins, useClass: Plugins, deps: [ HttpPluginsToken ] },
+        { provide: Plugins, useClass: Plugins, deps: [ HttpEvents, HttpPluginsToken ] },
         { provide: RequestDefaultOptionsToken, useValue: defaultRequest },
         { provide: DefaultOptionsToken, useValue: defaultResponse },
         Http,
