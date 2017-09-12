@@ -123,7 +123,7 @@ export class XHRConnection implements Connection {
         if (exception) {
           throw exception;
         }
-    };
+      };
       // error event handler
       const onError = (err: ErrorEvent) => {
         let responseOptions = new ResponseOptions({
@@ -166,7 +166,7 @@ export class XHRConnection implements Connection {
 
       // Select the correct buffer type to store the response
       if ((req.responseType !== undefined && req.responseType !== null)
-         && (_xhr.responseType !== undefined && _xhr.responseType !== null)) {
+          && (_xhr.responseType !== undefined && _xhr.responseType !== null)) {
         switch (req.responseType) {
           case ResponseContentType.ArrayBuffer:
             _xhr.responseType = 'arraybuffer';

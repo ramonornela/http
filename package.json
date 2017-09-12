@@ -43,6 +43,7 @@
     "@angular/platform-server": "4.0.0",
     "@mbamobi/configuration": "^3.0.0",
     "@mbamobi/url-resolver": "^3.0.0",
+    "@ionic-native/http": "^4.0.0",
     "@ramonornela/jsonpath": "0.2.10",
     "@types/jasmine": "2.2.33",
     "codelyzer": "2.0.0-beta.4",
@@ -68,6 +69,7 @@
     "@angular/core": "^4.0.0",
     "@angular/http": "^4.0.0",
     "@mbamobi/url-resolver": "^3.0.0",
+    "@ionic-native/http": "^4.0.0",
     "rxjs": "^5.1.1",
     "zone.js": "^0.8.4"
   },
