@@ -43,10 +43,10 @@ export class HttpPluginConnection implements Connection {
           promise = pluginHttp.get(req.url, {}, headers);
           break;
         case 'POST':
-          promise = pluginHttp.post(req.url, {}, headers);
+          promise = pluginHttp.post(req.url, this.transformParemeters(), headers);
           break;
         case 'PUT':
-          promise = pluginHttp.put(req.url, {}, headers);
+          promise = pluginHttp.put(req.url, this.transformParemeters(), headers);
           break;
         case 'DELETE':
           promise = pluginHttp.delete(req.url, {}, headers);
@@ -90,9 +90,9 @@ export class HttpPluginConnection implements Connection {
       }).catch((error: any) => {
         const responseOptions = new ResponseOptions({
           status: error.status,
-          body: error,
+          body: error.data,
           type: ResponseType.Error,
-          statusText: '' // @todo
+          statusText: error.error
         });
         const response = new Response(responseOptions);
         let exception;
@@ -110,6 +110,20 @@ export class HttpPluginConnection implements Connection {
         }
       });
     });
+  }
+
+  transformParemeters(): { [key: string]: any } {
+    let paramsResult: { [key: string]: any } = {};
+
+    // transform query string in object ex: x=1&y=2 = {x: 1, y: 2}
+    const body: any = this.request.getBody();
+    const params: string[] = body.split('&');
+    for (const param of params) {
+      const [ key, value ] = param.split('=');
+      paramsResult[key] = value;
+    }
+
+    return paramsResult;
   }
 }
 
