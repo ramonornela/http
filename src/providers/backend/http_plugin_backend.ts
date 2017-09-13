@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HTTP } from '@ionic-native/http';
 import {
   Connection,
   ConnectionBackend,
@@ -10,6 +9,7 @@ import {
   ResponseOptions,
   ResponseType
 } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { HttpEvents, isSuccess } from './utils';
