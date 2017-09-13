@@ -38,19 +38,20 @@ export class HttpPluginConnection implements Connection {
 
       this.events.preRequest(req, responseObserver);
       let promise: any;
+      const headers = req.headers.toJSON();
       // @todo add headers and parameters
       switch (method) {
         case 'GET':
-          promise = pluginHttp.get(req.url, {}, {});
+          promise = pluginHttp.get(req.url, {}, headers);
           break;
         case 'POST':
-          promise = pluginHttp.post(req.url, {}, {});
+          promise = pluginHttp.post(req.url, {}, headers);
           break;
         case 'PUT':
-          promise = pluginHttp.post(req.url, {}, {});
+          promise = pluginHttp.put(req.url, {}, headers);
           break;
         case 'DELETE':
-          promise = pluginHttp.delete(req.url, {}, {});
+          promise = pluginHttp.delete(req.url, {}, headers);
           break;
         default:
           throw new Error(`Method '${method}' not allowed`);
