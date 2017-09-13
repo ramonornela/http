@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeoutWith';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-import { HttpEvents } from './backend/xhr_backend';
+import { HttpEvents } from './backend/utils';
 import { TimeoutException } from './exception';
 import { HttpOverride } from './http_override';
 import { Mapper } from './mapper';
@@ -264,5 +264,27 @@ export class Http {
 
     this.requestOptions = options;
     return this;
+  }
+}
+
+@Injectable()
+export class HttpCordovaPlugin extends Http {
+  constructor(
+    http: HttpOverride,
+    events: HttpEvents,
+    plugins: Plugins,
+    @Optional() config: Config,
+    @Optional() requestFactory: Request,
+    @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
+    @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
+      super(
+        http,
+        events,
+        plugins,
+        config,
+        requestFactory,
+        defaultOptionsRequest,
+        defaultOptions
+      );
   }
 }

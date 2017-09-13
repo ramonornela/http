@@ -15,9 +15,7 @@ import {
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { HttpEvents } from './events';
-
-export const isSuccess = (status: number): boolean => (status >= 200 && status < 300);
+import { HttpEvents, isSuccess } from './utils';
 
 export function getResponseURL(xhr: any): string {
   if ('responseURL' in xhr) {
@@ -241,5 +239,3 @@ export class XHRBackend implements ConnectionBackend {
     return new XHRConnection(request, this.browserXHR, this.baseResponseOptions, this.events);
   }
 }
-
-export { Events };

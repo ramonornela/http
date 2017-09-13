@@ -1,3 +1,5 @@
+export const isSuccess = (status: number): boolean => (status >= 200 && status < 300);
+
 import { Injectable } from '@angular/core';
 import { Request, Response } from '@angular/http';
 

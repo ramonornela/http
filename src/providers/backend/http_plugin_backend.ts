@@ -12,13 +12,11 @@ import {
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { HttpEvents } from './events';
-
-export const isSuccess = (status: number): boolean => (status >= 200 && status < 300);
+import { HttpEvents, isSuccess } from './utils';
 
 export function httpPluginBackendFactory(
-  events: HttpEvents,
-  http: HTTP) {
+  http: HTTP,
+  events: HttpEvents) {
   return new HttpPluginBackend(http, events);
 }
 

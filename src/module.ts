@@ -1,5 +1,6 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserXhr, ConnectionBackend, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import {
   CancelRequestPlugin,
   DefaultOptionsToken,
@@ -8,6 +9,8 @@ import {
   HttpEvents,
   httpFactory,
   HttpOverride,
+  httpPluginBackendFactory,
+  HttpCordovaPlugin,
   HttpPluginsToken,
   ParseResponsePlugin,
   ParseResponseToken,
@@ -45,6 +48,40 @@ export class HttpModule {
         { provide: RequestDefaultOptionsToken, useValue: defaultRequest },
         { provide: DefaultOptionsToken, useValue: defaultResponse },
         Http,
+        plugins
+      ]
+    };
+  }
+}
+
+@NgModule()
+export class HttpCordovaPluginModule {
+
+  constructor(@Optional() @SkipSelf() parentModule: HttpModule) {
+    if (parentModule) {
+      throw new Error('HttpModule already loaded; Import in root module only.');
+    }
+  }
+
+  static initialize(plugins: Array<TypePlugins>, defaultRequest?: any, defaultResponse?: any): ModuleWithProviders {
+    return {
+      ngModule: HttpModule,
+      providers: [
+        Events,
+        HttpEvents,
+        HTTP,
+        {
+          provide: ConnectionBackend,
+          useFactory: httpPluginBackendFactory,
+          deps: [ HTTP, HttpEvents ]
+        },
+        { provide: HttpOverride, useFactory: httpFactory, deps: [ ConnectionBackend, RequestOptions ] },
+        { provide: ThrowExceptionStatusToken, useValue: null },
+        { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
+        { provide: Plugins, useClass: Plugins, deps: [ HttpEvents, HttpPluginsToken ] },
+        { provide: RequestDefaultOptionsToken, useValue: defaultRequest },
+        { provide: DefaultOptionsToken, useValue: defaultResponse },
+        HttpCordovaPlugin,
         plugins
       ]
     };
