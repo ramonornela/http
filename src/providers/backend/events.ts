@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Request, Response } from '@angular/http';
 
 /**
  * Code copy https://github.com/driftyco/ionic/blob/master/src/util/events.ts

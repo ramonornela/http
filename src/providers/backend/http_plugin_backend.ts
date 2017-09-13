@@ -6,7 +6,9 @@ import {
   ReadyState,
   Request,
   RequestMethod,
-  Response
+  Response,
+  ResponseOptions,
+  ResponseType
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -32,22 +34,63 @@ export class HttpPluginConnection implements Connection {
     this.response = new Observable<Response>((responseObserver: Observer<Response>) => {
       const method = RequestMethod[req.method].toUpperCase();
 
+      this.events.preRequest(req, responseObserver);
+      let promise: any;
+      // @todo add headers and parameters
       switch (method) {
         case 'GET':
-          pluginHttp.get(req.url, {}, {});
+          promise = pluginHttp.get(req.url, {}, {});
           break;
         case 'POST':
-          pluginHttp.post(req.url, {}, {});
+          promise = pluginHttp.post(req.url, {}, {});
           break;
         case 'PUT':
-          pluginHttp.post(req.url, {}, {});
+          promise = pluginHttp.post(req.url, {}, {});
           break;
         case 'DELETE':
-          pluginHttp.delete(req.url, {}, {});
+          promise = pluginHttp.delete(req.url, {}, {});
           break;
         default:
           throw new Error(`Method '${method}' not allowed`);
       }
+
+      promise.then((data: any) => {
+        const responseOptions = new ResponseOptions({
+          status: data.status,
+          body: data.data,
+          headers: data.headers,
+          url: req.url,
+          statusText: '' // @todo
+        });
+        const response = new Response(responseOptions);
+
+        this.events.postRequestSuccess(response);
+        this.events.postRequest(response);
+
+        responseObserver.next(response);
+        responseObserver.complete();
+      }).catch((error: any) => {
+        const responseOptions = new ResponseOptions({
+          status: error.status,
+          body: error,
+          type: ResponseType.Error,
+          statusText: '' // @todo
+        });
+        const response = new Response(responseOptions);
+        let exception;
+        try {
+          responseObserver.error(response);
+        } catch (ex) {
+          exception = ex;
+        }
+
+        this.events.postRequestError(response);
+        this.events.postRequest(response);
+
+        if (exception) {
+          throw exception;
+        }
+      });
     });
   }
 }
