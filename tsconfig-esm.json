@@ -5,6 +5,7 @@
     "module": "es2015",
     "target": "es5",
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "sourceMap": true,
     "declaration": true,
     "removeComments": true,

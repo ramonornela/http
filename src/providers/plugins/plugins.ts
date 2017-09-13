@@ -1,5 +1,5 @@
 import { Injectable, OpaqueToken, Optional } from '@angular/core';
-import { HttpEvents } from '../backend/xhr_backend';
+import { HttpEvents } from '../backend/utils';
 import { Plugin } from './plugin';
 
 export const HttpPluginsToken = new OpaqueToken('HTTP_PLUGINS');

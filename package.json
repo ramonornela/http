@@ -43,6 +43,7 @@
     "@angular/platform-server": "4.0.0",
     "@mbamobi/configuration": "^3.0.0",
     "@mbamobi/url-resolver": "^3.0.0",
+    "@ionic-native/core": "^4.0.0",
     "@ionic-native/http": "^4.0.0",
     "@ramonornela/jsonpath": "0.2.10",
     "@types/jasmine": "2.2.33",
@@ -62,7 +63,7 @@
     "tslint-eslint-rules": "3.2.3",
     "tslint-ionic-rules": "0.0.8",
     "typedoc": "^0.5.1",
-    "typescript": "~2.2.1",
+    "typescript": "^2.4.1",
     "zone.js": "0.8.4"
   },
   "peerDependencies": {
