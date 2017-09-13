@@ -14,6 +14,8 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { HttpEvents } from './events';
 
+export const isSuccess = (status: number): boolean => (status >= 200 && status < 300);
+
 export function httpPluginBackendFactory(
   events: HttpEvents,
   http: HTTP) {
@@ -55,20 +57,37 @@ export class HttpPluginConnection implements Connection {
       }
 
       promise.then((data: any) => {
+        const status = data.status;
         const responseOptions = new ResponseOptions({
-          status: data.status,
+          status,
           body: data.data,
           headers: data.headers,
           url: req.url,
           statusText: '' // @todo
         });
         const response = new Response(responseOptions);
+        response.ok = isSuccess(status);
+        if (response.ok) {
+          this.events.postRequestSuccess(response);
+          this.events.postRequest(response);
 
-        this.events.postRequestSuccess(response);
+          responseObserver.next(response);
+          responseObserver.complete();
+        }
+
+        let exception;
+        try {
+          responseObserver.error(response);
+        } catch (ex) {
+          exception = ex;
+        }
+
+        this.events.postRequestError(response);
         this.events.postRequest(response);
 
-        responseObserver.next(response);
-        responseObserver.complete();
+        if (exception) {
+          throw exception;
+        }
       }).catch((error: any) => {
         const responseOptions = new ResponseOptions({
           status: error.status,
