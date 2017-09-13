@@ -65,7 +65,7 @@ export class HttpCordovaPluginModule {
 
   static initialize(plugins: Array<TypePlugins>, defaultRequest?: any, defaultResponse?: any): ModuleWithProviders {
     return {
-      ngModule: HttpModule,
+      ngModule: HttpCordovaPluginModule,
       providers: [
         Events,
         HttpEvents,
