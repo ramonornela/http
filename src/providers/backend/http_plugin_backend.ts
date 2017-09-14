@@ -125,13 +125,17 @@ export class HttpPluginConnection implements Connection {
       }
     }
 
-    const params: string[] = body.split('&');
-    for (const param of params) {
-      const [ key, value ] = param.split('=');
-      paramsResult[key] = value;
-    }
+    try {
+      return JSON.parse(body);
+    } catch (e) {
+      const params: string[] = body.split('&');
+      for (const param of params) {
+        const [ key, value ] = param.split('=');
+        paramsResult[key] = value;
+      }
 
-    return paramsResult;
+      return paramsResult;
+    }
   }
 }
 
