@@ -117,6 +117,10 @@ export class HttpPluginConnection implements Connection {
 
     // transform query string in object ex: x=1&y=2 = {x: 1, y: 2}
     const body: any = this.request.getBody();
+    if (typeof body === 'object') {
+      return body;
+    }
+
     const params: string[] = body.split('&');
     for (const param of params) {
       const [ key, value ] = param.split('=');
