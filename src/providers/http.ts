@@ -131,12 +131,12 @@ export class Http {
     requestOptions = requestOptions || {};
     requestOptions = Object.assign({}, this.requestOptions, requestOptions);
 
+    requestOptions.params = params;
+
     if (typeof url === 'string' && this.requestFactory) {
       if (this.requestFactory.getMetadata().has(url)) {
         url = this.requestFactory.create(url, params, requestOptions);
         requestOptions = null;
-      } else {
-        requestOptions.params = params;
       }
     }
 
