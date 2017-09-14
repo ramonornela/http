@@ -135,6 +135,8 @@ export class Http {
       if (this.requestFactory.getMetadata().has(url)) {
         url = this.requestFactory.create(url, params, requestOptions);
         requestOptions = null;
+      } else {
+        requestOptions.params = params;
       }
     }
 
