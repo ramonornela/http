@@ -49,7 +49,7 @@ export class HttpPluginConnection implements Connection {
           } else {
             pluginHttp.setDataSerializer('urlencoded');
           }
-          promise = pluginHttp.post(req.url, this.transformParemeters(), headers);
+          promise = pluginHttp.post(req.url, this.transformParemeters(), headersSerialize);
           break;
         case 'PUT':
           if (headers.get('content-type') === 'application/json') {
@@ -57,10 +57,10 @@ export class HttpPluginConnection implements Connection {
           } else {
             pluginHttp.setDataSerializer('urlencoded');
           }
-          promise = pluginHttp.put(req.url, this.transformParemeters(), headers);
+          promise = pluginHttp.put(req.url, this.transformParemeters(), headersSerialize);
           break;
         case 'DELETE':
-          promise = pluginHttp.delete(req.url, {}, headers);
+          promise = pluginHttp.delete(req.url, {}, headersSerialize);
           break;
         default:
           throw new Error(`Method '${method}' not allowed`);
