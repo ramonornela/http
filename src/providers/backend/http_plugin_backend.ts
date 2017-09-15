@@ -36,16 +36,27 @@ export class HttpPluginConnection implements Connection {
 
       this.events.preRequest(req, responseObserver);
       let promise: any;
-      const headers = req.headers.toJSON();
+      const headers    = req.headers;
+      const headersSerialize = headers.toJSON();
       // @todo add headers and parameters
       switch (method) {
         case 'GET':
-          promise = pluginHttp.get(req.url, {}, headers);
+          promise = pluginHttp.get(req.url, {}, headersSerialize);
           break;
         case 'POST':
+          if (headers.get('content-type') === 'application/json') {
+            pluginHttp.setDataSerializer('json');
+          } else {
+            pluginHttp.setDataSerializer('urlencoded');
+          }
           promise = pluginHttp.post(req.url, this.transformParemeters(), headers);
           break;
         case 'PUT':
+          if (headers.get('content-type') === 'application/json') {
+            pluginHttp.setDataSerializer('json');
+          } else {
+            pluginHttp.setDataSerializer('urlencoded');
+          }
           promise = pluginHttp.put(req.url, this.transformParemeters(), headers);
           break;
         case 'DELETE':
