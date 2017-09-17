@@ -37,11 +37,16 @@ export class HttpPluginConnection implements Connection {
       this.events.preRequest(req, responseObserver);
       let promise: any;
       const headers    = req.headers;
+      let headersSerialize = {};
+      headers.forEach((value: any, index: string) => {
+        if (value !== undefined || value !== '' || value !== null) {
+          headersSerialize[index] = value;
+        }
+      });
       // @todo workaround assign origin
       if (!headers.has('origin')) {
-        headers.set('Origin', 'null');
+        headersSerialize['Origin'] = 'null';
       }
-      const headersSerialize = headers.toJSON();
       // @todo add headers and parameters
       switch (method) {
         case 'GET':
