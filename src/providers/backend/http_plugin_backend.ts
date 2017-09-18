@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   Connection,
   ConnectionBackend,
+  Headers,
   ReadyState,
   Request,
   RequestMethod,
@@ -83,7 +84,7 @@ export class HttpPluginConnection implements Connection {
         const responseOptions = new ResponseOptions({
           status,
           body: data.data,
-          headers: data.headers,
+          headers: new Headers(data.headers),
           url: req.url,
           statusText: '' // @todo
         });
