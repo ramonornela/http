@@ -39,8 +39,11 @@ export class HttpPluginConnection implements Connection {
       const headers    = req.headers;
       let headersSerialize = {};
       headers.forEach((value: any, index: string) => {
-        if (value !== undefined || value !== '' || value !== null) {
-          headersSerialize[index] = value;
+        value = value.filter((valueFilter: any) => {
+          return valueFilter !== undefined && valueFilter !== '' && valueFilter !== null;
+        });
+        if (value.length) {
+          headersSerialize[index] = value.join(',');
         }
       });
       // @todo workaround assign origin
