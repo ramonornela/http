@@ -51,26 +51,28 @@ export class HttpPluginConnection implements Connection {
       if (!headers.has('origin')) {
         headersSerialize['Origin'] = 'null';
       }
-      // @todo add headers and parameters
+      let parameters;
       switch (method) {
         case 'GET':
           promise = pluginHttp.get(req.url, {}, headersSerialize);
           break;
         case 'POST':
+          parameters = this.transformParemeters();
           if (headers.get('content-type') === 'application/json') {
             pluginHttp.setDataSerializer('json');
           } else {
             pluginHttp.setDataSerializer('urlencoded');
           }
-          promise = pluginHttp.post(req.url, this.transformParemeters(), headersSerialize);
+          promise = pluginHttp.post(req.url, parameters, headersSerialize);
           break;
         case 'PUT':
+          parameters = this.transformParemeters();
           if (headers.get('content-type') === 'application/json') {
             pluginHttp.setDataSerializer('json');
           } else {
             pluginHttp.setDataSerializer('urlencoded');
           }
-          promise = pluginHttp.put(req.url, this.transformParemeters(), headersSerialize);
+          promise = pluginHttp.put(req.url, parameters, headersSerialize);
           break;
         case 'DELETE':
           promise = pluginHttp.delete(req.url, {}, headersSerialize);
@@ -79,8 +81,21 @@ export class HttpPluginConnection implements Connection {
           throw new Error(`Method '${method}' not allowed`);
       }
 
+      let objectDebug: any = {
+        url: req.url,
+        headers: headersSerialize,
+        parameters: parameters
+      };
+      console.log('Debug: ', objectDebug);
+
       promise.then((data: any) => {
         const status = data.status;
+        objectDebug.headersResponse = data.headers;
+        objectDebug.body   = data.data;
+        objectDebug.status = status;
+
+        console.log('Debug success: ', objectDebug);
+
         const responseOptions = new ResponseOptions({
           status,
           body: data.data,
@@ -112,8 +127,15 @@ export class HttpPluginConnection implements Connection {
           throw exception;
         }
       }).catch((error: any) => {
+        const status = error.status;
+        objectDebug.status     = status;
+        objectDebug.body       = error.data;
+        objectDebug.statusText = error.error;
+
+        console.log('Debug error: ', objectDebug);
+
         const responseOptions = new ResponseOptions({
-          status: error.status,
+          status: status,
           body: error.data,
           type: ResponseType.Error,
           statusText: error.error
