@@ -1,5 +1,5 @@
 import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
-import { Response } from '@angular/http';
+import { ConnectionBackend, Http as HttpAngular, RequestOptions, Response } from '@angular/http';
 import { Config } from '@mbamobi/configuration';
 import { Request } from '@mbamobi/url-resolver';
 import 'rxjs/add/observable/defer';
@@ -10,7 +10,6 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvents } from './backend/utils';
 import { TimeoutException } from './exception';
-import { HttpOverride } from './http_override';
 import { Mapper } from './mapper';
 import { Options } from './options';
 import { Plugin, Plugins } from './plugins';
@@ -38,13 +37,18 @@ export class Http {
 
   protected requests: {[key: string]: LastRequest} = {};
 
-  constructor(protected http: HttpOverride,
+  protected http: HttpAngular;
+
+  constructor(options: RequestOptions,
+              backend: ConnectionBackend,
               protected events: HttpEvents,
               protected plugins: Plugins,
               @Optional() config: Config,
               @Optional() protected requestFactory: Request,
               @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
               @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
+
+    this.http = new HttpAngular(backend, options);
 
     if (config) {
       let httpConfig = config.get(KEY_CONFIG) || {};
@@ -273,7 +277,8 @@ export class Http {
 @Injectable()
 export class HttpCordovaPlugin extends Http {
   constructor(
-    http: HttpOverride,
+    options: RequestOptions,
+    backend: ConnectionBackend,
     events: HttpEvents,
     plugins: Plugins,
     @Optional() config: Config,
@@ -281,7 +286,8 @@ export class HttpCordovaPlugin extends Http {
     @Optional() @Inject(RequestDefaultOptionsToken) defaultOptionsRequest: any,
     @Optional() @Inject(DefaultOptionsToken) defaultOptions: any) {
       super(
-        http,
+        options,
+        backend,
         events,
         plugins,
         config,

@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { BrowserXhr, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
+import { BrowserXhr, ResponseOptions, XSRFStrategy } from '@angular/http';
 import { HTTP } from '@ionic-native/http';
 import {
   CancelRequestPlugin,
@@ -8,8 +8,6 @@ import {
   Http,
   HttpCordovaPlugin,
   HttpEvents,
-  httpFactory,
-  HttpOverride,
   HttpPluginBackend,
   httpPluginBackendFactory,
   HttpPluginsToken,
@@ -37,7 +35,6 @@ export class HttpModule {
           useFactory: xhrBackendFactory,
           deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ]
         },
-        { provide: HttpOverride, useFactory: httpFactory, deps: [ XHRBackend, RequestOptions ] },
         { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpEvents, HttpPluginsToken ] },
@@ -65,7 +62,6 @@ export class HttpCordovaPluginModule {
           useFactory: httpPluginBackendFactory,
           deps: [ HTTP, HttpEvents ]
         },
-        { provide: HttpOverride, useFactory: httpFactory, deps: [ HttpPluginBackend, RequestOptions ] },
         { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpEvents, HttpPluginsToken ] },
