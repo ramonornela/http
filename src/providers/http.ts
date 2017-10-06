@@ -1,5 +1,5 @@
 import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
-import { Http as HttpAngular, RequestOptions, Response } from '@angular/http';
+import { ConnectionBackend, Http as HttpAngular, RequestOptions, Response } from '@angular/http';
 import { Config } from '@mbamobi/configuration';
 import { Request } from '@mbamobi/url-resolver';
 import 'rxjs/add/observable/defer';
@@ -40,7 +40,7 @@ export class Http {
   protected http: HttpAngular;
 
   constructor(options: RequestOptions,
-              backend: any,
+              backend: ConnectionBackend,
               protected events: HttpEvents,
               protected plugins: Plugins,
               @Optional() config: Config,

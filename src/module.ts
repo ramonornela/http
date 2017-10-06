@@ -1,8 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { BrowserXhr, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
+import { BrowserXhr, ConnectionBackend, ResponseOptions, XSRFStrategy } from '@angular/http';
 import { HTTP } from '@ionic-native/http';
-import { Config } from '@mbamobi/configuration';
-import { Request } from '@mbamobi/url-resolver';
 import {
   CancelRequestPlugin,
   DefaultOptionsToken,
@@ -19,7 +17,6 @@ import {
   RequestDefaultOptionsToken,
   ThrowExceptionStatus,
   ThrowExceptionStatusToken,
-  XHRBackend,
   xhrBackendFactory
 } from './providers';
 
@@ -33,7 +30,7 @@ export class HttpModule {
         Events,
         HttpEvents,
         {
-          provide: XHRBackend,
+          provide: ConnectionBackend,
           useFactory: xhrBackendFactory,
           deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ]
         },
@@ -42,7 +39,7 @@ export class HttpModule {
         { provide: Plugins, useClass: Plugins, deps: [ HttpEvents, HttpPluginsToken ] },
         { provide: RequestDefaultOptionsToken, useValue: defaultRequest },
         { provide: DefaultOptionsToken, useValue: defaultResponse },
-        { provide: Http, useClass: Http, deps: [ RequestOptions, XHRBackend, HttpEvents, Plugins, Config, Request, RequestDefaultOptionsToken, DefaultOptionsToken ] },
+        Http,
         plugins
       ]
     };
