@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { BrowserXhr, ConnectionBackend, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
+import { BrowserXhr, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
 import { HTTP } from '@ionic-native/http';
 import {
   CancelRequestPlugin,
@@ -10,6 +10,7 @@ import {
   HttpEvents,
   httpFactory,
   HttpOverride,
+  HttpPluginBackend,
   httpPluginBackendFactory,
   HttpPluginsToken,
   ParseResponsePlugin,
@@ -18,6 +19,7 @@ import {
   RequestDefaultOptionsToken,
   ThrowExceptionStatus,
   ThrowExceptionStatusToken,
+  XHRBackend,
   xhrBackendFactory
 } from './providers';
 
@@ -31,11 +33,11 @@ export class HttpModule {
         Events,
         HttpEvents,
         {
-          provide: ConnectionBackend,
+          provide: XHRBackend,
           useFactory: xhrBackendFactory,
           deps: [ BrowserXhr, ResponseOptions, XSRFStrategy, HttpEvents ]
         },
-        { provide: HttpOverride, useFactory: httpFactory, deps: [ ConnectionBackend, RequestOptions ] },
+        { provide: HttpOverride, useFactory: httpFactory, deps: [ XHRBackend, RequestOptions ] },
         { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpEvents, HttpPluginsToken ] },
@@ -59,11 +61,11 @@ export class HttpCordovaPluginModule {
         HttpEvents,
         HTTP,
         {
-          provide: ConnectionBackend,
+          provide: HttpPluginBackend,
           useFactory: httpPluginBackendFactory,
           deps: [ HTTP, HttpEvents ]
         },
-        { provide: HttpOverride, useFactory: httpFactory, deps: [ ConnectionBackend, RequestOptions ] },
+        { provide: HttpOverride, useFactory: httpFactory, deps: [ HttpPluginBackend, RequestOptions ] },
         { provide: ThrowExceptionStatusToken, useValue: null },
         { provide: ParseResponseToken, useClass: ThrowExceptionStatus, deps: [ ThrowExceptionStatusToken ], multi: true },
         { provide: Plugins, useClass: Plugins, deps: [ HttpEvents, HttpPluginsToken ] },
