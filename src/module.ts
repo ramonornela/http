@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserXhr, ConnectionBackend, RequestOptions, ResponseOptions, XSRFStrategy } from '@angular/http';
 import { HTTP } from '@ionic-native/http';
 import {
@@ -23,12 +23,6 @@ import {
 
 @NgModule()
 export class HttpModule {
-
-  constructor(@Optional() @SkipSelf() parentModule: HttpModule) {
-    if (parentModule) {
-      throw new Error('HttpModule already loaded; Import in root module only.');
-    }
-  }
 
   static initialize(plugins: Array<TypePlugins>, defaultRequest?: any, defaultResponse?: any): ModuleWithProviders {
     return {
@@ -56,12 +50,6 @@ export class HttpModule {
 
 @NgModule()
 export class HttpCordovaPluginModule {
-
-  constructor(@Optional() @SkipSelf() parentModule: HttpModule) {
-    if (parentModule) {
-      throw new Error('HttpModule already loaded; Import in root module only.');
-    }
-  }
 
   static initialize(plugins: Array<TypePlugins>, defaultRequest?: any, defaultResponse?: any): ModuleWithProviders {
     return {
