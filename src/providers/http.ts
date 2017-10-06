@@ -1,5 +1,5 @@
 import { Inject, Injectable, OpaqueToken, Optional } from '@angular/core';
-import { ConnectionBackend, Http as HttpAngular, RequestOptions, Response } from '@angular/http';
+import { Http as HttpAngular, RequestOptions, Response } from '@angular/http';
 import { Config } from '@mbamobi/configuration';
 import { Request } from '@mbamobi/url-resolver';
 import 'rxjs/add/observable/defer';
@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeoutWith';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-import { HttpEvents } from './backend/utils';
+import { HttpEvents, HttpPluginBackend, XHRBackend } from './backend';
 import { TimeoutException } from './exception';
 import { Mapper } from './mapper';
 import { Options } from './options';
@@ -40,7 +40,7 @@ export class Http {
   protected http: HttpAngular;
 
   constructor(options: RequestOptions,
-              backend: ConnectionBackend,
+              backend: XHRBackend | HttpPluginBackend,
               protected events: HttpEvents,
               protected plugins: Plugins,
               @Optional() config: Config,
@@ -278,7 +278,7 @@ export class Http {
 export class HttpCordovaPlugin extends Http {
   constructor(
     options: RequestOptions,
-    backend: ConnectionBackend,
+    backend: HttpPluginBackend,
     events: HttpEvents,
     plugins: Plugins,
     @Optional() config: Config,
