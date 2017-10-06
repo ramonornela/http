@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeoutWith';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-import { HttpEvents, HttpPluginBackend, XHRBackend } from './backend';
+import { HttpEvents, HttpPluginBackend } from './backend';
 import { TimeoutException } from './exception';
 import { Mapper } from './mapper';
 import { Options } from './options';
@@ -40,7 +40,7 @@ export class Http {
   protected http: HttpAngular;
 
   constructor(options: RequestOptions,
-              backend: XHRBackend | HttpPluginBackend,
+              backend: any,
               protected events: HttpEvents,
               protected plugins: Plugins,
               @Optional() config: Config,
